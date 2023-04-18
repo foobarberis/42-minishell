@@ -20,22 +20,37 @@
 #include <stdlib.h>            /* malloc, free */
 #include <unistd.h>            /* write, sleep, usleep */
 #include <stdbool.h>
+#include <stdio.h>				/* DEBUG */
 
 typedef struct s_token t_token;
+typedef struct s_env t_env;
 typedef struct s_glb   t_glb;
+
+enum
+{
+	BLTIN,
+	PROG,
+	ARG,
+	SP
+};
+
+struct s_env
+{
+	char **envp;
+	size_t size;
+};
 
 struct s_glb
 {
-	t_token *tok;
+	t_token *tok; /* tokenized line */
+	t_env *env; /* getenv in the form of LL */
 };
 
+// see man execve
 struct s_token
 {
 	char    *word;
 	int      type;
-	char   **arg;
-	int      size;
-	bool     builtin;
 	t_token *next;
 	t_token *prev;
 };
