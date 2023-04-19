@@ -2,10 +2,6 @@
 
 /* gcc -g3 -fsanitize=address ps_env.c ps_env_utils.c ../mlc/libft.a -I../inc -I../mlc/inc */
 
-// TODO Add function to ASCII sort env (use function pointers) (belongs to
-// builtin export not env_export)
-
-// TODO export unset builtin
 // TODO Cleanup and error checking
 
 /**
@@ -56,13 +52,21 @@ void env_array_free(char **envp, size_t size)
 	envp = NULL;
 }
 
+/**
+ * @brief Prints the environment variable, but ignore entries which do not
+ * contain a '='.
+ */
 void env_array_print(t_env *env)
 {
 	size_t i;
 
 	i = 0;
 	while (env->envp[i])
-		f_printf("%s\n", env->envp[i++]);
+	{
+		if (f_memchr(env->envp[i], '=', f_strlen(env->envp[i])))
+			f_printf("%s\n", env->envp[i]);
+		i++;
+	}
 }
 
 char **env_array_dup(char **envp, size_t size)
@@ -90,16 +94,16 @@ int main(int ac, char *av[], char *ep[])
 	(void) av;
 	t_env *env;
 
-	f_printf("\nDEBUG: ORIGINAL\n\n");
+	f_printf("\n--- ORIGINAL ---\n");
 	for (int i = 0; ep[i]; i++)
 		printf("%s\n", ep[i]);
 	env = env_init(ep);
 	if (!env)
 		return (EXIT_FAILURE);
-	f_printf("\nDEBUG: EXPORT\n\n");
-	env_export(env, "coucou=test");
+	f_printf("\n--- EXPORT ---\n");
+	env_export(env, "coucou=hello");
 	env_array_print(env);
-	f_printf("\nDEBUG: UNSET\n\n");
+	f_printf("\n--- UNSET ---\n");
 	env_unset(env, "coucou");
 	env_array_print(env);
 	env_array_free(env->envp, env->size);

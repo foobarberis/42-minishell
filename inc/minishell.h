@@ -71,7 +71,7 @@ size_t env_key_get_len(char *key);
 t_env *env_init(char **envp);
 
 /* BLT_1 */
-void blt_export(t_glb *glb, char *key);
-void blt_unset(t_glb *glb, char *key);
+int blt_export(t_glb *glb, char *key);
+int blt_unset(t_glb *glb, char *key);
 
 #endif
