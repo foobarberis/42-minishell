@@ -12,11 +12,11 @@ Pre-execution :
 + Get Path of cmd if needed (not a builtin)
 + Check if there is here_doc
 	+ if so, fill them by creating files to stock the data with random name (use a flag to open to do so)
-+ Notify the cmd struct that there is files for redirection
++ Write in the cmd struct that there is files for redirection
 
 Execution :
 + check if there is multiple cmd
-	+ if not, run a fonction that directly execute the cmd given (builtin or not)
+	+ if not, directly run the fonction that execute the cmd given (builtin or not)
 + set a pipe
 + check if there is redirection
 	+ if so, open all of them in a different fonction
