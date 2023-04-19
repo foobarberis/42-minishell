@@ -5,6 +5,9 @@
 // TODO Add function to ASCII sort env (use function pointers) (belongs to
 // builtin export not env_export)
 
+// TODO export unset builtin
+// TODO Cleanup and error checking
+
 /**
  * @brief Add a new key/value pair to the environment. If the key exists
  * already, updates the value.
