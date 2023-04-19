@@ -5,7 +5,7 @@ static int exec(t_glb *glb)
 	return 0;
 }
 
-int main(int argc, char *argv[], char *envp[])
+int main(const int ac, const char *av[], const char *ep[])
 {
 	t_glb *glb;
 	char  *buf;
