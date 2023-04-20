@@ -3,14 +3,14 @@
 
 /* Penser avant la boucle readline a save stdin et stdout dans 2 variables
 les dup2 pour leur redonner leur indice de depart a la fin d'une cmd si il y a eu une redirection*/
-int	main_execution()
+int	main_execution(t_glob data)
 {
-	if (nb_pipe == NONE)
-		single_exection();
+	if (data.multiple_cmd == NONE)
+		single_exection(data.cmd);
 
 }
 
-int	single_execution(t_cmd *cmd, )
+int	single_execution(t_cmd *cmd)
 {
 	int	builtin;
 

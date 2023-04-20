@@ -3,7 +3,7 @@
 
 void	fils_here_doc(char *limiter, int *fd);
 
-void	ft_here_doc(char *limiter)
+void	here_doc(char *limiter)
 {
 	int		fd[2];
 	int		pid;

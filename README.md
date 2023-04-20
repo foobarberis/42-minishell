@@ -8,10 +8,14 @@ Parsing:
 + Expand variables
 
 Pre-execution :
++ Mandatory : run all the here_doc in child to be able to handle the singals without exit the minishell.
 + Check if is Builtin 
 + Get Path of cmd if needed (not a builtin)
 + Check if there is here_doc
 	+ if so, fill them by creating files to stock the data with random name (use a flag to open to do so)
++ Opening all of the other redirection (input or output)
+	- use to struct, one for input, the other for output, with double array, save only the last index since this is the one that we will read from or write in
+	- If one file has a per;ission denied, stop immediatly the openin or execution of everything and jumps to the next cmd!
 + Write in the cmd struct that there is files for redirection
 
 Execution :
