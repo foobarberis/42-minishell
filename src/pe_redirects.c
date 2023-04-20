@@ -6,10 +6,10 @@ int	open_all_redirects(t_input *input, t_output *output)
 	int	error;
 
 	error = open_input(input);
-	if (error = ERROR_REDIRECT)
+	if (error == ERROR_REDIRECT)
 		return (ERROR_REDIRECT);
 	error = open_ouptut;
-	if (error = ERROR_REDIRECT)
+	if (error == ERROR_REDIRECT)
 		return (ERROR_REDIRECT);
 	reuturn (error);
 }

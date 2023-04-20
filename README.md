@@ -7,7 +7,7 @@ Parsing:
 + Make tokens for line
 + Expand variables
 
-Pre-execution :
+Pre-execution : fill all the data needed by he struct of "execution.h"
 + Mandatory : run all the here_doc in child to be able to handle the singals without exit the minishell.
 + Check if is Builtin 
 + Get Path of cmd if needed (not a builtin)
