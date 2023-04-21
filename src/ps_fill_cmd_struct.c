@@ -1,5 +1,5 @@
-#include "execution.h"
-#include "minishell.h"
+#include "../inc/execution.h"
+#include "../inc/minishell.h"
 
 int	count_type(t_tok *tok, int	type)
 {

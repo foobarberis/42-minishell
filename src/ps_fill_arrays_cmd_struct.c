@@ -1,4 +1,4 @@
-#include "execution.h"
+#include "../inc/execution.h"
 #include "minishell.h"
 
 int	fill_input_array(t_token *tok, t_input *input)

@@ -8,7 +8,8 @@
 #define ERROR	-2
 #define ERROR_REDIRECT -3
 
-enum	type
+/*** Type ***/
+enum
 {
 	BASIC,
 	R_INPUT,
@@ -19,7 +20,8 @@ enum	type
 	D_OUTPUT_CHEVRON,
 }
 
-enum	builtin 
+/*** Builtin ***/
+enum
 {
 	NONE,
 	ECHO,
@@ -31,7 +33,8 @@ enum	builtin
 	EXIT = -1,
 }
 
-enum	redirect
+/*** redirection ***/
+enum
 {
 	TRUNC,
 	HERE_DOC,
@@ -64,6 +67,8 @@ struct s_cmd
 	t_env		*env;
 	char		**cmd;
 	char		*path_cmd;
+	char		*final_input;
+	char 		*final_output;
 	t_input		*input;
 	t_output	*output;
 };

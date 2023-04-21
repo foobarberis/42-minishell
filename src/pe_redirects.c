@@ -1,20 +1,21 @@
 #include "minishell.h"
-#include "execution.h"
+#include "../inc/execution.h"
 
-int	open_all_redirects(t_input *input, t_output *output)
+char	*open_input(t_input *files);
+char	*open_output(t_output *files);
+
+int	open_all_redirects(t_input *input, t_output *output, char *final_output, char *final_input)
 {
-	int	error;
-
-	error = open_input(input);
-	if (error == ERROR_REDIRECT)
+	final_output = open_input(input);
+	if (valid == ERROR_REDIRECT)
 		return (ERROR_REDIRECT);
-	error = open_ouptut;
-	if (error == ERROR_REDIRECT)
+	valid = open_ouptut;
+	if (valid == ERROR_REDIRECT)
 		return (ERROR_REDIRECT);
-	reuturn (error);
+	return (valid);
 }
-
-int	open_input(t_input *files)
+/** finir mon changement de redire */
+char	*open_input(t_input *files)
 {
 	int	i;
 	int	valid;
@@ -33,7 +34,7 @@ int	open_input(t_input *files)
 	return (i - 1);
 }
 
-int	open_output(t_output files)
+char	*open_output(t_output *files)
 {
 	int	i;
 	int	valid;

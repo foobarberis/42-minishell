@@ -1,4 +1,4 @@
-#include "execution.h"
+#include "../inc/execution.h"
 #include "minishell.h"
 
 /* Penser avant la boucle readline a save stdin et stdout dans 2 variables
@@ -12,14 +12,12 @@ int	main_execution(t_glob data)
 
 int	single_execution(t_cmd *cmd)
 {
-	int	builtin;
-
-	builtin = is_builtin(cmd->args[0])
+	cmd->builtin = is_builtin(cmd->args[0])
+	open_all_redirects(cmd->input, cmd->output);
 	if (builtin != NONE)
 	{
-		if (cmd->output != NONE)
+		if (cmd->output)
 		{
-			open_all_redirects(cmd->redirects);
 			dup2(cmd->output, STDOUT_FILENO);
 			close (cmd->output);
 		}
@@ -33,7 +31,7 @@ int	single_execution(t_cmd *cmd)
 			perror(" :fork failed\n");
 		if(pid == 0)
 		{
-			if (cmd->input != NULL)
+			if (cmd->input)
 			{
 				dup2(cmd->input, STDIN_FILENO);
 				close(cmd->input);
