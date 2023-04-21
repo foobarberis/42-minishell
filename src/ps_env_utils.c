@@ -1,5 +1,8 @@
 #include "minishell.h"
 
+//TODO: Add function to extract the value part of for a given key (for
+//variable expansion during parsing)
+
 size_t env_key_get_len(char *s)
 {
 	size_t key_len;
