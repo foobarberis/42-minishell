@@ -5,7 +5,19 @@
 #include "mlc.h"
 
 #define SUCCESS 0
-#define ERROR_REDIRECT -2
+#define ERROR	-2
+#define ERROR_REDIRECT -3
+
+enum	type
+{
+	BASIC,
+	R_INPUT,
+	R_OUTPUT,
+	S_INPUT_CHEVRON,
+	D_INPUT_CHEVRON,
+	S_OUTPUT_CHEVRON,
+	D_OUTPUT_CHEVRON,
+}
 
 enum	builtin 
 {
@@ -48,9 +60,10 @@ struct s_cmd
 {
 	int			fd[2];
 	int			pid;
-	char		*path_cmd;
+	int			builtin;
+	t_env		*env;
 	char		**cmd;
-	char		**env;
+	char		*path_cmd;
 	t_input		*input;
 	t_output	*output;
 };
@@ -69,5 +82,13 @@ char	*ft_path_cmd(char *cmd, char **envp);
 
 /*** ex_here_doc ***/
 void	ft_here_doc(char *limiter);
+
+/*** ps_fill_arrays_struct_cmd ***/
+int	fill_input_array(t_token *tok, t_input *input);
+int	fill_output_array(t_token *tok, t_output *output);
+int	fill_cmd_array(t_token *tok, char **cmd);
+
+/*** ps_fill_cmd_struct ***/
+int	fill_cmd_struct(t_glob	glob);
 
 #endif

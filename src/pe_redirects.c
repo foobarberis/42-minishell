@@ -41,7 +41,7 @@ int	open_output(t_output files)
 	i = 0;
 	while (files[i]->file)
 	{
-		if (files[i]->type == TRUNC)
+		if (files[i]->type == S_OUTPUT_CHEVRON)
 			valid = open(files[i]->output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		else
 			valid = open(files[i]->output, O_WRONLY | O_APPEND | O_CREAT, 0644);
