@@ -41,41 +41,25 @@ int	ps_token_list_node_add(t_token *tok, t_token *new)
 	return (0);
 }
 
-void ps_token_list_node_destroy(t_token *tok)
+t_token *ps_token_list_node_destroy(t_token *tok)
 {
-	t_token *before;
-	t_token *after;
+	t_token *tmp;
+	t_token *next;
 
-	before = tok->prev;
-	after = tok->next;
-	if (before)
-		before->next = after;
-	if (after)
-		after->prev = before;
-	free(tok->word);
-	tok->word = NULL;
-	free(tok);
-	tok = NULL;
-	return (before);
+	if (!tok)
+		return (NULL);
+	tmp = tok;
+	next = tok->next;
+	if (tmp->prev)
+		tmp->prev->next = tmp->next;
+	if (tmp->next)
+		tmp->next->prev = tmp->prev;
+	free(tmp->word);
+	tmp->word = NULL;
+	free(tmp);
+	tmp = NULL;
+	return (next);
 }
-
-/* void ps_token_list_node_destroy(t_token *tok)
-{
-	t_token *before;
-	t_token *after;
-
-	before = tok->prev;
-	after = tok->next;
-	if (before)
-		before->next = after;
-	if (after)
-		after->prev = before;
-	free(tok->word);
-	tok->word = NULL;
-	free(tok);
-	tok = NULL;
-	return (before);
-} */
 
 void	ps_token_list_free_all(t_token *tok)
 {
@@ -122,11 +106,39 @@ t_token *ps_token_list_from_array(char *s)
 
 void ps_token_list_print(t_token *tok)
 {
+	printf("quote | char | word index | cmd index\n");
+	printf("-------------------------------------\n");
 	while (tok)
 	{
-		if (tok->word && tok->quote == NONE)
-			f_printf("%s", tok->word);
+		if (tok->word)
+			printf("%d | %s | %ld | %ld\n", tok->quote, tok->word, tok->wnum, tok->cmdnum);
 		tok = tok->next;
 	}
 	f_printf("\n");
 }
+
+
+
+
+
+
+
+
+/* t_token *ps_token_list_node_destroy(t_token *tok)
+{
+	t_token *tmp;
+	t_token *next;
+
+	if (!tok)
+		return (NULL);
+	next = tok->next;
+	if (tok->prev)
+		tok->prev->next = tok->next;
+	if (tok->next)
+		tok->next->prev = tok->prev;
+	free(tok->word);
+	tok->word = NULL;
+	free(tok);
+	tok = NULL;
+	return (next);
+} */

@@ -21,6 +21,15 @@ static bool ps_line_has_balanced_quotes(char *s)
 	return (true);
 }
 
+static int ps_token_list_process_characters(t_token *tok)
+{
+	ps_token_list_mark_quotes(tok);
+	ps_token_list_mark_indices(tok);
+	ps_token_list_delete_unquoted_spaces(tok);
+	ps_token_list_print(tok);
+	return (0);
+}
+
 int main(const int ac, const char *av[], const char *ep[])
 {
 	(void) ac;
@@ -41,8 +50,7 @@ int main(const int ac, const char *av[], const char *ep[])
 			tok = ps_token_list_from_array(buf);
 			if (!tok)
 				break;
-			ps_token_list_mark_quotes(tok);
-			ps_token_list_print(tok);
+			ps_token_list_process_characters(tok);
 			ps_token_list_free_all(tok);
 		}
 		free(buf);

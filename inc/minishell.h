@@ -59,7 +59,8 @@ struct s_token
 	char    *word;
 	int      type;
 	int      quote;
-	size_t		index;
+	size_t   wnum;
+	size_t   cmdnum;
 	t_token *next;
 	t_token *prev;
 };
@@ -88,13 +89,14 @@ int blt_unset(t_glb *glb, char *key);
 t_token *ps_token_list_goto_last(t_token *tok);
 t_token *ps_token_list_node_create(char *s);
 int      ps_token_list_node_add(t_token *tok, t_token *new);
-void     ps_token_list_node_destroy(t_token *tok);
+t_token *ps_token_list_node_destroy(t_token *tok);
 void     ps_token_list_free_all(t_token *tok);
 t_token *ps_token_list_from_array(char *s);
 void     ps_token_list_print(t_token *tok);
 
 /* PS_TOKEN */
 void ps_token_list_mark_quotes(t_token *tok);
+void ps_token_list_mark_indices(t_token *tok);
+void ps_token_list_delete_unquoted(t_token *tok);
 void ps_token_list_delete_unquoted_spaces(t_token *tok);
-
 #endif

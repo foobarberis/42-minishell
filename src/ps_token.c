@@ -7,7 +7,11 @@
 // - Delete unquoted quotes
 // - Attribute index to letter who belong in the same word
 // 		- Separate construct of the form >file or <file into > file or < file
-// - Delete all unquoted spaces and unquoted quotes
+// - Attribute index to the letters who belongs to the same command
+// - Delete all unquoted spaces
+// - Look for syntax error e.g 'MSH $ | grep', 'MSH $ ''', 'MSH $ ""'
+// - Delete unquoted quotes and unquoted pipes
+	// - WARNING: MS $ '' should produce an empty string not an empty list
 // - Reassemble words
 // - Expand variables
 // - Turn consecutive words with the same quote state into one string
@@ -50,39 +54,60 @@ void ps_token_list_mark_quotes(t_token *tok)
 	}
 }
 
-void ps_token_list_give_index(t_token *tok)
+void ps_token_list_mark_indices(t_token *tok)
 {
-	char c;
-	bool was_space;
-	size_t i;
+	bool   was_space;
+	size_t word;
+	size_t cmd;
 
-	i = 0;
+	word = 0;
+	cmd = 0;
+	was_space = false;
 	while (tok)
 	{
-		c = tok->word[0];
-		if (f_isspace(c) && !was_space)
+		if (tok->word[0] == '|' && tok->prev && tok->next)
+				if (tok->prev->word[0] == ' ' && tok->next->word[0] == ' ')
+					cmd++;
+		if (f_isspace(tok->word[0]) && !was_space)
 		{
 			was_space = true;
-			i++;
+			word++;
 		}
-		tok->index = i;
+		else if (!f_isspace(tok->word[0]) && was_space)
+			was_space = false;
+		tok->wnum = word;
+		tok->cmdnum = cmd;
 		tok = tok->next;
 	}
 }
 
 void ps_token_list_delete_unquoted_spaces(t_token *tok)
 {
-	t_token *del;
-	char     curr;
-
+	if (!tok)
+		return ;
 	while (tok)
 	{
-		curr = tok->word[0];
-		if (tok->quote == NONE && f_isspace(curr))
-		{
-			del = tok;
-			ps_token_list_node_destroy(del);
-		}
-		tok = tok->next;
+		if (tok->quote == NONE && f_isspace(tok->word[0]))
+			tok = ps_token_list_node_destroy(tok);
+		if (tok)
+			tok = tok->next;
 	}
 }
+
+// WARNING: When deleting quotes, if curr == '"' && next == '"' it should
+// be replaced by one block with word set to the empty string
+/* void ps_token_list_delete_unquoted(t_token *tok)
+{
+	t_token *tmp;
+	char     curr;
+
+	tmp = tok;
+	while (tmp)
+	{
+		curr = tmp->word[0];
+		if (tmp->quote == NONE && (f_isspace(curr) || curr == '\'' || curr == '"' || curr == '|'))
+			tmp = ps_token_list_node_destroy(tmp);
+		if (tmp)
+			tmp = tmp->next;
+	}
+} */
