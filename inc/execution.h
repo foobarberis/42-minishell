@@ -1,6 +1,9 @@
 #ifndef EXECUTION_H
-# define EXECECUTION_H
+# define EXECUTION_H
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "minishell.h"
 #include "mlc.h"
 
@@ -49,12 +52,14 @@ struct s_input
 	char	*input;
 	char	*limiter;
 	int		type;
+	int 	fd_input;
 };
 
 struct s_output
 {
 	char	*output;
 	int		type;
+	int 	fd_output;
 };
 
 /*Need all this element for the execution of every t_cmd*/
@@ -67,10 +72,10 @@ struct s_cmd
 	t_env		*env;
 	char		**cmd;
 	char		*path_cmd;
-	char		*final_input;
-	char 		*final_output;
-	t_input		*input;
-	t_output	*output;
+	int			*final_input;
+	int			*final_output;
+	t_input		*struct_input;
+	t_output	*struct_output;
 };
 
 /*definition of globale struct to contain the infomation given by readline
@@ -89,11 +94,17 @@ char	*ft_path_cmd(char *cmd, char **envp);
 void	ft_here_doc(char *limiter);
 
 /*** ps_fill_arrays_struct_cmd ***/
-int	fill_input_array(t_token *tok, t_input *input);
-int	fill_output_array(t_token *tok, t_output *output);
-int	fill_cmd_array(t_token *tok, char **cmd);
+int	fill_input_array(t_token tok, t_input *input);
+int	fill_output_array(t_token tok, t_output *output);
+int	fill_cmd_array(t_token tok, char ***cmd);
 
 /*** ps_fill_cmd_struct ***/
 int	fill_cmd_struct(t_glob	glob);
+
+/*** pe_get_cmd_path ***/
+void	get_path_cmd(char *cmd, char **envp, char **path_cmd);
+
+/*** pe_redirect ***/
+int	open_all_redirects(t_input *input, t_output *output, char **final_output, char **final_input);
 
 #endif

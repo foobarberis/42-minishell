@@ -1,7 +1,7 @@
 #include "../inc/execution.h"
 #include "minishell.h"
 
-int	fill_input_array(t_token *tok, t_input *input)
+int	fill_input_array(t_token tok, t_input *input)
 {
 	while (tok->word)
 	{
@@ -28,7 +28,7 @@ int	fill_input_array(t_token *tok, t_input *input)
 	return (SUCCESS);
 }
 
-int	fill_output_array(t_token *tok, t_output *output)
+int	fill_output_array(t_token tok, t_output *output)
 {
 	while (tok->word)
 	{
@@ -53,7 +53,7 @@ int	fill_output_array(t_token *tok, t_output *output)
 	return (SUCCESS);
 }
 
-int	fill_cmd_array(t_token *tok, char **cmd)
+int	fill_cmd_array(t_token tok, char ***cmd)
 {
 	int	i;
 

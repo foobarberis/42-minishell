@@ -1,6 +1,5 @@
 #include "minishell.h"
-#include "execution.h"
-
+#include "../src/execution.h"
 
 char	*ft_grep_path(char **envp);
 char	*ft_compute_path(char **path, char *cmd);
