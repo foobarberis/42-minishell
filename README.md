@@ -7,6 +7,7 @@ Parsing:
 + Make tokens for line
 + Expand variables
 
+
 Pre-execution : fill all the data needed by he struct of "execution.h"
 + Mandatory : run all the here_doc in child to be able to handle the singals without exit the minishell.
 + Check if is Builtin 
@@ -30,3 +31,6 @@ Execution :
 + execute the command with execve
 	+ if something went wrong, exit with the pid as a status to know wich fork failed and be able to end the waitpid loop in the main.
 + Make a fonction that write the error directly in the error output.(fd 2)
+- TODO Add builtins
+- TODO Cleanup env manipulation functions
+- TODO Finish parsing
