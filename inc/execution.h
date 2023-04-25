@@ -10,6 +10,7 @@
 #define SUCCESS 0
 #define ERROR	-2
 #define ERROR_REDIRECT -3
+#define NO_REDIRECTION -4
 
 /*** Type ***/
 enum
@@ -21,12 +22,11 @@ enum
 	D_INPUT_CHEVRON,
 	S_OUTPUT_CHEVRON,
 	D_OUTPUT_CHEVRON,
-}
+};
 
 /*** Builtin ***/
 enum
 {
-	NONE,
 	ECHO,
 	CD,
 	PWD,
@@ -34,14 +34,14 @@ enum
 	UNSET,
 	ENV,
 	EXIT = -1,
-}
+};
 
 /*** redirection ***/
 enum
 {
 	TRUNC,
 	HERE_DOC,
-}
+};
 
 typedef struct s_input t_input;
 typedef struct s_output t_output;
@@ -72,8 +72,8 @@ struct s_cmd
 	t_env		*env;
 	char		**cmd;
 	char		*path_cmd;
-	int			*final_input;
-	int			*final_output;
+	int			final_input;
+	int			final_output;
 	t_input		*struct_input;
 	t_output	*struct_output;
 };
@@ -88,23 +88,32 @@ struct s_glob
 */
 
 /*** pe_get_cmd_path ***/
-char	*ft_path_cmd(char *cmd, char **envp);
+int	get_path_cmd(char *cmd, char **envp, char **path_cmd);
+
+/*** pe_fill_all_cmd ***/
+int initialisation_cmds(t_cmd *cmd, t_glb glob);
 
 /*** ex_here_doc ***/
 void	ft_here_doc(char *limiter);
 
 /*** ps_fill_arrays_struct_cmd ***/
-int	fill_input_array(t_token tok, t_input *input);
-int	fill_output_array(t_token tok, t_output *output);
-int	fill_cmd_array(t_token tok, char ***cmd);
+int	fill_input_array(t_token *tok, t_input *input, int nb_input);
+int	fill_output_array(t_token *tok, t_output *output, int nb_output);
+int	fill_cmd_array(t_token *tok, char **cmd, int nb_args);
 
 /*** ps_fill_cmd_struct ***/
-int	fill_cmd_struct(t_glob	glob);
-
-/*** pe_get_cmd_path ***/
-void	get_path_cmd(char *cmd, char **envp, char **path_cmd);
+int	fill_cmd_struct(t_cmd *cmd, t_token *tok);
 
 /*** pe_redirect ***/
-int	open_all_redirects(t_input *input, t_output *output, char **final_output, char **final_input);
+int	open_all_redirects(t_input *input, t_output *output, int *final_output, int *final_input);
+
+/*** main_test_exec ***/
+char	*ft_strdup(const char *s);
+size_t	ft_strlen(const char *s);
+char	**ft_split(char const *s, char c);
+char	*ft_strjoin(char const *s1, char const *s2);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+void	ft_free_split(char **array);
+void print_double_array(char **array, char *title);
 
 #endif

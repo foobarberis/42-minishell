@@ -10,10 +10,9 @@ int	main_execution(t_glob data)
 
 }
 
-int	single_execution(t_cmd *cmd)
+int	single_execution(t_cmd cmd, t_env *env)
 {
-	cmd->builtin = is_builtin(cmd->args[0])
-	open_all_redirects(cmd->input, cmd->output);
+	cmd->builtin = is_builtin(cmd->args[0]);
 	if (builtin != NONE)
 	{
 		if (cmd->output)

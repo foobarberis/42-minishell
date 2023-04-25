@@ -23,48 +23,59 @@ int	open_all_redirects(t_input *input, t_output *output, int *final_output, int 
 int	open_input(t_input *files)
 {
 	int	i;
+	int count;
 	int	valid;
 
 	i = 0;
-	valid = 0;
-	while (files[i].input)
+	count = 0;
+	if (files)
+		count = files[i].fd_input;
+	valid = -1;
+	while (i < count)
 	{
-		if (files[i].type == S_INPUT_CHEVRON)
+		printf("i = %d et nb_input = %d\n", i, files[i].fd_input);
+		if (files[i].type == R_INPUT)
 			valid = open(files[i].input, O_RDONLY);
-		if (valid != SUCCESS)
+		if (valid < SUCCESS)
 		{
 			perror(files[i].input);
 			return (ERROR_REDIRECT);
 		}
-		if (files[i].type == S_INPUT_CHEVRON && files[i + 1].input)
+		if (i + 1 < count)
 			close(valid);
 		i++;
 	}
-	files->fd_input = valid;
-	return (SUCCESS);
+	if (valid == 0)
+		return (NO_REDIRECTION);
+	return (valid);
 }
 
 int	open_output(t_output *files)
 {
 	int	i;
+	int	count;
 	int	valid;
 
 	i = 0;
-	while (files[i].output)
+	count = 0;
+	if (files)
+		count = files[i].fd_output;
+	while (i < count)
 	{
-		if (files[i].type == S_OUTPUT_CHEVRON)
+		if (files[i].type == R_OUTPUT)
 			valid = open(files[i].output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		else
 			valid = open(files[i].output, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		if (valid != SUCCESS)
+		if (valid < SUCCESS)
 		{
 			perror(files[i].output);
 			return (ERROR_REDIRECT);
 		}
-		if (files[i + 1].output)
+		if (i + 1 < count)
 			close(valid);
 		i++;
 	}
-	files->fd_output = valid;
-	return (SUCCESS);
+	if (valid == 0)
+		return (NO_REDIRECTION);
+	return (valid);
 }

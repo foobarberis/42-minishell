@@ -17,30 +17,12 @@ int	count_type(t_token *tok, int type)
 	return (nb_redirect);
 }
 
-
-void	init_cmd_struct(t_cmd *cmd)
-{
-	pipe(cmd->fd);
-	cmd->pid = -1;
-	cmd->builtin = NONE;
-	cmd->path_cmd = NULL;
-	cmd->cmd = NULL;
-	cmd->env = NULL;
-	cmd->struct_input = NULL;
-	cmd->struct_output = NULL;
-	cmd->final_output = NULL;
-	cmd->final_input = NULL;
-	
-}
-
-int	fill_cmd_struct(t_cmd *cmd, t_token *tok, t_env *env)
+int	fill_cmd_struct(t_cmd *cmd, t_token *tok)
 {
 	int	nb_args;
 	int nb_input;
 	int nb_output;
 
-	init_cmd_struct(cmd);
-	cmd->env = env;
 	nb_args = count_type(tok, BASIC) + 1;
 	cmd->cmd = malloc(sizeof(char *) * nb_args);
 	if (fill_cmd_array(tok, cmd->cmd, nb_args) == ERROR)

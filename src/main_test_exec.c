@@ -23,6 +23,7 @@ int	main(int argc,char **argv, char **envp)
 	i = 0;
 	glob.multiple_cmd = 2;
 	cmd = malloc(sizeof(t_cmd) * glob.multiple_cmd);
+	glob.tok = malloc(sizeof(t_token) * 2);
 	if (argc == 5 && argv)
 	{
 		return (0);
@@ -36,7 +37,7 @@ int	main(int argc,char **argv, char **envp)
 	tok1.word = ft_strdup("<");
 	tok1.type = S_INPUT_CHEVRON;
 	tok1.next = &tok2;
-	tok2.word = ft_strdup("input");
+	tok2.word = ft_strdup("/nfs/homes/vburton/Documents/42-minishell/src/input.txt");
 	tok2.type = R_INPUT;
 	tok2.next = &tok3;
 	tok3.word = ft_strdup("-e");
@@ -45,13 +46,13 @@ int	main(int argc,char **argv, char **envp)
 	tok4.word = ft_strdup(">");
 	tok4.type = S_OUTPUT_CHEVRON;
 	tok4.next = &tok5;
-	tok5.word = ft_strdup("output");
+	tok5.word = ft_strdup("output.txt");
 	tok5.type = R_OUTPUT;
 	tok5.next = &tok6;
 	tok6.word = ft_strdup("<");
 	tok6.type = S_INPUT_CHEVRON;
 	tok6.next = &tok7;
-	tok7.word = ft_strdup("input2");
+	tok7.word = ft_strdup("input2.txt");
 	tok7.type = R_INPUT;
 	tok7.next = NULL;
 //	tok8.word = ft_strdup("|");
@@ -63,13 +64,13 @@ int	main(int argc,char **argv, char **envp)
 	tok10.word = ft_strdup(">");
 	tok10.type = S_OUTPUT_CHEVRON;
 	tok10.next = &tok11;
-	tok11.word = ft_strdup("output_cmd_2");
+	tok11.word = ft_strdup("output_cmd_2.txt");
 	tok11.type = R_OUTPUT;
 	tok11.next = NULL;
-	glob.tok = &tok;
-	fill_cmd_struct(&cmd[0], &tok, glob.env);
-	fill_cmd_struct(&cmd[1], &tok9, glob.env);
-	while (i < 2)
+	glob.tok[0] = &tok;
+	glob.tok[1] = &tok9;
+	initialisation_cmds(cmd, glob);
+	while (i < glob.multiple_cmd)
 	{
 		j = 0;
 		print_double_array(cmd[i].cmd, "array of cmd");
@@ -77,28 +78,23 @@ int	main(int argc,char **argv, char **envp)
 		while (cmd[i].struct_input && j < cmd[i].struct_input->fd_input)
 		{
 			printf("input file = %s\n", cmd[i].struct_input[j].input);
-			//		printf("nb_input_files = %d\n", cmd[i].struct_input->fd_input);
 			j++;
 		}
 		j = 0;
 		while (cmd[i].struct_output && j < cmd[i].struct_output->fd_output)
 		{
 			printf("output files = %s\n", cmd[i].struct_output[j].output);
-			//		printf("nb_output_files = %d\n", cmd[i].struct_output->fd_output);
 
 			j++;
 		}
 		printf("\n");
 		i++;
 	}
-//	open_all_redirects(cmd[i].struct_input, cmd[i].struct_output, cmd[i].final_input, cmd[i].final_output);
-//	int i;
-//	i = 0;
-//	while (i < 7)
-//	{
-//		dprintf(1,"%d\n", glob.tok[i].type);
-//		i++;
-//	}
+	printf("\nfd_input of cmd 0 = %d\n", cmd[0].final_input);
+	printf("fd_output of cmd 0 = %d\n", cmd[0].final_output);
+	printf("\nfd_input of cmd 1 = %d\n", cmd[1].final_input);
+	printf("fd_output of cmd 1 = %d\n", cmd[1].final_output);
+
 	return (0);
 }
 
