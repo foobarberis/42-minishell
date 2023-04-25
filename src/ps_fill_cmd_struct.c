@@ -1,17 +1,19 @@
 #include "../inc/execution.h"
-#include "../inc/minishell.h"
 
-int	count_type(t_tok *tok, int	type)
+int	count_type(t_token *tok, int type)
 {
 	int	nb_redirect;
 
 	nb_redirect = 0;
-	while (tok->word)
+	while (tok->next)
 	{
 		if (tok->type == type)
 			nb_redirect++;
-		tok++;
+		if (tok->next)
+			tok = tok->next;
 	}
+	if (tok->type == type)
+			nb_redirect++;
 	return (nb_redirect);
 }
 
@@ -31,35 +33,33 @@ void	init_cmd_struct(t_cmd *cmd)
 	
 }
 
-int	fill_cmd_struct(t_glob	glob)
+int	fill_cmd_struct(t_cmd *cmd, t_token *tok, t_env *env)
 {
-	int 	i;
-	int		nb_args;
-	int		nb_input;
-	int		nb_output;
-	t_cmd	*cmd;
+	int	nb_args;
+	int nb_input;
+	int nb_output;
 
-	i = 0;
-	cmd = malloc(sizeof(t_cmd) * glob.multiple_cmd);
-	while (i < glob.multiple_cmd)
+	init_cmd_struct(cmd);
+	cmd->env = env;
+	nb_args = count_type(tok, BASIC) + 1;
+	cmd->cmd = malloc(sizeof(char *) * nb_args);
+	if (fill_cmd_array(tok, cmd->cmd, nb_args) == ERROR)
+		return (ERROR);
+	if (get_path_cmd(cmd->cmd[0], cmd->env->envp, &cmd->path_cmd) == ERROR)
+		return (ERROR);
+	nb_input = count_type(tok, R_INPUT);
+	if (nb_input > 0)
 	{
-		init_cmd_struct(&cmd[i]);
-		cmd[i].env = glob.env;
-		nb_args = count_type(glob.tok[i], BASIC) + 1;
-		cmd[i].cmd = malloc(sizeof(char *) * nb_args);
-		if (fill_cmd_array(glob.tok[i], &cmd[i].cmd) == ERROR)
+		cmd->struct_input = malloc(sizeof(t_input) * nb_input);
+		if (fill_input_array(tok, cmd->struct_input, nb_input))
 			return (ERROR);
-		if (get_path_cmd(cmd[i].cmd[0], cmd[i].env->envp, &cmd[i].path_cmd) == ERROR)
+	}
+	nb_output = count_type(tok, R_OUTPUT);
+	if (nb_output > 0)
+	{
+		cmd->struct_output = malloc(sizeof(t_output) * nb_output);
+		if (fill_output_array(tok, cmd->struct_output, nb_output))
 			return (ERROR);
-		nb_input = count_type(glob.tok[i], R_INPUT);
-		cmd[i].input = malloc(sizeof(t_input) * nb_input);
-		if (fill_input_array(glob.tok[i], cmd[i].input))
-			return (ERROR);
-		nb_output = count_type(glob.tok[i], R_OUPUT);
-		cmd[i].output = malloc(sizeof(t_output) * nb_output);
-		if (fill_output_array(glob.tok[i], cmd[i].output))
-			return (ERROR);
-		i++;
 	}
 	return (SUCCESS);
 }

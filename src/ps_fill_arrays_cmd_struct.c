@@ -1,70 +1,83 @@
 #include "../inc/execution.h"
 #include "minishell.h"
 
-int	fill_input_array(t_token tok, t_input *input)
+int	fill_input_array(t_token *tok, t_input *input, int nb_input)
 {
-	while (tok->word)
+	while (tok->next)
 	{
 		if (tok->type == S_INPUT_CHEVRON)
 		{
-			tok++;
+			tok = tok->next;
 			input->type = tok->type;
-			input->limiteur = NULL;
+			input->limiter = NULL;
 			input->input = ft_strdup(tok->word);
+			input->fd_input = nb_input;
 			if (!input->input)
 				return (ERROR);
+			input++;
 		}
 		else if (tok->type == D_INPUT_CHEVRON)
 		{
-			tok++;
+			tok = tok->next;
 			input->input = NULL;
 			input->type = tok->type;
-			input->limiteur = ft_strdup(tok->word);
+			input->limiter = ft_strdup(tok->word);
+			input->fd_input = nb_input;
 			if (!input->input)
 				return (ERROR);
+			input++;
 		}
-		tok++;
+		if (tok->next)
+			tok = tok->next;
 	}
 	return (SUCCESS);
 }
 
-int	fill_output_array(t_token tok, t_output *output)
+int	fill_output_array(t_token *tok, t_output *output, int nb_output)
 {
-	while (tok->word)
+	while (tok->next)
 	{
 		if (tok->type == S_OUTPUT_CHEVRON)
 		{
-			tok++;
-			output->output = ft_strdup(tok->word);
+			tok = tok->next;
+			output->output = strdup(tok->word);
 			output->type = tok->type;
+			output->fd_output = nb_output;
 			if (!output->output)
 				return (ERROR);
+			output++;
 		}
 		else if (tok->type == D_OUTPUT_CHEVRON)
 		{
-			tok++;
+			tok = tok->next;
 			output->output = ft_strdup(tok->word);
 			output->type = tok->type;
+			output->fd_output = nb_output;
 			if (!output->output)
 				return (ERROR);
+			output++;
 		}
-		tok++;
+		if (tok->next)
+			tok = tok->next;
 	}
 	return (SUCCESS);
 }
 
-int	fill_cmd_array(t_token tok, char ***cmd)
+int	fill_cmd_array(t_token *tok, char **cmd, int nb_args)
 {
-	int	i;
+	int i;
 
 	i = 0;
-	while (tok->word)
+	while (tok->next && i < nb_args)
 	{
 		if (tok->type == BASIC)
-			cmd[i] = ft_stdup(tok->word);
-		if (!cmd[i])
-			return (ERROR);
-		i++;
+		{
+			cmd[i] = ft_strdup(tok->word);
+			if (!cmd[i] && tok->type == BASIC)
+				return (ERROR);
+			i++;
+		}
+		tok = tok->next;
 	}
 	cmd[i] = NULL;
 	return (SUCCESS);
