@@ -79,25 +79,25 @@ int ps_token_list_node_add(t_token **tok, t_token *new)
 
 void ps_token_list_node_destroy(t_token **tok, t_token *del)
 {
-	t_token *tmp;
+	t_token *curr;
 
 	if (!tok || !tok[0] || !tok[1] || !del)
 		return;
-	tmp = tok[0];
-	while (tmp && tmp != del)
-		tmp = tmp->next;
-	if (!tmp)
+	curr = tok[0];
+	while (curr && curr != del)
+		curr = curr->next;
+	if (!curr)
 		return;
-	if (tmp->prev)
-		tmp->prev->next = tmp->next;
-	if (tmp->next)
-		tmp->next->prev = tmp->prev;
-	free(tmp->word);
+	if (curr->prev)
+		curr->prev->next = curr->next;
+	if (curr->next)
+		curr->next->prev = curr->prev;
+	free(curr->word);
 	if (del == tok[0])
-		tok[0] = tmp->next;
+		tok[0] = curr->next;
 	if (del == tok[1])
-		tok[1] = tmp->prev;
-	free(tmp);
+		tok[1] = curr->prev;
+	free(curr);
 }
 
 void	ps_token_list_free_all(t_token **tok)
@@ -164,77 +164,121 @@ static int ps_token_list_update_quote_state(char c, int state)
 
 void ps_token_list_mark_quotes(t_token **tok_list)
 {
-	t_token *tok;
+	t_token *curr;
 	char     c;
 	int      state;
 
-	tok = *tok_list;
+	curr = *tok_list;
 	state = NONE;
-	while (tok)
+	while (curr)
 	{
-		c = tok->word[0];
+		c = curr->word[0];
 		if (state == NONE && (c == '\'' || c == '"'))
 		{
-			tok->quote = NONE;
+			curr->quote = NONE;
 			state = ps_token_list_update_quote_state(c, state);
-			tok = tok->next;
+			curr = curr->next;
 		}
 		else
 		{
 			state = ps_token_list_update_quote_state(c, state);
-			tok->quote = state;
-			tok = tok->next;
+			curr->quote = state;
+			curr = curr->next;
 		}
 	}
 }
 
-void ps_token_list_mark_indices(t_token **tok_list)
+/* FIXME: Check for edge cases with current approach */
+void ps_token_list_set_index_cmd(t_token **tok_list)
 {
-	bool     was_space;
-	size_t   word;
 	size_t   cmd;
-	t_token *tok;
+	t_token *curr;
 
-	word = 0;
+	if (!tok_list)
+		return;
 	cmd = 0;
-	was_space = false;
-	tok = *tok_list;
-	while (tok)
+	curr = *tok_list;
+	while (curr)
 	{
-		if (tok->word[0] == '|' && tok->prev && tok->next)
-			if (tok->prev->word[0] == ' ' && tok->next->word[0] == ' ')
+		if (curr->word[0] == '|' && curr->prev && curr->next)
+			if ((f_isalnum(curr->prev->word[0]) || f_isspace(curr->prev->word[0])) && (f_isalnum(curr->next->word[0]) || f_isspace(curr->prev->word[0])))
 				cmd++;
-		if (f_isspace(tok->word[0]) && !was_space)
+		curr->cmd_index = cmd;
+		curr = curr->next;
+	}
+}
+
+/* FIXME: cmd >| file should treat >| as one word */
+void ps_token_list_set_index_word(t_token **tok_list)
+{
+	size_t   word;
+	t_token *curr;
+	bool     sep;
+
+	if (!tok_list)
+		return;
+	word = 0;
+	sep = false;
+	curr = *tok_list;
+	while (curr)
+	{
+		if ((f_isspace(curr->word[0]) || curr->word[0] == '|') && !sep)
 		{
-			was_space = true;
+			sep = true;
 			word++;
 		}
-		else if (!f_isspace(tok->word[0]) && was_space)
-			was_space = false;
-		tok->word_index = word;
-		tok->cmd_index = cmd;
-		tok = tok->next;
+		else if (!(f_isspace(curr->word[0]) || curr->word[0] == '|') && sep)
+		{
+			sep = false;
+			word++;
+		}
+		curr->word_index = word;
+		curr = curr->next;
+	}
+}
+
+/* Update index to separate construct of the form >file into two words */
+void ps_token_list_update_indices(t_token **tok_list)
+{
+	char     c;
+	size_t   i;
+	t_token *curr;
+
+	if (!tok_list)
+		return;
+	i = 0;
+	curr = *tok_list;
+	while (curr)
+	{
+		curr->word_index += i;
+		if ((curr->word[0] == '>' || curr->word[0] == '<') && curr->next)
+		{
+			c = curr->next->word[0];
+			if (c != '<' && c != '>' && c != '|')
+				i++;
+		}
+		curr = curr->next;
 	}
 }
 
 void ps_token_list_delete_unquoted_spaces(t_token **tok_list)
 {
 	t_token *next;
-	t_token *tok;
+	t_token *curr;
 
 	if (!tok_list)
 		return;
-	tok = *tok_list;
-	while (tok)
+	curr = *tok_list;
+	while (curr)
 	{
-		next = tok->next;
-		if (tok->quote == NONE && f_isspace(tok->word[0]))
-			ps_token_list_node_destroy(tok_list, tok);
-		tok = next;
+		next = curr->next;
+		if (curr->quote == NONE && f_isspace(curr->word[0]))
+			ps_token_list_node_destroy(tok_list, curr);
+		curr = next;
 	}
 }
 
-// FIXME: Make the function shorter
+/* FIXME: Make the function shorter */
 void ps_token_list_delete_unquoted_quotes(t_token **tok_list)
 {
 	t_token *next;
@@ -262,6 +306,23 @@ void ps_token_list_delete_unquoted_quotes(t_token **tok_list)
 		}
 		else
 			curr = curr->next;
+	}
+}
+
+void ps_token_list_delete_unquoted_pipes(t_token **tok_list)
+{
+	t_token *next;
+	t_token *curr;
+
+	if (!tok_list)
+		return;
+	curr = *tok_list;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->quote == NONE && curr->word[0] == '|')
+			ps_token_list_node_destroy(tok_list, curr);
+		curr = next;
 	}
 }
 
@@ -313,9 +374,12 @@ static bool ps_line_has_balanced_quotes(char *s)
 static int ps_token_list_process_characters(t_token **tok)
 {
 	ps_token_list_mark_quotes(tok);
-	ps_token_list_mark_indices(tok);
+	ps_token_list_set_index_word(tok);
+	ps_token_list_set_index_cmd(tok);
 	ps_token_list_delete_unquoted_spaces(tok);
 	ps_token_list_delete_unquoted_quotes(tok);
+	ps_token_list_update_indices(tok);
+	ps_token_list_delete_unquoted_pipes(tok);
 	ps_token_list_recreate_words(tok);
 	ps_token_list_print(tok);
 	return (0);
@@ -377,5 +441,34 @@ int main(const int ac, const char *av[], const char *ep[])
 		}
 		else
 			curr = curr->next;
+	}
+} */
+
+
+/* void ps_token_list_set_index_word(t_token **tok_list)
+{
+	size_t   word;
+	t_token *curr;
+	bool     sep;
+
+	if (!tok_list)
+		return;
+	word = 0;
+	sep = false;
+	curr = *tok_list;
+	while (curr)
+	{
+		if (f_isspace(curr->word[0]) && !sep)
+		{
+			sep = true;
+			word++;
+		}
+		else if (!f_isspace(curr->word[0]) && sep)
+		{
+			sep = false;
+			word++;
+		}
+		curr->word_index = word;
+		curr = curr->next;
 	}
 } */
