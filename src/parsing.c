@@ -137,12 +137,12 @@ void ps_token_list_print(t_token **tok_list)
 	t_token *tok;
 
 	tok = *tok_list;
-	printf("quote | char | word index | cmd index\n");
-	printf("-------------------------------------\n");
+	printf("%-10s | %-10s | %-10s | %-10s\n", "quote", "char", "word", "cmd");
+	printf("------------------------------------------\n");
 	while (tok)
 	{
 		if (tok->word)
-			printf("%d | %s | %ld | %ld\n", tok->quote, tok->word, tok->word_index, tok->cmd_index);
+			printf("%-10d | %-10s | %-10ld | %-10ld\n", tok->quote, tok->word, tok->word_index, tok->cmd_index);
 		tok = tok->next;
 	}
 	f_printf("\n");
@@ -234,6 +234,62 @@ void ps_token_list_delete_unquoted_spaces(t_token **tok_list)
 	}
 }
 
+// FIXME: Make the function shorter
+void ps_token_list_delete_unquoted_quotes(t_token **tok_list)
+{
+	t_token *next;
+	t_token *curr;
+
+	if (!tok_list)
+		return;
+	curr = *tok_list;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->quote == NONE && (curr->word[0] == '\'' || curr->word[0] == '"'))
+		{
+			if (next && (next->word[0] == curr->word[0]))
+			{
+				curr->word[0] = '\0';
+				ps_token_list_node_destroy(tok_list, next);
+				curr = curr->next;
+			}
+			else
+			{
+				ps_token_list_node_destroy(tok_list, curr);
+				curr = next;
+			}
+		}
+		else
+			curr = curr->next;
+	}
+}
+
+void ps_token_list_recreate_words(t_token **tok_list)
+{
+	char    *tmp;
+	t_token *curr;
+	t_token *next;
+
+	if (!tok_list || !*tok_list)
+		return;
+	curr = *tok_list;
+	next = curr->next;
+	while (curr)
+	{
+		next = curr->next;
+		while (next && (curr->word_index == next->word_index))
+		{
+			tmp = f_strjoin(curr->word, next->word);
+			free(curr->word);
+			curr->word = tmp;
+			ps_token_list_node_destroy(tok_list, next);
+			next = curr->next;
+		}
+		curr = curr->next;
+	}
+}
+
 static bool ps_line_has_balanced_quotes(char *s)
 {
 	size_t nsimple;
@@ -259,6 +315,8 @@ static int ps_token_list_process_characters(t_token **tok)
 	ps_token_list_mark_quotes(tok);
 	ps_token_list_mark_indices(tok);
 	ps_token_list_delete_unquoted_spaces(tok);
+	ps_token_list_delete_unquoted_quotes(tok);
+	ps_token_list_recreate_words(tok);
 	ps_token_list_print(tok);
 	return (0);
 }
@@ -290,3 +348,34 @@ int main(const int ac, const char *av[], const char *ep[])
 	}
 	return (EXIT_SUCCESS);
 }
+
+
+/* void ps_token_list_delete_unquoted_quotes(t_token **tok_list)
+{
+	t_token *next;
+	t_token *curr;
+
+	if (!tok_list)
+		return;
+	curr = *tok_list;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->quote == NONE && (curr->word[0] == '\'' || curr->word[0] == '"'))
+		{
+			if (next && (next->word[0] == curr->word[0]))
+			{
+				curr->word[0] = '\0';
+				ps_token_list_node_destroy(tok_list, next);
+				curr = curr->next;
+			}
+			else
+			{
+				ps_token_list_node_destroy(tok_list, curr);
+				curr = next;
+			}
+		}
+		else
+			curr = curr->next;
+	}
+} */

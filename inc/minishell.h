@@ -91,4 +91,6 @@ void      ps_token_list_print(t_token **tok_list);
 void      ps_token_list_mark_quotes(t_token **tok_list);
 void      ps_token_list_mark_indices(t_token **tok_list);
 void      ps_token_list_delete_unquoted_spaces(t_token **tok_list);
+void      ps_token_list_delete_unquoted_quotes(t_token **tok_list);
+void      ps_token_list_recreate_words(t_token **tok_list);
 #endif
