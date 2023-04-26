@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vburton <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/04/26 11:10:08 by vburton          ###   ########.fr       */
+/*   Updated: 2023/04/26 11:22:05 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ struct s_glb
 {
 	t_env    *env;
 	int 	multiple_cmd;
-	t_token ***tok;
+	t_token **tok;
 };
 
 struct s_token
@@ -82,6 +82,7 @@ int blt_export(t_glb *glb, char *key);
 int blt_unset(t_glb *glb, char *key);
 
 /* PARSING*/
+t_token **parsing(char *buf);
 t_token  *ps_token_list_goto_last(t_token **tok);
 t_token  *ps_token_list_node_create(char *s);
 int       ps_token_list_node_add(t_token **tok, t_token *new);

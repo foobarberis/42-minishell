@@ -94,7 +94,7 @@ int	is_builtin(char *cmd);
 int	get_path_cmd(char *cmd, char **envp, char **path_cmd);
 
 /*** pe_fill_all_cmd ***/
-int initialisation_cmds(t_cmd *cmd, t_glb glob);
+int initialisation_cmds(t_cmd *cmd, t_glb *glob);
 
 /*** ex_here_doc ***/
 void	ft_here_doc(char *limiter);

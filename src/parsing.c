@@ -382,7 +382,7 @@ static int ps_token_list_process_characters(t_token **tok)
 	ps_token_list_update_indices(tok);
 	ps_token_list_delete_unquoted_pipes(tok);
 	ps_token_list_recreate_words(tok);
-	// ps_token_list_print(tok);
+	ps_token_list_print(tok);
 	return (0);
 }
 
@@ -402,22 +402,22 @@ t_token **parsing(char *buf)
 	return (tok);
 }
 
-int main(const int ac, const char *av[], const char *ep[])
-{
-	(void) ac;
-	(void) av;
-	(void) ep;
-	t_token **tok;
-	char    *buf;
-
-	while (1)
-	{
-		buf = readline("MS $ ");
-		if (!buf || !*buf)
-			continue;
-		tok = parsing(buf);
-		ps_token_list_free_all(tok);
-		free(buf);
-	}
-	return (EXIT_SUCCESS);
-}
+//int main(const int ac, const char *av[], const char *ep[])
+//{
+//	(void) ac;
+//	(void) av;
+//	(void) ep;
+//	t_token **tok;
+//	char    *buf;
+//
+//	while (1)
+//	{
+//		buf = readline("MS $ ");
+//		if (!buf || !*buf)
+//			continue;
+//		tok = parsing(buf);
+//		ps_token_list_free_all(tok);
+//		free(buf);
+//	}
+//	return (EXIT_SUCCESS);
+//}
