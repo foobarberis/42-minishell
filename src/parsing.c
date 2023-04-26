@@ -382,7 +382,7 @@ static int ps_token_list_process_characters(t_token **tok)
 	ps_token_list_update_indices(tok);
 	ps_token_list_delete_unquoted_pipes(tok);
 	ps_token_list_recreate_words(tok);
-	ps_token_list_print(tok);
+//	ps_token_list_print(tok);
 	return (0);
 }
 
