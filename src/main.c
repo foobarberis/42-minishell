@@ -16,8 +16,8 @@ int main(const int ac, const char *av[], const char *ep[])
 	while (1)
 	{
 		buf = readline("MS $ ");
-		if (!buf)
-			break;
+		if (!buf || !*buf)
+			continue;
 		glb->tok = parsing(buf);
 		if (!glb->tok)
 			return (free(glb), EXIT_FAILURE); /* FIXME Add better error handling */

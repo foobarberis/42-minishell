@@ -309,6 +309,7 @@ void ps_token_list_delete_unquoted_quotes(t_token **tok_list)
 	}
 }
 
+/* FIXME: Do not delete || */
 void ps_token_list_delete_unquoted_pipes(t_token **tok_list)
 {
 	t_token *next;
@@ -381,8 +382,24 @@ static int ps_token_list_process_characters(t_token **tok)
 	ps_token_list_update_indices(tok);
 	ps_token_list_delete_unquoted_pipes(tok);
 	ps_token_list_recreate_words(tok);
-	ps_token_list_print(tok);
+	// ps_token_list_print(tok);
 	return (0);
+}
+
+t_token **parsing(char *buf)
+{
+	t_token **tok;
+
+	if (!ps_line_has_balanced_quotes(buf))
+		printf("minishell: syntax error.\n");
+	else
+	{
+		tok = ps_token_list_from_array(buf);
+		if (!tok)
+			return (NULL);
+		ps_token_list_process_characters(tok);
+	}
+	return (tok);
 }
 
 int main(const int ac, const char *av[], const char *ep[])
@@ -398,77 +415,9 @@ int main(const int ac, const char *av[], const char *ep[])
 		buf = readline("MS $ ");
 		if (!buf || !*buf)
 			continue;
-		if (!ps_line_has_balanced_quotes(buf))
-			printf("minishell: syntax error.\n");
-		else
-		{
-			tok = ps_token_list_from_array(buf);
-			if (!tok)
-				break;
-			ps_token_list_process_characters(tok);
-			ps_token_list_free_all(tok);
-		}
+		tok = parsing(buf);
+		ps_token_list_free_all(tok);
 		free(buf);
 	}
 	return (EXIT_SUCCESS);
 }
-
-
-/* void ps_token_list_delete_unquoted_quotes(t_token **tok_list)
-{
-	t_token *next;
-	t_token *curr;
-
-	if (!tok_list)
-		return;
-	curr = *tok_list;
-	while (curr)
-	{
-		next = curr->next;
-		if (curr->quote == NONE && (curr->word[0] == '\'' || curr->word[0] == '"'))
-		{
-			if (next && (next->word[0] == curr->word[0]))
-			{
-				curr->word[0] = '\0';
-				ps_token_list_node_destroy(tok_list, next);
-				curr = curr->next;
-			}
-			else
-			{
-				ps_token_list_node_destroy(tok_list, curr);
-				curr = next;
-			}
-		}
-		else
-			curr = curr->next;
-	}
-} */
-
-
-/* void ps_token_list_set_index_word(t_token **tok_list)
-{
-	size_t   word;
-	t_token *curr;
-	bool     sep;
-
-	if (!tok_list)
-		return;
-	word = 0;
-	sep = false;
-	curr = *tok_list;
-	while (curr)
-	{
-		if (f_isspace(curr->word[0]) && !sep)
-		{
-			sep = true;
-			word++;
-		}
-		else if (!f_isspace(curr->word[0]) && sep)
-		{
-			sep = false;
-			word++;
-		}
-		curr->word_index = word;
-		curr = curr->next;
-	}
-} */
