@@ -20,6 +20,22 @@ size_t env_key_get_len(char *s)
 	return (key_len);
 }
 
+/* FIXME: Check for edge cases */
+char *env_extract_value(t_env *env, char *s)
+{
+	char *p;
+	int pos;
+
+	pos = env_key_search(env, s);
+	if (pos == -1)
+		return (NULL);
+	p = env->envp[pos];
+	while (*p && *p != '=')
+		p++;
+	p += 1;
+	return (p);
+}
+
 int env_key_search(t_env *env, char *s)
 {
 	int    pos;
@@ -185,6 +201,19 @@ int main(int ac, char *av[], char *ep[])
 	(void) av;
 	t_env *env;
 
+	env = env_init(ep);
+	env_extract_value(env, "USER");
+	env_array_free(env->envp, env->size);
+	free(env);
+}
+
+
+/* int main(int ac, char *av[], char *ep[])
+{
+	(void) ac;
+	(void) av;
+	t_env *env;
+
 	f_printf("\n--- ORIGINAL ---\n");
 	for (int i = 0; ep[i]; i++)
 		printf("%s\n", ep[i]);
@@ -199,4 +228,4 @@ int main(int ac, char *av[], char *ep[])
 	env_array_print(env);
 	env_array_free(env->envp, env->size);
 	free(env);
-}
+} */
