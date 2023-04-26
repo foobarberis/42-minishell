@@ -20,11 +20,23 @@
 #include <stddef.h>            /* size_t, int64_t etc. */
 #include <stdio.h>             /* DEBUG */
 #include <stdlib.h>            /* malloc, free */
+#include <string.h>            /* DEBUG */
 #include <unistd.h>            /* write, sleep, usleep */
 
 typedef struct s_token t_token;
 typedef struct s_env   t_env;
 typedef struct s_glb   t_glb;
+
+enum
+{
+	BASIC,
+	R_INPUT,
+	R_OUTPUT,
+	S_INPUT_CHEVRON,
+	D_INPUT_CHEVRON,
+	S_OUTPUT_CHEVRON,
+	D_OUTPUT_CHEVRON,
+};
 
 enum e_types
 {
@@ -72,6 +84,7 @@ void   env_array_free(char **envp, size_t size);
 void   env_array_print(t_env *env);
 char **env_array_dup(char **envp, size_t size);
 int    env_key_search(t_env *env, char *key);
+char  *env_extract_value(t_env *env, char *s);
 int    env_key_add(t_env *env, char *key);
 int    env_key_del(t_env *env, int pos);
 size_t env_key_get_len(char *key);
@@ -99,4 +112,6 @@ void      ps_token_list_delete_unquoted_spaces(t_token **tok_list);
 void      ps_token_list_delete_unquoted_quotes(t_token **tok_list);
 void      ps_token_list_delete_unquoted_pipes(t_token **tok_list);
 void      ps_token_list_recreate_words(t_token **tok_list);
+void      ps_token_list_fill_types_brackets(t_token **tok);
+void      ps_token_list_fill_types_files(t_token **tok);
 #endif
