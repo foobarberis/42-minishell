@@ -21,7 +21,7 @@ int	main(int argc,char **argv, char **envp)
 	t_cmd	*cmd;
 
 	i = 0;
-	glob.multiple_cmd = 2;
+	glob.multiple_cmd = 1;
 	cmd = malloc(sizeof(t_cmd) * glob.multiple_cmd);
 	glob.tok = malloc(sizeof(t_token) * 2);
 	if (argc == 5 && argv)
@@ -37,7 +37,7 @@ int	main(int argc,char **argv, char **envp)
 	tok1.word = ft_strdup("<");
 	tok1.type = S_INPUT_CHEVRON;
 	tok1.next = &tok2;
-	tok2.word = ft_strdup("/nfs/homes/vburton/Documents/42-minishell/src/input.txt");
+	tok2.word = ft_strdup("input.txt");
 	tok2.type = R_INPUT;
 	tok2.next = &tok3;
 	tok3.word = ft_strdup("-e");
@@ -58,7 +58,7 @@ int	main(int argc,char **argv, char **envp)
 //	tok8.word = ft_strdup("|");
 //	tok8.type = S_OUTPUT_CHEVRON;
 //	tok8.next = &tok9;
-	tok9.word = ft_strdup("ls");
+	tok9.word = ft_strdup("echo");
 	tok9.type = BASIC;
 	tok9.next = &tok10;
 	tok10.word = ft_strdup(">");
@@ -73,7 +73,7 @@ int	main(int argc,char **argv, char **envp)
 	while (i < glob.multiple_cmd)
 	{
 		j = 0;
-		print_double_array(cmd[i].cmd, "array of cmd");
+		print_double_array(cmd[i].args, "array of cmd");
 		printf("Path cmd = %s\n", cmd[i].path_cmd);
 		while (cmd[i].struct_input && j < cmd[i].struct_input->fd_input)
 		{
@@ -94,6 +94,9 @@ int	main(int argc,char **argv, char **envp)
 	printf("fd_output of cmd 0 = %d\n", cmd[0].final_output);
 	printf("\nfd_input of cmd 1 = %d\n", cmd[1].final_input);
 	printf("fd_output of cmd 1 = %d\n", cmd[1].final_output);
+	printf("is builtin cmd 0 = %d\n", cmd[0].builtin);
+	printf("is builtin cmd 1= %d\n", cmd[1].builtin);
+	single_execution(cmd[0]);
 
 	return (0);
 }
@@ -300,4 +303,20 @@ void	ft_free_split(char **array)
 		}
 		free(array);
 	}
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	if (!s1 || !s2)
+		return (-1);
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+	{
+		i++;
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	}
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

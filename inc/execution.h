@@ -27,7 +27,7 @@ enum
 /*** Builtin ***/
 enum
 {
-	ECHO,
+	ECHO = 1,
 	CD,
 	PWD,
 	EXPORT,
@@ -70,7 +70,7 @@ struct s_cmd
 	int			pid;
 	int			builtin;
 	t_env		*env;
-	char		**cmd;
+	char		**args;
 	char		*path_cmd;
 	int			final_input;
 	int			final_output;
@@ -86,6 +86,9 @@ struct s_glob
 	t_cmd	*cmd;
 }
 */
+
+/*** pe_is_builtin ***/
+int	is_builtin(char *cmd);
 
 /*** pe_get_cmd_path ***/
 int	get_path_cmd(char *cmd, char **envp, char **path_cmd);
@@ -107,6 +110,12 @@ int	fill_cmd_struct(t_cmd *cmd, t_token *tok);
 /*** pe_redirect ***/
 int	open_all_redirects(t_input *input, t_output *output, int *final_output, int *final_input);
 
+/*** ex_builtin ***/
+void	exec_builtin(int builtin, char **arg);
+
+/*** ex_execution ***/
+int	single_execution(t_cmd cmd);
+
 /*** main_test_exec ***/
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);
@@ -115,5 +124,6 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_free_split(char **array);
 void print_double_array(char **array, char *title);
+int	ft_strcmp(const char *s1, const char *s2);
 
 #endif

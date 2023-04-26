@@ -1,5 +1,5 @@
-#include "minishell.h"
-#include "execution.h"
+#include "../inc/minishell.h"
+#include "../inc/execution.h"
 
 int	is_builtin(char *cmd)
 {
@@ -17,5 +17,5 @@ int	is_builtin(char *cmd)
 		return (ENV);
 	else if (ft_strcmp(cmd, "exit") == 0)
 		return (EXIT);
-	return (NONE)
+	return (NONE);
 }
