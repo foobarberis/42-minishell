@@ -101,18 +101,19 @@ void     ps_token_list_node_destroy(t_token **tok, t_token *del);
 void     ps_token_list_free_all(t_token **tok);
 
 t_token **ps_token_list_from_array(char *s);
-void      ps_token_list_print(t_token **tok_list);
-void      ps_token_list_mark_quotes(t_token **tok_list);
-void      ps_token_list_set_index_word(t_token **tok_list);
-void      ps_token_list_set_index_cmd(t_token **tok_list);
-void      ps_token_list_update_indices(t_token **tok_list);
-void      ps_token_list_delete_unquoted_spaces(t_token **tok_list);
-void      ps_token_list_delete_unquoted_quotes(t_token **tok_list);
-void      ps_token_list_delete_unquoted_pipes(t_token **tok_list);
-void      ps_token_list_recreate_words(t_token **tok_list);
+void      ps_token_list_print(t_token **tok);
+void      ps_token_list_mark_quotes(t_token **tok);
+void      ps_token_list_set_index_word(t_token **tok);
+void      ps_token_list_set_index_cmd(t_token **tok);
+void      ps_token_list_update_indices(t_token **tok);
+void      ps_token_list_delete_unquoted_spaces(t_token **tok);
+void      ps_token_list_delete_unquoted_quotes(t_token **tok);
+void      ps_token_list_delete_unquoted_pipes(t_token **tok);
+void      ps_token_list_recreate_words(t_token **tok);
 void      ps_token_list_fill_types_brackets(t_token **tok);
 void      ps_token_list_fill_types_files(t_token **tok);
 void      ps_token_list_expand_variables(t_token **tok, t_env *env);
+void ps_token_list_group_words(t_token **tok);
 
 t_glb *init_glb(char **envp);
 int    parsing(t_glb *glb);

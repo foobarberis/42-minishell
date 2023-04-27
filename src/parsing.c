@@ -131,18 +131,18 @@ t_token **ps_token_list_from_array(char *s)
 	return (tok);
 }
 
-void ps_token_list_print(t_token **tok_list)
+void ps_token_list_print(t_token **tok)
 {
-	t_token *tok;
+	t_token *curr;
 
-	tok = *tok_list;
-	printf("%-10s | %-10s | %-10s | %-10s | %-10s\n", "type", "quote", "char", "word", "cmd");
-	printf("-------------------------------------------------------\n");
-	while (tok)
+	curr = *tok;
+	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n", "type", "quote", "char *", "word", "cmd");
+	printf("---------------------------------------------------------------------------\n");
+	while (curr)
 	{
-		if (tok->word)
-			printf("%-10d | %-10d | %-10s | %-10ld | %-10ld\n", tok->type, tok->quote, tok->word, tok->word_index, tok->cmd_index);
-		tok = tok->next;
+		if (curr->word)
+			printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", curr->type, curr->quote, curr->word, curr->word_index, curr->cmd_index);
+		curr = curr->next;
 	}
 	f_printf("\n");
 }
@@ -161,13 +161,13 @@ static int ps_token_list_update_quote_state(char c, int state)
 	return (state);
 }
 
-void ps_token_list_mark_quotes(t_token **tok_list)
+void ps_token_list_mark_quotes(t_token **tok)
 {
 	t_token *curr;
 	char     c;
 	int      state;
 
-	curr = *tok_list;
+	curr = *tok;
 	state = NONE;
 	while (curr)
 	{
@@ -188,15 +188,15 @@ void ps_token_list_mark_quotes(t_token **tok_list)
 }
 
 /* FIXME: Check for edge cases with current approach */
-void ps_token_list_set_index_cmd(t_token **tok_list)
+void ps_token_list_set_index_cmd(t_token **tok)
 {
 	size_t   cmd;
 	t_token *curr;
 
-	if (!tok_list)
+	if (!tok)
 		return;
 	cmd = 0;
-	curr = *tok_list;
+	curr = *tok;
 	while (curr)
 	{
 		if (curr->word[0] == '|' && curr->prev && curr->next)
@@ -209,17 +209,17 @@ void ps_token_list_set_index_cmd(t_token **tok_list)
 }
 
 /* FIXME: cmd >| file should treat >| as one word */
-void ps_token_list_set_index_word(t_token **tok_list)
+void ps_token_list_set_index_word(t_token **tok)
 {
 	size_t   word;
 	t_token *curr;
 	bool     sep;
 
-	if (!tok_list)
+	if (!tok)
 		return;
 	word = 0;
 	sep = false;
-	curr = *tok_list;
+	curr = *tok;
 	while (curr)
 	{
 		if ((f_isspace(curr->word[0]) || curr->word[0] == '|') && !sep)
@@ -238,16 +238,16 @@ void ps_token_list_set_index_word(t_token **tok_list)
 }
 
 /* Update index to separate construct of the form >file into two words */
-void ps_token_list_update_indices(t_token **tok_list)
+void ps_token_list_update_indices(t_token **tok)
 {
 	char     c;
 	size_t   i;
 	t_token *curr;
 
-	if (!tok_list)
+	if (!tok)
 		return;
 	i = 0;
-	curr = *tok_list;
+	curr = *tok;
 	while (curr)
 	{
 		curr->word_index += i;
@@ -261,32 +261,32 @@ void ps_token_list_update_indices(t_token **tok_list)
 	}
 }
 
-void ps_token_list_delete_unquoted_spaces(t_token **tok_list)
+void ps_token_list_delete_unquoted_spaces(t_token **tok)
 {
 	t_token *next;
 	t_token *curr;
 
-	if (!tok_list)
+	if (!tok)
 		return;
-	curr = *tok_list;
+	curr = *tok;
 	while (curr)
 	{
 		next = curr->next;
 		if (curr->quote == NONE && f_isspace(curr->word[0]))
-			ps_token_list_node_destroy(tok_list, curr);
+			ps_token_list_node_destroy(tok, curr);
 		curr = next;
 	}
 }
 
 /* FIXME: Make the function shorter */
-void ps_token_list_delete_unquoted_quotes(t_token **tok_list)
+void ps_token_list_delete_unquoted_quotes(t_token **tok)
 {
 	t_token *next;
 	t_token *curr;
 
-	if (!tok_list)
+	if (!tok)
 		return;
-	curr = *tok_list;
+	curr = *tok;
 	while (curr)
 	{
 		next = curr->next;
@@ -295,12 +295,12 @@ void ps_token_list_delete_unquoted_quotes(t_token **tok_list)
 			if (next && (next->word[0] == curr->word[0]))
 			{
 				curr->word[0] = '\0';
-				ps_token_list_node_destroy(tok_list, next);
+				ps_token_list_node_destroy(tok, next);
 				curr = curr->next;
 			}
 			else
 			{
-				ps_token_list_node_destroy(tok_list, curr);
+				ps_token_list_node_destroy(tok, curr);
 				curr = next;
 			}
 		}
@@ -310,32 +310,32 @@ void ps_token_list_delete_unquoted_quotes(t_token **tok_list)
 }
 
 /* FIXME: Do not delete || */
-void ps_token_list_delete_unquoted_pipes(t_token **tok_list)
+void ps_token_list_delete_unquoted_pipes(t_token **tok)
 {
 	t_token *next;
 	t_token *curr;
 
-	if (!tok_list)
+	if (!tok)
 		return;
-	curr = *tok_list;
+	curr = *tok;
 	while (curr)
 	{
 		next = curr->next;
 		if (curr->quote == NONE && curr->word[0] == '|')
-			ps_token_list_node_destroy(tok_list, curr);
+			ps_token_list_node_destroy(tok, curr);
 		curr = next;
 	}
 }
 
-void ps_token_list_recreate_words(t_token **tok_list)
+void ps_token_list_recreate_words(t_token **tok)
 {
 	char    *tmp;
 	t_token *curr;
 	t_token *next;
 
-	if (!tok_list || !*tok_list)
+	if (!tok || !*tok)
 		return;
-	curr = *tok_list;
+	curr = *tok;
 	next = curr->next;
 	while (curr)
 	{
@@ -345,7 +345,7 @@ void ps_token_list_recreate_words(t_token **tok_list)
 			tmp = f_strjoin(curr->word, next->word);
 			free(curr->word);
 			curr->word = tmp;
-			ps_token_list_node_destroy(tok_list, next);
+			ps_token_list_node_destroy(tok, next);
 			next = curr->next;
 		}
 		curr = curr->next;
@@ -446,6 +446,32 @@ void ps_token_list_expand_variables(t_token **tok, t_env *env)
 	}
 }
 
+/* Regroup words between quotes in one string */
+void ps_token_list_group_words(t_token **tok)
+{
+	char    *tmp;
+	t_token *curr;
+	t_token *next;
+
+	if (!tok || !*tok)
+		return;
+	curr = *tok;
+	next = curr->next;
+	while (curr)
+	{
+		next = curr->next;
+		while (next && curr->quote != NONE && (curr->quote == next->quote))
+		{
+			tmp = f_strjoin(curr->word, next->word);
+			free(curr->word);
+			curr->word = tmp;
+			ps_token_list_node_destroy(tok, next);
+			next = curr->next;
+		}
+		curr = curr->next;
+	}
+}
+
 static int ps_token_list_process_characters(t_glb *glb)
 {
 	ps_token_list_mark_quotes(glb->tok);
@@ -459,6 +485,7 @@ static int ps_token_list_process_characters(t_glb *glb)
 	ps_token_list_fill_types_brackets(glb->tok);
 	ps_token_list_fill_types_files(glb->tok);
 	ps_token_list_expand_variables(glb->tok, glb->env);
+	ps_token_list_group_words(glb->tok);
 	ps_token_list_print(glb->tok);
 	return (0);
 }
