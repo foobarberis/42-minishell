@@ -194,7 +194,7 @@ char **env_array_dup(char **envp, size_t size)
 	}
 	return (new[i] = NULL, new);
 }
-
+/*
 int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
@@ -205,7 +205,7 @@ int main(int ac, char *av[], char *ep[])
 	env_extract_value(env, "USER");
 	env_array_free(env->envp, env->size);
 	free(env);
-}
+} */
 
 
 /* int main(int ac, char *av[], char *ep[])

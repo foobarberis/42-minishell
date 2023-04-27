@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-/* gcc -Wall -Wextra -g3 -fsanitize=address -lreadline parsing.c ../mlc/libft.a -I../inc -I../mlc/inc */
+/* gcc -Wall -Wextra -g3 -fsanitize=address -lreadline parsing.c env.c ../mlc/libft.a -I../inc -I../mlc/inc */
 
 /* WARNING: Quoted vs unquoted here-doc limiter */
 /*
@@ -25,9 +25,9 @@
  */
 
 /* LIST UTILS */
-t_token	*ps_token_list_goto_last(t_token **tok)
+t_token *ps_token_list_goto_last(t_token **tok)
 {
-	t_token	*p;
+	t_token *p;
 
 	p = *tok;
 	while (p)
@@ -39,9 +39,9 @@ t_token	*ps_token_list_goto_last(t_token **tok)
 	return (NULL);
 }
 
-t_token	*ps_token_list_node_create(char *s)
+t_token *ps_token_list_node_create(char *s)
 {
-	t_token	*p;
+	t_token *p;
 
 	p = malloc(sizeof(t_token));
 	if (!p)
@@ -100,10 +100,10 @@ void ps_token_list_node_destroy(t_token **tok, t_token *del)
 	free(curr);
 }
 
-void	ps_token_list_free_all(t_token **tok)
+void ps_token_list_free_all(t_token **tok)
 {
 	if (!tok || !tok[0] || !tok[1])
-		return ;
+		return;
 	while (tok[0])
 		ps_token_list_node_destroy(tok, tok[0]);
 	free(tok);
@@ -111,8 +111,7 @@ void	ps_token_list_free_all(t_token **tok)
 
 t_token **ps_token_list_from_array(char *s)
 {
-
-	char     buf[2];
+	char      buf[2];
 	t_token **tok;
 
 	if (!s || !*s)
@@ -201,7 +200,8 @@ void ps_token_list_set_index_cmd(t_token **tok_list)
 	while (curr)
 	{
 		if (curr->word[0] == '|' && curr->prev && curr->next)
-			if ((f_isalnum(curr->prev->word[0]) || f_isspace(curr->prev->word[0])) && (f_isalnum(curr->next->word[0]) || f_isspace(curr->prev->word[0])))
+			if ((f_isalnum(curr->prev->word[0]) || f_isspace(curr->prev->word[0])) &&
+			    (f_isalnum(curr->next->word[0]) || f_isspace(curr->prev->word[0])))
 				cmd++;
 		curr->cmd_index = cmd;
 		curr = curr->next;
@@ -423,54 +423,93 @@ void ps_token_list_fill_types_files(t_token **tok)
 	}
 }
 
-static int ps_token_list_process_characters(t_token **tok)
+void ps_token_list_expand_variables(t_token **tok, t_env *env)
 {
-	ps_token_list_mark_quotes(tok);
-	ps_token_list_set_index_word(tok);
-	ps_token_list_set_index_cmd(tok);
-	ps_token_list_delete_unquoted_spaces(tok);
-	ps_token_list_delete_unquoted_quotes(tok);
-	ps_token_list_update_indices(tok);
-	ps_token_list_delete_unquoted_pipes(tok);
-	ps_token_list_recreate_words(tok);
-	ps_token_list_fill_types_brackets(tok);
-	ps_token_list_fill_types_files(tok);
-	ps_token_list_print(tok);
+	char    *value;
+	t_token *curr;
+
+	if (!tok)
+		return;
+	curr = *tok;
+	while (curr)
+	{
+		if (curr->word[0] == '$' && curr->quote != SIMPLE)
+		{
+			value = env_extract_value(env, &curr->word[1]);
+			free(curr->word);
+			if (value)
+				curr->word = f_strdup(value);
+			else
+				curr->word = f_strdup("");
+		}
+		curr = curr->next;
+	}
+}
+
+static int ps_token_list_process_characters(t_glb *glb)
+{
+	ps_token_list_mark_quotes(glb->tok);
+	ps_token_list_set_index_word(glb->tok);
+	ps_token_list_set_index_cmd(glb->tok);
+	ps_token_list_delete_unquoted_spaces(glb->tok);
+	ps_token_list_delete_unquoted_quotes(glb->tok);
+	ps_token_list_update_indices(glb->tok);
+	ps_token_list_delete_unquoted_pipes(glb->tok);
+	ps_token_list_recreate_words(glb->tok);
+	ps_token_list_fill_types_brackets(glb->tok);
+	ps_token_list_fill_types_files(glb->tok);
+	ps_token_list_expand_variables(glb->tok, glb->env);
+	ps_token_list_print(glb->tok);
 	return (0);
 }
 
-t_token **parsing(char *buf)
+int parsing(t_glb *glb)
 {
-	t_token **tok;
-
-	if (!ps_line_has_balanced_quotes(buf))
-		printf("minishell: syntax error.\n");
-	else
-	{
-		tok = ps_token_list_from_array(buf);
-		if (!tok)
-			return (NULL);
-		ps_token_list_process_characters(tok);
-	}
-	return (tok);
+	ps_token_list_process_characters(glb);
+	return (0);
 }
 
-int main(const int ac, const char *av[], const char *ep[])
+t_glb *init_glb(char **envp)
+{
+	t_glb *glb;
+	glb = malloc(sizeof(t_glb));
+	if (!glb)
+		return (NULL);
+	glb->env = env_init(envp);
+	if (!glb->env)
+		return (free(glb), NULL);
+	return (glb);
+}
+
+int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
 	(void) av;
-	(void) ep;
-	t_token **tok;
-	char    *buf;
+	t_glb *glb;
+	char  *buf;
 
+	glb = init_glb(ep);
+	if (!glb)
+		return (EXIT_FAILURE);
 	while (1)
 	{
 		buf = readline("MS $ ");
 		if (!buf || !*buf)
 			continue;
-		tok = parsing(buf);
-		if (tok)
-			ps_token_list_free_all(tok);
+		if (!ps_line_has_balanced_quotes(buf))
+		{
+			printf("minishell: syntax error.\n");
+			continue;
+		}
+		else
+		{
+			glb->tok = ps_token_list_from_array(buf);
+			if (!glb->tok)
+				continue;
+		}
+		parsing(glb);
+		if (glb->tok)
+			ps_token_list_free_all(glb->tok);
 		free(buf);
 	}
 	return (EXIT_SUCCESS);

@@ -94,11 +94,11 @@ int blt_export(t_glb *glb, char *key);
 int blt_unset(t_glb *glb, char *key);
 
 /* PARSING*/
-t_token  *ps_token_list_goto_last(t_token **tok);
-t_token  *ps_token_list_node_create(char *s);
-int       ps_token_list_node_add(t_token **tok, t_token *new);
-void      ps_token_list_node_destroy(t_token **tok, t_token *del);
-void      ps_token_list_free_all(t_token **tok);
+t_token *ps_token_list_goto_last(t_token **tok);
+t_token *ps_token_list_node_create(char *s);
+int      ps_token_list_node_add(t_token **tok, t_token *new);
+void     ps_token_list_node_destroy(t_token **tok, t_token *del);
+void     ps_token_list_free_all(t_token **tok);
 
 t_token **ps_token_list_from_array(char *s);
 void      ps_token_list_print(t_token **tok_list);
@@ -112,4 +112,9 @@ void      ps_token_list_delete_unquoted_pipes(t_token **tok_list);
 void      ps_token_list_recreate_words(t_token **tok_list);
 void      ps_token_list_fill_types_brackets(t_token **tok);
 void      ps_token_list_fill_types_files(t_token **tok);
+void      ps_token_list_expand_variables(t_token **tok, t_env *env);
+
+t_glb *init_glb(char **envp);
+int    parsing(t_glb *glb);
+
 #endif
