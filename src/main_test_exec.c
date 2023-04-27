@@ -1,56 +1,56 @@
 #include "../inc/execution.h"
 
-//int	main(int argc,char **argv, char **envp)
-//{
-//	int 	i;
-//	int 	j;
-//	t_token tok;
-//	t_token	tok1;
-//	t_token tok2;
-//	t_token	tok3;
-//	t_token tok4;
-//	t_token	tok5;
-//	t_token tok6;
-//	t_token	tok7;
-////	t_token tok8;
-//	t_token	tok9;
-//	t_token tok10;
-//	t_token	tok11;
-//	t_env	*env;
-//	t_glb	glob;
-//	t_cmd	*cmd;
-//
-//	i = 0;
-//	glob.multiple_cmd = 1;
-//	cmd = malloc(sizeof(t_cmd) * glob.multiple_cmd);
-//	glob.tok = malloc(sizeof(t_token) * 2);
-//	if (argc == 5 && argv)
-//	{
-//		return (0);
-//	}
-//	env = malloc(sizeof(t_env) * 1);
-//	env->envp = envp;
-//	glob.env = env;
-//	tok.word = ft_strdup("cat");
-//	tok.type = BASIC;
-//	tok.next = &tok1;
-//	tok1.word = ft_strdup("<");
-//	tok1.type = S_INPUT_CHEVRON;
-//	tok1.next = &tok2;
-//	tok2.word = ft_strdup("input.txt");
-//	tok2.type = R_INPUT;
-//	tok2.next = &tok3;
-//	tok3.word = ft_strdup("-e");
-//	tok3.type = BASIC;
-//	tok3.next = &tok4;
-//	tok4.word = ft_strdup(">");
-//	tok4.type = S_OUTPUT_CHEVRON;
-//	tok4.next = &tok5;
-//	tok5.word = ft_strdup("output.txt");
-//	tok5.type = R_OUTPUT;
-//	tok5.next = &tok6;
-//	tok6.word = ft_strdup("<");
-//	tok6.type = S_INPUT_CHEVRON;
+int	main(int argc,char **argv, char **envp)
+{
+	int 	i;
+	int 	j;
+	t_token tok;
+	t_token	tok1;
+	t_token tok2;
+	t_token	tok3;
+	t_token tok4;
+	t_token	tok5;
+	t_token tok6;
+	t_token	tok7;
+//	t_token tok8;
+	t_token	tok9;
+	t_token tok10;
+	t_token	tok11;
+	t_env	*env;
+	t_glb	glob;
+	t_cmd	*cmd;
+
+	i = 0;
+	glob.multiple_cmd = 1;
+	cmd = malloc(sizeof(t_cmd) * glob.multiple_cmd);
+	glob.tok = malloc(sizeof(t_token) * 2);
+	if (argc == 5 && argv)
+	{
+		return (0);
+	}
+	env = malloc(sizeof(t_env) * 1);
+	env->envp = envp;
+	glob.env = env;
+	tok.word = ft_strdup("cat");
+	tok.type = BASIC;
+	tok.next = &tok1;
+	tok1.word = ft_strdup("<");
+	tok1.type = S_INPUT_CHEVRON;
+	tok1.next = &tok2;
+	tok2.word = ft_strdup("input.txt");
+	tok2.type = R_INPUT;
+	tok2.next = &tok3;
+	tok3.word = ft_strdup("-e");
+	tok3.type = BASIC;
+	tok3.next = &tok4;
+	tok4.word = ft_strdup(">");
+	tok4.type = S_OUTPUT_CHEVRON;
+	tok4.next = &tok5;
+	tok5.word = ft_strdup("output.txt");
+	tok5.type = R_OUTPUT;
+	tok5.next = &tok6;
+	tok6.word = ft_strdup("<");
+	tok6.type = S_INPUT_CHEVRON;
 //	tok6.next = &tok7;
 //	tok7.word = ft_strdup("input2.txt");
 //	tok7.type = R_INPUT;

@@ -16,12 +16,12 @@
 enum
 {
 	BASIC,
-	R_INPUT,
-	R_OUTPUT,
-	S_INPUT_CHEVRON,
-	D_INPUT_CHEVRON,
-	S_OUTPUT_CHEVRON,
-	D_OUTPUT_CHEVRON,
+	R_INPUT, // file rigth after <
+	R_OUTPUT, // file right after >
+	S_INPUT_CHEVRON, // '<'
+	D_INPUT_CHEVRON, // '>'
+	S_OUTPUT_CHEVRON, // '<<'
+	D_OUTPUT_CHEVRON, // '>>'
 };
 
 /*** Builtin ***/
