@@ -2,8 +2,8 @@
 
 int	main(int argc,char **argv, char **envp)
 {
-	int 	i;
-	int 	j;
+	// int 	i;
+	// int 	j;
 	t_token tok;
 	t_token	tok1;
 	t_token tok2;
@@ -20,7 +20,7 @@ int	main(int argc,char **argv, char **envp)
 	t_glb	glob;
 	t_cmd	*cmd;
 
-	i = 0;
+	// i = 0;
 	glob.multiple_cmd = 1;
 	cmd = malloc(sizeof(t_cmd) * glob.multiple_cmd);
 	glob.tok = malloc(sizeof(t_token) * 2);
@@ -51,25 +51,25 @@ int	main(int argc,char **argv, char **envp)
 	tok5.next = &tok6;
 	tok6.word = ft_strdup("<");
 	tok6.type = S_INPUT_CHEVRON;
-//	tok6.next = &tok7;
-//	tok7.word = ft_strdup("input2.txt");
-//	tok7.type = R_INPUT;
-//	tok7.next = NULL;
-////	tok8.word = ft_strdup("|");
-////	tok8.type = S_OUTPUT_CHEVRON;
-////	tok8.next = &tok9;
-//	tok9.word = ft_strdup("echo");
-//	tok9.type = BASIC;
-//	tok9.next = &tok10;
-//	tok10.word = ft_strdup(">");
-//	tok10.type = S_OUTPUT_CHEVRON;
-//	tok10.next = &tok11;
-//	tok11.word = ft_strdup("output_cmd_2.txt");
-//	tok11.type = R_OUTPUT;
-//	tok11.next = NULL;
-//	glob.tok[0] = &tok;
-//	glob.tok[1] = &tok9;
-//	initialisation_cmds(cmd, glob);
+	tok6.next = &tok7;
+	tok7.word = ft_strdup("input2.txt");
+	tok7.type = R_INPUT;
+	tok7.next = NULL;
+//	tok8.word = ft_strdup("|");
+//	tok8.type = S_OUTPUT_CHEVRON;
+//	tok8.next = &tok9;
+	tok9.word = ft_strdup("echo");
+	tok9.type = BASIC;
+	tok9.next = &tok10;
+	tok10.word = ft_strdup(">");
+	tok10.type = S_OUTPUT_CHEVRON;
+	tok10.next = &tok11;
+	tok11.word = ft_strdup("output_cmd_2.txt");
+	tok11.type = R_OUTPUT;
+	tok11.next = NULL;
+	glob.tok[0] = &tok;
+	glob.tok[1] = &tok9;
+	initialisation_cmds(cmd, &glob);
 //	while (i < glob.multiple_cmd)
 //	{
 //		j = 0;
@@ -96,10 +96,10 @@ int	main(int argc,char **argv, char **envp)
 //	printf("fd_output of cmd 1 = %d\n", cmd[1].final_output);
 //	printf("is builtin cmd 0 = %d\n", cmd[0].builtin);
 //	printf("is builtin cmd 1= %d\n", cmd[1].builtin);
-//	single_execution(cmd[0]);
-//
-//	return (0);
-//}
+	single_execution(cmd[0]);
+
+	return (0);
+}
 
 void print_double_array(char **array, char *title)
 {

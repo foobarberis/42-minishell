@@ -47,7 +47,7 @@ t_token	*ps_token_list_node_create(char *s)
 	if (!p)
 		return (NULL);
 	p->word = f_strdup(s);
-	p->type = 0;
+	p->type = BASIC;
 	p->quote = NONE;
 	p->word_index = 0;
 	p->cmd_index = 0;
@@ -137,12 +137,12 @@ void ps_token_list_print(t_token **tok_list)
 	t_token *tok;
 
 	tok = *tok_list;
-	printf("%-10s | %-10s | %-10s | %-10s\n", "quote", "char", "word", "cmd");
-	printf("------------------------------------------\n");
+	printf("%-10s | %-10s | %-10s | %-10s | %-10s\n", "type", "quote", "char", "word", "cmd");
+	printf("-------------------------------------------------------\n");
 	while (tok)
 	{
 		if (tok->word)
-			printf("%-10d | %-10s | %-10ld | %-10ld\n", tok->quote, tok->word, tok->word_index, tok->cmd_index);
+			printf("%-10d | %-10d | %-10s | %-10ld | %-10ld\n", tok->type, tok->quote, tok->word, tok->word_index, tok->cmd_index);
 		tok = tok->next;
 	}
 	f_printf("\n");
@@ -372,6 +372,57 @@ static bool ps_line_has_balanced_quotes(char *s)
 	return (true);
 }
 
+/* FIXME: Use f_strcmp */
+void ps_token_list_fill_types_brackets(t_token **tok)
+{
+	t_token *curr;
+
+	if (!tok)
+		return;
+	curr = *tok;
+	while (curr)
+	{
+		if (curr->quote == NONE)
+		{
+			if (!strcmp(curr->word, ">"))
+				curr->type = S_OUTPUT_CHEVRON;
+			else if (!strcmp(curr->word, "<"))
+				curr->type = S_INPUT_CHEVRON;
+			else if (!strcmp(curr->word, ">>"))
+				curr->type = D_OUTPUT_CHEVRON;
+			else if (!strcmp(curr->word, "<<"))
+				curr->type = D_INPUT_CHEVRON;
+		}
+		curr = curr->next;
+	}
+}
+
+void ps_token_list_fill_types_files(t_token **tok)
+{
+	t_token *curr;
+
+	if (!tok)
+		return;
+	curr = *tok;
+	while (curr)
+	{
+		if (curr->quote == NONE)
+		{
+			if (curr->type == S_INPUT_CHEVRON)
+			{
+				if (curr->next)
+					curr->next->type = R_INPUT;
+			}
+			else if (curr->type == S_OUTPUT_CHEVRON)
+			{
+				if (curr->next)
+					curr->next->type = R_OUTPUT;
+			}
+		}
+		curr = curr->next;
+	}
+}
+
 static int ps_token_list_process_characters(t_token **tok)
 {
 	ps_token_list_mark_quotes(tok);
@@ -382,7 +433,9 @@ static int ps_token_list_process_characters(t_token **tok)
 	ps_token_list_update_indices(tok);
 	ps_token_list_delete_unquoted_pipes(tok);
 	ps_token_list_recreate_words(tok);
-//	ps_token_list_print(tok);
+	ps_token_list_fill_types_brackets(tok);
+	ps_token_list_fill_types_files(tok);
+	ps_token_list_print(tok);
 	return (0);
 }
 
@@ -390,6 +443,7 @@ t_token **parsing(char *buf)
 {
 	t_token **tok;
 
+	tok = NULL;
 	if (!ps_line_has_balanced_quotes(buf))
 		printf("minishell: syntax error.\n");
 	else
@@ -402,22 +456,23 @@ t_token **parsing(char *buf)
 	return (tok);
 }
 
-//int main(const int ac, const char *av[], const char *ep[])
-//{
-//	(void) ac;
-//	(void) av;
-//	(void) ep;
-//	t_token **tok;
-//	char    *buf;
-//
-//	while (1)
-//	{
-//		buf = readline("MS $ ");
-//		if (!buf || !*buf)
-//			continue;
-//		tok = parsing(buf);
-//		ps_token_list_free_all(tok);
-//		free(buf);
-//	}
-//	return (EXIT_SUCCESS);
-//}
+// int main(const int ac, const char *av[], const char *ep[])
+// {
+// 	(void) ac;
+// 	(void) av;
+// 	(void) ep;
+// 	t_token **tok;
+// 	char    *buf;
+
+// 	while (1)
+// 	{
+// 		buf = readline("MS $ ");
+// 		if (!buf || !*buf)
+// 			continue;
+// 		tok = parsing(buf);
+// 		if (tok)
+// 			ps_token_list_free_all(tok);
+// 		free(buf);
+// 	}
+// 	return (EXIT_SUCCESS);
+// }

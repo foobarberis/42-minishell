@@ -59,6 +59,11 @@ int	single_execution(t_cmd cmd)
 			//			ft_free(cmd.args, nb_cmd);
 			exit(1);
 		}
+		if (cmd.final_output == NO_REDIRECTION)
+		{
+			dup2(cmd.fd[0], STDIN_FILENO);
+			close(cmd.fd[0]);
+		}
 //	}
 	return (SUCCESS);
 }
