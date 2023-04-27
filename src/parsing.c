@@ -508,7 +508,7 @@ t_glb *init_glb(char **envp)
 	return (glb);
 }
 
-int main(int ac, char *av[], char *ep[])
+/* int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
 	(void) av;
@@ -541,3 +541,4 @@ int main(int ac, char *av[], char *ep[])
 	}
 	return (EXIT_SUCCESS);
 }
+ */

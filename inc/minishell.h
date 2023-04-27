@@ -92,6 +92,7 @@ t_env *env_init(char **envp);
 /* BUILTINS */
 int blt_export(t_glb *glb, char *key);
 int blt_unset(t_glb *glb, char *key);
+int blt_cd(int argc, char **argv, t_glb *glb);
 
 /* PARSING*/
 t_token *ps_token_list_goto_last(t_token **tok);

@@ -1,7 +1,13 @@
 #include "minishell.h"
 
-// FIXME: Print as in Bash i.e "declare -x key=value" and sort in ASCII order
+/* gcc -Wall -Wextra -g3 -fsanitize=address -lreadline parsing.c env.c builtins.c ../mlc/libft.a -I../inc -I../mlc/inc */
 
+/*
+ * Useful links:
+ * - https://man7.org/linux/man-pages/man1/cd.1p.html
+*/
+
+/* FIXME: Print as in Bash i.e "declare -x key=value" and sort in ASCII order */
 void blt_export__array_print(t_env *env)
 {
 	// duplicate array
@@ -25,4 +31,58 @@ int blt_unset(t_glb *glb, char *key)
 	if (!key)
 		return (0);
 	return (env_unset(glb->env, key));
+}
+
+size_t blt_compute_argc(char **argv)
+{
+	size_t i;
+
+	i = 0;
+	if (!argv)
+		return (0);
+	while (argv[i])
+		i++;
+	return (i);
+}
+
+int blt_cd(int argc, char **argv, t_glb *glb)
+{
+	char *path;
+
+	if (argc > 2)
+		return (f_printf("minishell: cd: too many arguments\n"));
+	if (!argv[1])
+	{
+		path = env_extract_value(glb->env, "HOME");
+		if (!path || !*path)
+			return (f_printf("minishell: cd: HOME not set\n"));
+		else
+			chdir(path);
+	}
+	else if (!argv[1][0])
+		return (0);
+	chdir(argv[1]);
+	return (0);
+}
+
+#define BUF_SIZE 1024
+
+int main(int argc, char *argv[], char *envp[])
+{
+	(void)argc;
+
+	char buf[BUF_SIZE];
+	t_glb *glb;
+
+	glb = init_glb(envp);
+	if (!glb)
+		return (EXIT_FAILURE);
+	env_unset(glb->env, "HOME");
+	printf("cwd :: %s\n", getcwd(buf, BUF_SIZE));
+	blt_cd(argc, argv, glb);
+	printf("cwd :: %s\n", getcwd(buf, BUF_SIZE));
+	env_array_free(glb->env->envp, blt_compute_argc(glb->env->envp));
+	free(glb->env);
+	free(glb);
+	return (0);
 }
