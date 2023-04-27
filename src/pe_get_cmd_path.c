@@ -8,7 +8,7 @@ int	get_path_cmd(char *cmd, char **envp, char **path_cmd)
 {
     char    *path;
     char    **split_path;
-
+	printf("get path of cmd = %s\n", cmd);
 	if (cmd == NULL)
     {
         printf(": command not found:\n");

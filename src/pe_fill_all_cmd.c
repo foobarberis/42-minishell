@@ -26,6 +26,7 @@ int initialisation_cmds(t_cmd *cmd, t_glb *glob)
 		init_to_null_cmd_struct(&cmd[i]);
 		cmd[i].env = glob->env;
 		fill_cmd_struct(&cmd[i], glob->tok[i]);
+		// printf("Debug fill all cmd : %s\n", cmd[i].args[0]);
 		cmd[i].builtin = is_builtin(cmd[i].args[0]);
 		open_all_redirects(cmd[i].struct_input, cmd[i].struct_output, &cmd[i].final_output, &cmd[i].final_input);
 		if (cmd[i].struct_input && cmd[i].struct_input->fd_input > 0)

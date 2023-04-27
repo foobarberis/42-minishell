@@ -23,10 +23,11 @@ int	fill_cmd_struct(t_cmd *cmd, t_token *tok)
 	int nb_input;
 	int nb_output;
 
-	nb_args = count_type(tok, BASIC) + 1;
+	nb_args = count_type(tok, BASIC);
 	cmd->args = malloc(sizeof(char *) * nb_args);
 	if (fill_cmd_array(tok, cmd->args, nb_args) == ERROR)
 		return (ERROR);
+	print_double_array(cmd->args, "cmd de args in fill_cmd_struct = ");
 	if (get_path_cmd(cmd->args[0], cmd->env->envp, &cmd->path_cmd) == ERROR)
 		return (ERROR);
 	nb_input = count_type(tok, R_INPUT);

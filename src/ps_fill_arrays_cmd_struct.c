@@ -3,7 +3,7 @@
 
 int	fill_input_array(t_token *tok, t_input *input, int nb_input)
 {
-	while (tok->next)
+	while (tok)
 	{
 		if (tok->type == S_INPUT_CHEVRON)
 		{
@@ -27,15 +27,14 @@ int	fill_input_array(t_token *tok, t_input *input, int nb_input)
 				return (ERROR);
 			input++;
 		}
-		if (tok->next)
-			tok = tok->next;
+		tok = tok->next;
 	}
 	return (SUCCESS);
 }
 
 int	fill_output_array(t_token *tok, t_output *output, int nb_output)
 {
-	while (tok->next)
+	while (tok)
 	{
 		if (tok->type == S_OUTPUT_CHEVRON)
 		{
@@ -57,8 +56,7 @@ int	fill_output_array(t_token *tok, t_output *output, int nb_output)
 				return (ERROR);
 			output++;
 		}
-		if (tok->next)
-			tok = tok->next;
+		tok = tok->next;
 	}
 	return (SUCCESS);
 }
@@ -68,17 +66,23 @@ int	fill_cmd_array(t_token *tok, char **cmd, int nb_args)
 	int i;
 
 	i = 0;
-	while (tok->next && i < nb_args)
+	while (tok && i < nb_args)
 	{
 		if (tok->type == BASIC)
 		{
 			cmd[i] = ft_strdup(tok->word);
+			printf("tok-word = %s\n", tok->word);
 			if (!cmd[i] && tok->type == BASIC)
 				return (ERROR);
 			i++;
 		}
 		tok = tok->next;
 	}
+	printf("i = %d\n", i);
+	printf("cmd 0 first = %s.\n", cmd[0]);
+	printf("cmd 1 second = %s.\n", cmd[1]);
 	cmd[i] = NULL;
+	printf("cmd 0 = %s.\n", cmd[0]);
+	printf("cmd 1 = %s.\n", cmd[1]);
 	return (SUCCESS);
 }

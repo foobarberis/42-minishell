@@ -413,7 +413,7 @@ void ps_token_list_fill_types_files(t_token **tok)
 				if (curr->next)
 					curr->next->type = R_INPUT;
 			}
-			else if ((curr->type == S_OUTPUT_CHEVRON))
+			else if (curr->type == S_OUTPUT_CHEVRON)
 			{
 				if (curr->next)
 					curr->next->type = R_OUTPUT;
@@ -443,6 +443,7 @@ t_token **parsing(char *buf)
 {
 	t_token **tok;
 
+	tok = NULL;
 	if (!ps_line_has_balanced_quotes(buf))
 		printf("minishell: syntax error.\n");
 	else
@@ -455,23 +456,23 @@ t_token **parsing(char *buf)
 	return (tok);
 }
 
-int main(const int ac, const char *av[], const char *ep[])
-{
-	(void) ac;
-	(void) av;
-	(void) ep;
-	t_token **tok;
-	char    *buf;
+// int main(const int ac, const char *av[], const char *ep[])
+// {
+// 	(void) ac;
+// 	(void) av;
+// 	(void) ep;
+// 	t_token **tok;
+// 	char    *buf;
 
-	while (1)
-	{
-		buf = readline("MS $ ");
-		if (!buf || !*buf)
-			continue;
-		tok = parsing(buf);
-		if (tok)
-			ps_token_list_free_all(tok);
-		free(buf);
-	}
-	return (EXIT_SUCCESS);
-}
+// 	while (1)
+// 	{
+// 		buf = readline("MS $ ");
+// 		if (!buf || !*buf)
+// 			continue;
+// 		tok = parsing(buf);
+// 		if (tok)
+// 			ps_token_list_free_all(tok);
+// 		free(buf);
+// 	}
+// 	return (EXIT_SUCCESS);
+// }
