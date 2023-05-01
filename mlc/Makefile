@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/16 17:06:24 by mbarberi          #+#    #+#              #
-#    Updated: 2023/03/07 17:36:48 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/01 10:32:59 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,13 +41,15 @@ SRCS		:=	ctype/f_isalnum.c \
 				string/f_strlcpy.c \
 				string/f_strlen.c \
 				string/f_strnlen.c \
-				string/f_strnstr.c
+				string/f_strnstr.c \
+				string/f_strchr.c
 
 CC			:=	cc
 RM			:=	rm
 
 CFLAGS		:=	-Wall -Wextra -Werror -O3
-LDFLAGS		:=	-Wall
+DFLAGS		:=	-g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address
+LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 
 SRCDIR		:=	src

@@ -17,19 +17,19 @@
 #define BASE16UP "0123456789ABCDEF"
 #define BASE16LOW "0123456789abcdef"
 
-static int	f__putchar(char c)
+static ssize_t	f__putchar(char c)
 {
 	return (write(STDOUT_FILENO, &c, 1));
 }
 
-static int	f__putstr(char *s)
+static ssize_t	f__putstr(char *s)
 {
 	if (!s)
 		return (write(STDOUT_FILENO, "(null)", 6));
 	return (write(STDOUT_FILENO, s, f_strlen(s)));
 }
 
-static int	f__putnbr(int n)
+static ssize_t	f__putnbr(int n)
 {
 	if (n < 0)
 	{
@@ -45,7 +45,7 @@ static int	f__putnbr(int n)
  * @param ap The list of variable arguments.
  * @return The number of characters printed.
  */
-static int	f__print_arg(char c, va_list *ap)
+static ssize_t	f__print_arg(char c, va_list *ap)
 {
 	if (c == 'c')
 		return (f__putchar(va_arg(*ap, int)));
@@ -78,7 +78,7 @@ static int	f__print_arg(char c, va_list *ap)
  */
 int	f_printf(const char *s, ...)
 {
-	int		r;
+	ssize_t	r;
 	va_list	ap;
 
 	if (!s || write(1, 0, 0) < 0)
@@ -97,5 +97,5 @@ int	f_printf(const char *s, ...)
 			break ;
 	}
 	va_end(ap);
-	return (r);
+	return ((int)r);
 }

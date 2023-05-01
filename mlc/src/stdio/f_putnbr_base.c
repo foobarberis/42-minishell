@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 16:35:37 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/03/04 16:38:49 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/01 10:32:12 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@
 int	f_putnbr_base(uint64_t n, char *base)
 {
 	int		i;
-	int		l;
-	int		r;
+	size_t	l;
+	ssize_t	r;
 	char	num[32];
 
 	i = 0;
 	r = 0;
 	l = f_strlen(base);
 	if (!n)
-		return (write(STDOUT_FILENO, &base[0], 1));
+		return ((int)write(STDOUT_FILENO, &base[0], 1));
 	while (n)
 	{
 		num[i++] = base[n % l];
@@ -37,5 +37,5 @@ int	f_putnbr_base(uint64_t n, char *base)
 	}
 	while (--i >= 0)
 		r += write(STDOUT_FILENO, &num[i], 1);
-	return (r);
+	return ((int)r);
 }

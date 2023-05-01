@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:59:04 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/03/07 17:34:17 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/01 10:27:05 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void		*f_memmem(const void *h0, size_t hlen, const void *n0, size_t nlen);
 void		*f_memmove(void *d, const void *s, size_t n);
 void		*f_memset(void *s, int c, size_t n);
 
+char		*f_strchr(const char *s, int c);
 char		*f_strdup(const char *str);
 char		*f_strjoin(char const *s1, char const *s2);
 size_t		f_strlcat(char *d, const char *s, size_t n);
@@ -45,7 +46,7 @@ double		f_atof(const char *s);
 /* STDIO */
 /* standard */
 int			f_printf(const char *s, ...);
-int			f_perror(const char *s);
+ssize_t		f_perror(const char *s);
 /* non-standard */
 int			f_putnbr_base(uint64_t n, char *base);
 

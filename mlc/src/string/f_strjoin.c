@@ -21,8 +21,8 @@
  */
 char	*f_strjoin(char const *s1, char const *s2)
 {
-	int		l1;
-	int		l2;
+	size_t	l1;
+	size_t	l2;
 	char	*p;
 
 	if (!s1 || !s2)

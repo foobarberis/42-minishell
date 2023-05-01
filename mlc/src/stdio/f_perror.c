@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 16:28:15 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/03/06 11:40:37 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/01 10:26:45 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @param s The error message.
  * @return The number of characters written or -1 if s is empty or NULL.
  */
-int	f_perror(const char *s)
+ssize_t	f_perror(const char *s)
 {
 	if (!s || !*s)
 		return (-1);

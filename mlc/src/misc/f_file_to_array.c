@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:32:22 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/03/07 17:37:38 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/01 10:26:06 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
  * @param file A string containing the name of the file to process.
  * @return The size of the file or -1 if an error occured.
  */
-static int	f_get_file_size(char *file)
+static ssize_t	f_get_file_size(char *file)
 {
-	int		r;
 	int		fd;
-	int		size;
+	ssize_t	r;
+	ssize_t	size;
 	char	buf[READALL_CHUNK];
 
 	fd = open(file, O_RDONLY);
@@ -53,7 +53,7 @@ static int	f_get_file_size(char *file)
 char	*f_file_to_array(char *file)
 {
 	int		fd;
-	int		size;
+	ssize_t	size;
 	char	*buf;
 
 	size = f_get_file_size(file);
