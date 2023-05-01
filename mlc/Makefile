@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/16 17:06:24 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/01 10:32:59 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/01 11:00:05 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ SRCS		:=	ctype/f_isalnum.c \
 				string/f_strlen.c \
 				string/f_strnlen.c \
 				string/f_strnstr.c \
-				string/f_strchr.c
+				string/f_strchr.c \
+				string/f_strcmp.c
 
 CC			:=	cc
 RM			:=	rm

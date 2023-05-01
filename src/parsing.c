@@ -2,6 +2,7 @@
 
 /* gcc -Wall -Wextra -g3 -fsanitize=address -lreadline parsing.c env.c ../mlc/libft.a -I../inc -I../mlc/inc */
 
+// gcc -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address -fsanitize-trap -lreadline parsing.c env.c ../mlc/libft.a -I../inc -I../mlc/inc
 /* WARNING: Quoted vs unquoted here-doc limiter */
 /*
  * - Turn the readline buffer into a doubly-linked list with one char per
@@ -413,7 +414,7 @@ void ps_token_list_fill_types_files(t_token **tok)
 				if (curr->next)
 					curr->next->type = R_INPUT;
 			}
-			else if ((curr->type == S_OUTPUT_CHEVRON))
+			else if (curr->type == S_OUTPUT_CHEVRON)
 			{
 				if (curr->next)
 					curr->next->type = R_OUTPUT;
@@ -423,6 +424,15 @@ void ps_token_list_fill_types_files(t_token **tok)
 	}
 }
 
+/*
+ * Contrary to Bash, `echo [$HOME]` should not expand since `[` is actually
+ * a built-in that we don't have to handle. Therefore `[` and `[[` are
+ * treated as litteral characters. This goes for `echo \$HOME` which
+ * produces `$HOME` in Bash but produces `\$HOME` here since `\` is not a
+ * metacharacter in MSH.
+ * https://unix.stackexchange.com/questions/99185/what-do-square-brackets-mean-without-the-if-on-the-left
+*/
+/* FIXME: echo $UID$HOME */
 void ps_token_list_expand_variables(t_token **tok, t_env *env)
 {
 	char    *value;
@@ -508,7 +518,7 @@ t_glb *init_glb(char **envp)
 	return (glb);
 }
 
-/* int main(int ac, char *av[], char *ep[])
+int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
 	(void) av;
@@ -520,7 +530,7 @@ t_glb *init_glb(char **envp)
 		return (EXIT_FAILURE);
 	while (1)
 	{
-		buf = readline("MS $ ");
+		buf = readline("MSH $ ");
 		if (!buf || !*buf)
 			continue;
 		if (!ps_line_has_balanced_quotes(buf))
@@ -541,4 +551,4 @@ t_glb *init_glb(char **envp)
 	}
 	return (EXIT_SUCCESS);
 }
- */
+

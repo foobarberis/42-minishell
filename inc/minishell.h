@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/04/17 11:42:41 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/01 10:39:44 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void      ps_token_list_recreate_words(t_token **tok);
 void      ps_token_list_fill_types_brackets(t_token **tok);
 void      ps_token_list_fill_types_files(t_token **tok);
 void      ps_token_list_expand_variables(t_token **tok, t_env *env);
-void ps_token_list_group_words(t_token **tok);
+void      ps_token_list_group_words(t_token **tok);
 
 t_glb *init_glb(char **envp);
 int    parsing(t_glb *glb);
