@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/02 10:40:37 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/02 11:53:22 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ typedef struct s_glb   t_glb;
 enum e_types
 {
 	BASIC,
-	S_INPUT,  /* > */
-	D_INPUT,  /* >> */
-	S_OUTPUT, /* < */
-	D_OUTPUT  /* << */
+	S_INPUT,  /* < */
+	D_INPUT,  /* << */
+	S_OUTPUT, /* > */
+	D_OUTPUT  /* >> */
 };
 
 enum e_quote_state

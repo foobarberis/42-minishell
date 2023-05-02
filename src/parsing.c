@@ -1,9 +1,8 @@
 #include "minishell.h"
 
-/* gcc -Wall -Wextra -g3 -fsanitize=address -lreadline parsing.c env.c ../mlc/libft.a -I../inc -I../mlc/inc */
-
 // gcc -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address -lreadline parsing.c env.c ../mlc/libft.a -I../inc -I../mlc/inc
 /* WARNING: Quoted vs unquoted here-doc limiter */
+
 /*
  * - Turn the readline buffer into a doubly-linked list with one char per
  *   node.
@@ -101,6 +100,7 @@ void ps_token_list_node_destroy(t_token **tok, t_token *del)
 	free(curr);
 }
 
+/* FIXME: Possible leaks if tok[0] != NULL && tok[1] == NULL */
 void ps_token_list_free_all(t_token **tok)
 {
 	if (!tok || !tok[0] || !tok[1])
@@ -488,13 +488,13 @@ void ps_token_list_fill_types_brackets(t_token **tok)
 			if (!curr->next)
 				break;
 			if (!f_strcmp(curr->word, ">"))
-				curr->next->type = S_INPUT;
-			else if (!f_strcmp(curr->word, "<"))
 				curr->next->type = S_OUTPUT;
+			else if (!f_strcmp(curr->word, "<"))
+				curr->next->type = S_INPUT;
 			else if (!f_strcmp(curr->word, ">>"))
-				curr->next->type = D_INPUT;
-			else if (!f_strcmp(curr->word, "<<"))
 				curr->next->type = D_OUTPUT;
+			else if (!f_strcmp(curr->word, "<<"))
+				curr->next->type = D_INPUT;
 		}
 		curr = curr->next;
 	}
@@ -515,6 +515,7 @@ void ps_token_list_fill_types_brackets(t_token **tok)
  */
 /* FIXME: Handle $?USER -> 0USER, check if curr->word[0] == '$' &&
 curr->word[1] == '?' if true call special function */
+/* FIXME: echo $''HOME -> HOME */
 void ps_token_list_expand_variables(t_token **tok, t_env *env)
 {
 	char    *value;
