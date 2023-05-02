@@ -2,6 +2,7 @@
 
 // gcc -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address -lreadline parsing.c env.c ../mlc/libft.a -I../inc -I../mlc/inc
 /* WARNING: Quoted vs unquoted here-doc limiter */
+/* WARNING: `cat |<env.c grep void -> cat: write error: Broken pipe */
 
 /*
  * - Turn the readline buffer into a doubly-linked list with one char per
@@ -152,7 +153,7 @@ void ps_token_list_print(t_token **tok)
 /* PARSING */
 static bool ismeta(int c)
 {
-	return (c == '<' || c == '>' || c == '|' || c == ' ' || c == '\t' || '\n');
+	return (c == '<' || c == '>' || c == '|' || c == ' ' || c == '\t' || c == '\n');
 }
 
 static int is_legal_var_char(int c)
@@ -369,7 +370,7 @@ void ps_token_list_delete_unquoted_dollar(t_token **tok)
 	}
 }
 
-void ps_token_list_delete_unquoted_angle(t_token **tok)
+void ps_token_list_delete_unquoted_brackets(t_token **tok)
 {
 	t_token *next;
 	t_token *curr;
@@ -398,7 +399,7 @@ void ps_token_list_delete_unquoted_pipes(t_token **tok)
 	while (curr)
 	{
 		next = curr->next;
-		if (curr->quote == NONE && curr->word[0] == '|')
+		if (next && curr->quote == NONE && curr->word[0] == '|' && !ismeta(next->word[0]))
 			ps_token_list_node_destroy(tok, curr);
 		curr = next;
 	}
@@ -474,7 +475,7 @@ static bool ps_line_has_balanced_quotes(char *s)
 	return (true);
 }
 
-void ps_token_list_fill_types_brackets(t_token **tok)
+void ps_token_list_fill_type(t_token **tok)
 {
 	t_token *curr;
 
@@ -565,7 +566,7 @@ void ps_token_list_group_words(t_token **tok)
 	}
 }
 
-static int ps_token_list_process_characters(t_glb *glb)
+static int ps_token_list_parse(t_glb *glb)
 {
 	ps_token_list_mark_quotes(glb->tok);
 	ps_token_list_set_index_word(glb->tok);
@@ -579,9 +580,9 @@ static int ps_token_list_process_characters(t_glb *glb)
 	ps_token_list_recreate_variables(glb->tok);
 	ps_token_list_expand_variables(glb->tok, glb->env);
 	ps_token_list_recreate_words(glb->tok);
-	ps_token_list_fill_types_brackets(glb->tok);
+	ps_token_list_fill_type(glb->tok);
 	ps_token_list_delete_unquoted_dollar(glb->tok);
-	ps_token_list_delete_unquoted_angle(glb->tok);
+	ps_token_list_delete_unquoted_brackets(glb->tok);
 	ps_token_list_group_words(glb->tok);
 	ps_token_list_print(glb->tok);
 	return (0);
@@ -589,7 +590,7 @@ static int ps_token_list_process_characters(t_glb *glb)
 
 int parsing(t_glb *glb)
 {
-	if (ps_token_list_process_characters(glb))
+	if (ps_token_list_parse(glb))
 		return (1);
 	return (0);
 }
