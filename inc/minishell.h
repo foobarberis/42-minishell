@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/01 10:39:44 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/02 10:40:37 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,13 @@ typedef struct s_token t_token;
 typedef struct s_env   t_env;
 typedef struct s_glb   t_glb;
 
-enum
-{
-	BASIC,
-	R_INPUT,
-	R_OUTPUT,
-	S_INPUT_CHEVRON,
-	D_INPUT_CHEVRON,
-	S_OUTPUT_CHEVRON,
-	D_OUTPUT_CHEVRON,
-};
-
 enum e_types
 {
-	BLTIN,
-	PROG,
-	ARG,
-	SP
+	BASIC,
+	S_INPUT,  /* > */
+	D_INPUT,  /* >> */
+	S_OUTPUT, /* < */
+	D_OUTPUT  /* << */
 };
 
 enum e_quote_state
@@ -110,13 +100,15 @@ void      ps_token_list_update_indices(t_token **tok);
 void      ps_token_list_delete_unquoted_spaces(t_token **tok);
 void      ps_token_list_delete_unquoted_quotes(t_token **tok);
 void      ps_token_list_delete_unquoted_pipes(t_token **tok);
+void      ps_token_list_delete_unquoted_dollar(t_token **tok);
 void      ps_token_list_recreate_words(t_token **tok);
+void      ps_token_list_recreate_variables(t_token **tok);
 void      ps_token_list_fill_types_brackets(t_token **tok);
 void      ps_token_list_fill_types_files(t_token **tok);
 void      ps_token_list_expand_variables(t_token **tok, t_env *env);
 void      ps_token_list_group_words(t_token **tok);
-
-t_glb *init_glb(char **envp);
-int    parsing(t_glb *glb);
+int       ps_token_list_has_syntax_error(t_token **tok);
+t_glb    *init_glb(char **envp);
+int       parsing(t_glb *glb);
 
 #endif

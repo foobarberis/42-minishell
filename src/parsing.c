@@ -2,7 +2,7 @@
 
 /* gcc -Wall -Wextra -g3 -fsanitize=address -lreadline parsing.c env.c ../mlc/libft.a -I../inc -I../mlc/inc */
 
-// gcc -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address -fsanitize-trap -lreadline parsing.c env.c ../mlc/libft.a -I../inc -I../mlc/inc
+// gcc -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address -lreadline parsing.c env.c ../mlc/libft.a -I../inc -I../mlc/inc
 /* WARNING: Quoted vs unquoted here-doc limiter */
 /*
  * - Turn the readline buffer into a doubly-linked list with one char per
@@ -138,7 +138,8 @@ void ps_token_list_print(t_token **tok)
 
 	curr = *tok;
 	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n", "type", "quote", "char *", "word", "cmd");
-	printf("---------------------------------------------------------------------------\n");
+	printf("-------------------------------------------------------------------"
+	       "--------\n");
 	while (curr)
 	{
 		if (curr->word)
@@ -149,6 +150,28 @@ void ps_token_list_print(t_token **tok)
 }
 
 /* PARSING */
+static bool ismeta(int c)
+{
+	return (c == '<' || c == '>' || c == '|' || c == ' ' || c == '\t' || '\n');
+}
+
+static int is_legal_var_char(int c)
+{
+	return (f_isalnum(c) || c == '_');
+}
+
+static int is_legal_var_name(char *s)
+{
+	if (f_isdigit(s[0]))
+		return (0);
+	while (*s)
+	{
+		if (!is_legal_var_char(*s++))
+			return (0);
+	}
+	return (1);
+}
+
 static int ps_token_list_update_quote_state(char c, int state)
 {
 	if (c == '\'' && state == SIMPLE)
@@ -238,6 +261,23 @@ void ps_token_list_set_index_word(t_token **tok)
 	}
 }
 
+int ps_token_list_has_syntax_error(t_token **tok)
+{
+	t_token *curr;
+
+	if (!tok)
+		return (0);
+	curr = *tok;
+	if (curr)
+	{
+		if (!ismeta(curr->word[0]))
+			return (0);
+		else
+			return (f_perror("minishell: syntax error.\n"), 1);
+	}
+	return (0);
+}
+
 /* Update index to separate construct of the form >file into two words */
 void ps_token_list_update_indices(t_token **tok)
 {
@@ -251,6 +291,8 @@ void ps_token_list_update_indices(t_token **tok)
 	curr = *tok;
 	while (curr)
 	{
+		if (curr->word[0] == '$')
+			i++;
 		curr->word_index += i;
 		if ((curr->word[0] == '>' || curr->word[0] == '<') && curr->next)
 		{
@@ -310,6 +352,40 @@ void ps_token_list_delete_unquoted_quotes(t_token **tok)
 	}
 }
 
+void ps_token_list_delete_unquoted_dollar(t_token **tok)
+{
+	t_token *next;
+	t_token *curr;
+
+	if (!tok)
+		return;
+	curr = *tok;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->quote == NONE && curr->word[0] == '$' && !curr->word[1])
+			ps_token_list_node_destroy(tok, curr);
+		curr = next;
+	}
+}
+
+void ps_token_list_delete_unquoted_angle(t_token **tok)
+{
+	t_token *next;
+	t_token *curr;
+
+	if (!tok)
+		return;
+	curr = *tok;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->quote == NONE && curr->type == BASIC && !curr->word[1])
+			ps_token_list_node_destroy(tok, curr);
+		curr = next;
+	}
+}
+
 /* FIXME: Do not delete || */
 void ps_token_list_delete_unquoted_pipes(t_token **tok)
 {
@@ -341,7 +417,32 @@ void ps_token_list_recreate_words(t_token **tok)
 	while (curr)
 	{
 		next = curr->next;
-		while (next && (curr->word_index == next->word_index))
+		while (next && (curr->word_index == next->word_index) && (curr->quote == next->quote))
+		{
+			tmp = f_strjoin(curr->word, next->word);
+			free(curr->word);
+			curr->word = tmp;
+			ps_token_list_node_destroy(tok, next);
+			next = curr->next;
+		}
+		curr = curr->next;
+	}
+}
+
+void ps_token_list_recreate_variables(t_token **tok)
+{
+	char    *tmp;
+	t_token *curr;
+	t_token *next;
+
+	if (!tok || !*tok)
+		return;
+	curr = *tok;
+	next = curr->next;
+	while (curr)
+	{
+		next = curr->next;
+		while (next && curr->word[0] == '$' && is_legal_var_char(next->word[0]) && (curr->word_index == next->word_index) && (curr->quote == next->quote))
 		{
 			tmp = f_strjoin(curr->word, next->word);
 			free(curr->word);
@@ -373,7 +474,6 @@ static bool ps_line_has_balanced_quotes(char *s)
 	return (true);
 }
 
-/* FIXME: Use f_strcmp */
 void ps_token_list_fill_types_brackets(t_token **tok)
 {
 	t_token *curr;
@@ -385,54 +485,36 @@ void ps_token_list_fill_types_brackets(t_token **tok)
 	{
 		if (curr->quote == NONE)
 		{
-			if (!strcmp(curr->word, ">"))
-				curr->type = S_OUTPUT_CHEVRON;
-			else if (!strcmp(curr->word, "<"))
-				curr->type = S_INPUT_CHEVRON;
-			else if (!strcmp(curr->word, ">>"))
-				curr->type = D_OUTPUT_CHEVRON;
-			else if (!strcmp(curr->word, "<<"))
-				curr->type = D_INPUT_CHEVRON;
-		}
-		curr = curr->next;
-	}
-}
-
-void ps_token_list_fill_types_files(t_token **tok)
-{
-	t_token *curr;
-
-	if (!tok)
-		return;
-	curr = *tok;
-	while (curr)
-	{
-		if (curr->quote == NONE)
-		{
-			if (curr->type == S_INPUT_CHEVRON)
-			{
-				if (curr->next)
-					curr->next->type = R_INPUT;
-			}
-			else if (curr->type == S_OUTPUT_CHEVRON)
-			{
-				if (curr->next)
-					curr->next->type = R_OUTPUT;
-			}
+			if (!curr->next)
+				break;
+			if (!f_strcmp(curr->word, ">"))
+				curr->next->type = S_INPUT;
+			else if (!f_strcmp(curr->word, "<"))
+				curr->next->type = S_OUTPUT;
+			else if (!f_strcmp(curr->word, ">>"))
+				curr->next->type = D_INPUT;
+			else if (!f_strcmp(curr->word, "<<"))
+				curr->next->type = D_OUTPUT;
 		}
 		curr = curr->next;
 	}
 }
 
 /*
- * Contrary to Bash, `echo [$HOME]` should not expand since `[` is actually
- * a built-in that we don't have to handle. Therefore `[` and `[[` are
+ * Unlike Bash, `echo [$HOME]` should not expand since `[` is actually a
+ * built-in that we don't have to handle. Therefore `[` and `[[` are
  * treated as litteral characters. This goes for `echo \$HOME` which
  * produces `$HOME` in Bash but produces `\$HOME` here since `\` is not a
  * metacharacter in MSH.
  * https://unix.stackexchange.com/questions/99185/what-do-square-brackets-mean-without-the-if-on-the-left
-*/
-/* FIXME: echo $UID$HOME */
+ *
+ * Also, variable names must be of the form [a-zA-Z_]+[a-zA-Z0-9_]*, so
+ * `echo $USER- -> matthieu-`. Since we don't treat \ as a metacharacter
+ * `echo $USER\ -> matthieu\`.
+ * https://stackoverflow.com/questions/2821043/allowed-characters-in-linux-environment-variable-names
+ */
+/* FIXME: Handle $?USER -> 0USER, check if curr->word[0] == '$' &&
+curr->word[1] == '?' if true call special function */
 void ps_token_list_expand_variables(t_token **tok, t_env *env)
 {
 	char    *value;
@@ -443,7 +525,7 @@ void ps_token_list_expand_variables(t_token **tok, t_env *env)
 	curr = *tok;
 	while (curr)
 	{
-		if (curr->word[0] == '$' && curr->quote != SIMPLE)
+		if (curr->word[0] == '$' && curr->word[1] && is_legal_var_name(&curr->word[1]) && curr->quote != SIMPLE)
 		{
 			value = env_extract_value(env, &curr->word[1]);
 			free(curr->word);
@@ -489,12 +571,16 @@ static int ps_token_list_process_characters(t_glb *glb)
 	ps_token_list_set_index_cmd(glb->tok);
 	ps_token_list_delete_unquoted_spaces(glb->tok);
 	ps_token_list_delete_unquoted_quotes(glb->tok);
+	/* 	if (ps_token_list_has_syntax_error(glb->tok))
+	        return (1); */
 	ps_token_list_update_indices(glb->tok);
 	ps_token_list_delete_unquoted_pipes(glb->tok);
+	ps_token_list_recreate_variables(glb->tok);
+	ps_token_list_expand_variables(glb->tok, glb->env);
 	ps_token_list_recreate_words(glb->tok);
 	ps_token_list_fill_types_brackets(glb->tok);
-	ps_token_list_fill_types_files(glb->tok);
-	ps_token_list_expand_variables(glb->tok, glb->env);
+	ps_token_list_delete_unquoted_dollar(glb->tok);
+	ps_token_list_delete_unquoted_angle(glb->tok);
 	ps_token_list_group_words(glb->tok);
 	ps_token_list_print(glb->tok);
 	return (0);
@@ -502,7 +588,8 @@ static int ps_token_list_process_characters(t_glb *glb)
 
 int parsing(t_glb *glb)
 {
-	ps_token_list_process_characters(glb);
+	if (ps_token_list_process_characters(glb))
+		return (1);
 	return (0);
 }
 
@@ -535,7 +622,7 @@ int main(int ac, char *av[], char *ep[])
 			continue;
 		if (!ps_line_has_balanced_quotes(buf))
 		{
-			printf("minishell: syntax error.\n");
+			f_perror("minishell: syntax error.\n");
 			continue;
 		}
 		else
@@ -551,4 +638,3 @@ int main(int ac, char *av[], char *ep[])
 	}
 	return (EXIT_SUCCESS);
 }
-

@@ -2,9 +2,7 @@
 
 /* gcc -g3 -fsanitize=address ps_env.c ps_env_utils.c ../mlc/libft.a -I../inc -I../mlc/inc */
 
-/* TODO: Add function to extract the value part of for a given key (for variable expansion during parsing) */
 /* TODO Cleanup and error checking */
-
 size_t env_key_get_len(char *s)
 {
 	size_t key_len;
