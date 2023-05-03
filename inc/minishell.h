@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vburton <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/04/26 17:08:50 by victor           ###   ########.fr       */
+/*   Updated: 2023/04/27 15:19:05 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 #define MINISHELL_H
 
 #include "mlc.h"
+#include <stdio.h>             /* DEBUG */
 #include <readline/readline.h> /* readline */
+#include <readline/history.h> /* history readline */
 #include <signal.h>            /* signal, sigaction etc. */
 #include <stdbool.h>           /* bool */
 #include <stddef.h>            /* size_t, int64_t etc. */
-#include <stdio.h>             /* DEBUG */
 #include <stdlib.h>            /* malloc, free */
 #include <string.h>            /* DEBUG */
 #include <unistd.h>            /* write, sleep, usleep */
+#include <sys/types.h>
+#include <sys/wait.h>
 
 typedef struct s_token t_token;
 typedef struct s_env   t_env;

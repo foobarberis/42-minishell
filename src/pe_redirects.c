@@ -10,10 +10,12 @@ int	open_all_redirects(t_input *input, t_output *output, int *final_output, int 
 	int valid;
 
 	valid = open_input(input);
+	dprintf(2, "valid input = %d\n", valid);
 	if (valid == ERROR_REDIRECT)
 		return (ERROR_REDIRECT);
 	*final_input = valid;
 	valid = open_output(output);
+	dprintf(2, "valid output = %d\n", valid);
 	if (valid == ERROR_REDIRECT)
 		return (ERROR_REDIRECT);
 	*final_output = valid;
@@ -33,7 +35,6 @@ int	open_input(t_input *files)
 	valid = -1;
 	while (i < count)
 	{
-		printf("i = %d et nb_input = %d\n", i, files[i].fd_input);
 		if (files[i].type == R_INPUT)
 			valid = open(files[i].input, O_RDONLY);
 		if (valid < SUCCESS)
@@ -45,7 +46,7 @@ int	open_input(t_input *files)
 			close(valid);
 		i++;
 	}
-	if (valid == 0)
+	if (valid == -1)
 		return (NO_REDIRECTION);
 	return (valid);
 }
@@ -60,6 +61,7 @@ int	open_output(t_output *files)
 	count = 0;
 	if (files)
 		count = files[i].fd_output;
+	valid = -1;
 	while (i < count)
 	{
 		if (files[i].type == R_OUTPUT)
@@ -75,7 +77,7 @@ int	open_output(t_output *files)
 			close(valid);
 		i++;
 	}
-	if (valid == 0)
+	if (valid == -1)
 		return (NO_REDIRECTION);
 	return (valid);
 }

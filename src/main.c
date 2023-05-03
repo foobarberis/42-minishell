@@ -1,48 +1,33 @@
 #include "../inc/minishell.h"
 #include "../inc/execution.h"
 
+int find_nb_cmd(t_token *tok);
+t_token	**split_tok_into_cmd(t_token *tok, size_t nb_cmd);
+void	end_tok_lst(t_token *tok, size_t i);
+
 static int exec(t_glb *glob)
 {
 	int i;
-	int j;
 	t_cmd	*cmd;
+	t_token **final_tok_lst;
 
 	i = 0;
-	j = 0;
-	glob->multiple_cmd = 1;
+	glob->multiple_cmd = find_nb_cmd(glob->tok[0]);
+	final_tok_lst = split_tok_into_cmd(glob->tok[0], glob->multiple_cmd);
+	glob->tok = final_tok_lst;
 	cmd = malloc(sizeof(t_cmd) * glob->multiple_cmd);
 	initialisation_cmds(cmd, glob);
+	if (glob->multiple_cmd == 1)
+		single_execution(cmd[i]);
+	else
+		multiple_execution(&cmd[i], glob->multiple_cmd);
+	i = 0;
 	while (i < glob->multiple_cmd)
 	{
-		j = 0;
-		print_double_array(cmd[i].args, "array of cmd");
-		printf("Path cmd = %s\n", cmd[i].path_cmd);
-		while (cmd[i].struct_input && j < cmd[i].struct_input->fd_input)
-		{
-			printf("input file = %s\n", cmd[i].struct_input[j].input);
-			j++;
-		}
-		j = 0;
-		while (cmd[i].struct_output && j < cmd[i].struct_output->fd_output)
-		{
-			printf("output files = %s\n", cmd[i].struct_output[j].output);
-
-			j++;
-		}
-		printf("\n");
+		waitpid(cmd[i].pid, NULL, 0);
 		i++;
 	}
-	single_execution(cmd[0]);
 	return (0);
-}
-
-void display_lst_tok(t_token *tok)
-{
-	while (tok)
-	{
-		printf("tok-> word = %s et tok->type = %d\n", tok->word, tok->type);
-		tok = tok->next;
-	}
 }
 
 int main(const int ac, const char *av[], const char *ep[])
@@ -60,9 +45,9 @@ int main(const int ac, const char *av[], const char *ep[])
 		buf = readline("MS $ ");
 		if (!buf || !*buf)
 			continue;
+		add_history(buf);
 		glb->tok = parsing(buf);
 		glb->env = env_init((char**)ep);
-		display_lst_tok(glb->tok[0]);
 		if (!glb->tok)
 			return (free(glb), EXIT_FAILURE); /* FIXME Add better error handling */
 		else
@@ -73,4 +58,44 @@ int main(const int ac, const char *av[], const char *ep[])
 	}
 	// FIXME Free everything
 	return (EXIT_SUCCESS);
+}
+
+
+int find_nb_cmd(t_token *tok)
+{
+	int nb;
+
+	nb = 0;
+	while (tok)
+	{
+		nb = (int)tok->cmd_index;
+		tok = tok->next;
+	}
+	return (nb + 1);
+}
+
+t_token	**split_tok_into_cmd(t_token *tok, size_t nb_cmd)
+{
+	size_t	i;
+	t_token **final_tok_lst;
+
+	i = 0;
+	final_tok_lst = malloc(sizeof(t_token *) * nb_cmd);
+	while(tok)
+	{
+		final_tok_lst[i] = tok;
+		while(tok && tok->cmd_index == i)
+			tok = tok->next;
+		end_tok_lst(final_tok_lst[i], i + 1);
+		i++;
+	}
+	return (final_tok_lst);
+}
+
+void	end_tok_lst(t_token *tok, size_t i)
+{
+	while (tok && tok->cmd_index < i)
+		tok = tok->next;
+	if (tok)
+		tok->prev->next = NULL;
 }

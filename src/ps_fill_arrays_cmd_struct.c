@@ -71,18 +71,12 @@ int	fill_cmd_array(t_token *tok, char **cmd, int nb_args)
 		if (tok->type == BASIC)
 		{
 			cmd[i] = ft_strdup(tok->word);
-			printf("tok-word = %s\n", tok->word);
 			if (!cmd[i] && tok->type == BASIC)
 				return (ERROR);
 			i++;
 		}
 		tok = tok->next;
 	}
-	printf("i = %d\n", i);
-	printf("cmd 0 first = %s.\n", cmd[0]);
-	printf("cmd 1 second = %s.\n", cmd[1]);
 	cmd[i] = NULL;
-	printf("cmd 0 = %s.\n", cmd[0]);
-	printf("cmd 1 = %s.\n", cmd[1]);
 	return (SUCCESS);
 }

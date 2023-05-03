@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
+#    By: vburton <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/04/17 10:48:58 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/04/27 15:27:31 by vburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 
 # Edit the $(NAME) and $(SRCS) variables as necessary.
 NAME		:=	minishell
-SRCS		:=	main.c parsing.c
+SRCS		:=	main_test_exec.c ps_fill_cmd_struct.c ps_fill_arrays_cmd_struct.c pe_get_cmd_path.c pe_redirects.c pe_fill_all_cmd.c pe_is_builtin.c ex_execution.c main.c parsing.c env.c
 
 CC			:=	cc
 RM			:=	rm
@@ -32,7 +32,7 @@ LFTDIR		:=	mlc
 # Edit the $(HEADERS) variable as necessary.
 HEADERS		:=	$(INCDIR)/minishell.h
 
-INCFLAGS	:= -I$(INCDIR) -I$(LFTDIR)/inc
+INCFLAGS	:= -I$(INCDIR) -I$(LFTDIR)/inc ./mlc/libft.a
 
 LINK.o		:=	$(CC) $(LDFLAGS)
 COMPILE.c	:=	$(CC) $(INCFLAGS) $(CFLAGS) -c
@@ -45,7 +45,10 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
 	$(COMPILE.c) $< -o $@
 
-all: libft $(NAME)
+all:
+	gcc -Wall -Wextra -g3 $(SOURCES) ./mlc/libft.a -I./inc -I./mlc/inc -lreadline -o minishell
+
+#libft $(NAME)
 
 $(OBJECTS): $(HEADERS) Makefile
 

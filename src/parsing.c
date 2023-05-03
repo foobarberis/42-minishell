@@ -435,7 +435,7 @@ static int ps_token_list_process_characters(t_token **tok)
 	ps_token_list_recreate_words(tok);
 	ps_token_list_fill_types_brackets(tok);
 	ps_token_list_fill_types_files(tok);
-	ps_token_list_print(tok);
+//	ps_token_list_print(tok);
 	return (0);
 }
 
