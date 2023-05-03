@@ -3,6 +3,8 @@
 /* WARNING: Quoted vs unquoted here-doc limiter */
 /* WARNING: `cat |<env.c grep void -> cat: write error: Broken pipe */
 
+/* TODO: Add support for ~ expansion */
+
 /*
  * - Turn the readline buffer into a doubly-linked list with one char per
  *   node.
@@ -609,6 +611,7 @@ t_glb *init_glb(char **envp)
 	if (!glb)
 		return (NULL);
 	glb->env = env_init(envp);
+	glb->tok = NULL;
 	if (!glb->env)
 		return (free(glb), NULL);
 	return (glb);
