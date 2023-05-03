@@ -101,7 +101,6 @@ void ps_token_list_node_destroy(t_token **tok, t_token *del)
 	free(curr);
 }
 
-/* FIXME: Possible leaks if tok[0] != NULL && tok[1] == NULL */
 void ps_token_list_free_all(t_token **tok)
 {
 	if (!tok || !tok[0] || !tok[1])
@@ -156,9 +155,11 @@ static bool ismeta(int c)
 	return (c == '<' || c == '>' || c == '|' || c == ' ' || c == '\t' || c == '\n');
 }
 
+/* FIXME: Replace isprint with f_isprint */
 static int is_legal_var_char(int c)
 {
-	return (f_isalnum(c) || c == '_');
+	// return (f_isalnum(c) || c == '_');
+	return (!ismeta(c) && isprint(c));
 }
 
 static int is_legal_var_name(char *s)
@@ -264,17 +265,25 @@ void ps_token_list_set_index_word(t_token **tok)
 
 int ps_token_list_has_syntax_error(t_token **tok)
 {
+	t_token *next;
 	t_token *curr;
 
 	if (!tok)
 		return (0);
 	curr = *tok;
-	if (curr)
+	if (curr->word[0] == '|')
+		return (f_perror("minishell: syntax error.\n"), 1);
+	while (curr)
 	{
-		if (!ismeta(curr->word[0]))
-			return (0);
-		else
-			return (f_perror("minishell: syntax error.\n"), 1);
+		next = curr->next;
+		if (ismeta(curr->word[0]))
+		{
+			if (next && (curr->word[0] == '>' || curr->word[0] == '<') && (next->word[0] == '>' || next->word[0] == '<'))
+				next = next->next;
+			if ((next && ismeta(next->word[0])) || !next)
+				return (f_perror("minishell: syntax error.\n"), 1);
+		}
+		curr = next;
 	}
 	return (0);
 }
@@ -573,8 +582,8 @@ static int ps_token_list_parse(t_glb *glb)
 	ps_token_list_set_index_cmd(glb->tok);
 	ps_token_list_delete_unquoted_spaces(glb->tok);
 	ps_token_list_delete_unquoted_quotes(glb->tok);
-	/* 	if (ps_token_list_has_syntax_error(glb->tok))
-	        return (1); */
+	if (ps_token_list_has_syntax_error(glb->tok))
+	        return (1);
 	ps_token_list_update_indices(glb->tok);
 	ps_token_list_delete_unquoted_pipes(glb->tok);
 	ps_token_list_recreate_variables(glb->tok);
@@ -582,7 +591,7 @@ static int ps_token_list_parse(t_glb *glb)
 	ps_token_list_recreate_words(glb->tok);
 	ps_token_list_fill_type(glb->tok);
 	ps_token_list_delete_unquoted_dollar(glb->tok);
-	ps_token_list_delete_unquoted_brackets(glb->tok);
+	// ps_token_list_delete_unquoted_brackets(glb->tok);
 	ps_token_list_group_words(glb->tok);
 	ps_token_list_print(glb->tok);
 	return (0);
