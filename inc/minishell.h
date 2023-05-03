@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/02 14:21:40 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/03 11:46:47 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,21 @@
 #define MINISHELL_H
 
 #include "mlc.h"
-#include <readline/readline.h> /* readline */
-#include <signal.h>            /* signal, sigaction etc. */
-#include <stdbool.h>           /* bool */
-#include <stddef.h>            /* size_t, int64_t etc. */
-#include <stdio.h>             /* DEBUG */
-#include <stdlib.h>            /* malloc, free */
-#include <string.h>            /* DEBUG */
-#include <unistd.h>            /* write, sleep, usleep */
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <signal.h>  /* signal, sigaction etc. */
+#include <stdbool.h> /* bool */
+#include <stddef.h>  /* size_t, int64_t etc. */
+#include <stdio.h>   /* DEBUG */
+#include <stdlib.h>  /* malloc, free */
+#include <string.h>  /* DEBUG */
+#include <unistd.h>  /* write, sleep, usleep */
 
 typedef struct s_token t_token;
 typedef struct s_env   t_env;
 typedef struct s_glb   t_glb;
+
+#define SYNTAX "minishell: syntax error.\n"
 
 enum e_types
 {
@@ -91,6 +94,7 @@ int      ps_token_list_node_add(t_token **tok, t_token *new);
 void     ps_token_list_node_destroy(t_token **tok, t_token *del);
 void     ps_token_list_free_all(t_token **tok);
 
+bool      ps_line_has_balanced_quotes(char *s);
 t_token **ps_token_list_from_array(char *s);
 void      ps_token_list_print(t_token **tok);
 void      ps_token_list_mark_quotes(t_token **tok);

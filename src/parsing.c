@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-// gcc -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address -lreadline parsing.c env.c ../mlc/libft.a -I../inc -I../mlc/inc
 /* WARNING: Quoted vs unquoted here-doc limiter */
 /* WARNING: `cat |<env.c grep void -> cat: write error: Broken pipe */
 
@@ -158,7 +157,6 @@ static bool ismeta(int c)
 /* FIXME: Replace isprint with f_isprint */
 static int is_legal_var_char(int c)
 {
-	// return (f_isalnum(c) || c == '_');
 	return (!ismeta(c) && isprint(c));
 }
 
@@ -234,7 +232,6 @@ void ps_token_list_set_index_cmd(t_token **tok)
 	}
 }
 
-/* FIXME: cmd >| file should treat >| as one word */
 void ps_token_list_set_index_word(t_token **tok)
 {
 	size_t   word;
@@ -272,7 +269,7 @@ int ps_token_list_has_syntax_error(t_token **tok)
 		return (0);
 	curr = *tok;
 	if (curr->word[0] == '|')
-		return (f_perror("minishell: syntax error.\n"), 1);
+		return (f_perror(SYNTAX), 1);
 	while (curr)
 	{
 		next = curr->next;
@@ -281,7 +278,7 @@ int ps_token_list_has_syntax_error(t_token **tok)
 			if (next && (curr->word[0] == '>' || curr->word[0] == '<') && (next->word[0] == '>' || next->word[0] == '<'))
 				next = next->next;
 			if ((next && ismeta(next->word[0])) || !next)
-				return (f_perror("minishell: syntax error.\n"), 1);
+				return (f_perror(SYNTAX), 1);
 		}
 		curr = next;
 	}
@@ -379,6 +376,7 @@ void ps_token_list_delete_unquoted_dollar(t_token **tok)
 	}
 }
 
+/* FIXME: echo $USER$var\ make the program crash */
 void ps_token_list_delete_unquoted_brackets(t_token **tok)
 {
 	t_token *next;
@@ -396,7 +394,6 @@ void ps_token_list_delete_unquoted_brackets(t_token **tok)
 	}
 }
 
-/* FIXME: Do not delete || */
 void ps_token_list_delete_unquoted_pipes(t_token **tok)
 {
 	t_token *next;
@@ -464,7 +461,7 @@ void ps_token_list_recreate_variables(t_token **tok)
 	}
 }
 
-static bool ps_line_has_balanced_quotes(char *s)
+bool ps_line_has_balanced_quotes(char *s)
 {
 	size_t nsimple;
 	size_t ndouble;
@@ -523,6 +520,7 @@ void ps_token_list_fill_type(t_token **tok)
  * `echo $USER\ -> matthieu\`.
  * https://stackoverflow.com/questions/2821043/allowed-characters-in-linux-environment-variable-names
  */
+
 /* FIXME: Handle $?USER -> 0USER, check if curr->word[0] == '$' &&
 curr->word[1] == '?' if true call special function */
 /* FIXME: echo $''HOME -> HOME */
@@ -614,38 +612,4 @@ t_glb *init_glb(char **envp)
 	if (!glb->env)
 		return (free(glb), NULL);
 	return (glb);
-}
-
-int main(int ac, char *av[], char *ep[])
-{
-	(void) ac;
-	(void) av;
-	t_glb *glb;
-	char  *buf;
-
-	glb = init_glb(ep);
-	if (!glb)
-		return (EXIT_FAILURE);
-	while (1)
-	{
-		buf = readline("MSH $ ");
-		if (!buf || !*buf)
-			continue;
-		if (!ps_line_has_balanced_quotes(buf))
-		{
-			f_perror("minishell: syntax error.\n");
-			continue;
-		}
-		else
-		{
-			glb->tok = ps_token_list_from_array(buf);
-			if (!glb->tok)
-				continue;
-		}
-		parsing(glb);
-		if (glb->tok)
-			ps_token_list_free_all(glb->tok);
-		free(buf);
-	}
-	return (EXIT_SUCCESS);
 }
