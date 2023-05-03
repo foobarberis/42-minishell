@@ -276,7 +276,7 @@ int ps_token_list_has_syntax_error(t_token **tok)
 	while (curr)
 	{
 		next = curr->next;
-		if (ismeta(curr->word[0]))
+		if (ismeta(curr->word[0]) && curr->quote == NONE)
 		{
 			if (next && (curr->word[0] == '>' || curr->word[0] == '<') && (next->word[0] == '>' || next->word[0] == '<'))
 				next = next->next;
