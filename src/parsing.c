@@ -4,6 +4,16 @@
 /* WARNING: `cat |<env.c grep void -> cat: write error: Broken pipe */
 
 /* TODO: Add support for ~ expansion */
+/* TODO: Add check for invalid variable names (i.e `export 0TEST=test` -> invalid identifier) */
+/* TODO: Transform double LL to simple LL */
+/* TODO: Reimplement env management with simple LL */
+/* TODO: Do not store list's tail anymore */
+/* TODO: Move all malloc in a single function */
+/* TODO: Add security check when f_strdup is involved (create function to
+check that none of the word member is NULL) */
+/* TODO: Run all examples from the example sheet */
+/* TODO: Deal with all remaining FIXME */
+/* TODO: Fix all Norme errors for parsing.c, env.c and main.c */
 
 /*
  * - Turn the readline buffer into a doubly-linked list with one char per
@@ -29,33 +39,34 @@
 /* LIST UTILS */
 t_token *ps_token_list_goto_last(t_token **tok)
 {
-	t_token *p;
+	t_token *curr;
 
-	p = *tok;
-	while (p)
+	curr = *tok;
+	while (curr)
 	{
-		if (!p->next)
-			return (p);
-		p = p->next;
+		if (!curr->next)
+			return (curr);
+		curr = curr->next;
 	}
 	return (NULL);
 }
 
 t_token *ps_token_list_node_create(char *s)
 {
-	t_token *p;
+	t_token *new;
 
-	p = malloc(sizeof(t_token));
-	if (!p)
+	new = malloc(sizeof(t_token));
+	if (!new)
 		return (NULL);
-	p->word = f_strdup(s);
-	p->type = BASIC;
-	p->quote = NONE;
-	p->word_index = 0;
-	p->cmd_index = 0;
-	p->next = NULL;
-	p->prev = NULL;
-	return (p);
+	new->word = f_strdup(s);
+	if (!new->word)
+		return (NULL);
+	new->type = BASIC;
+	new->quote = NONE;
+	new->word_index = 0;
+	new->cmd_index = 0;
+	new->next = NULL;
+	return (new);
 }
 
 int ps_token_list_node_add(t_token **tok, t_token *new)
@@ -63,43 +74,48 @@ int ps_token_list_node_add(t_token **tok, t_token *new)
 	t_token *tail;
 
 	if (!tok || !new)
-		return (-1);
-	if (!tok[0] && !tok[1])
-	{
-		tok[0] = new;
-		tok[1] = new;
-	}
+		return (1);
+	if (!*tok)
+		*tok = new;
 	else
 	{
-		tail = tok[1];
-		tail->next = new;
-		tok[1] = new;
-		new->prev = tail;
+		tail = ps_token_list_goto_last(tok);
+		if (tail)
+			tail->next = new;
 	}
 	return (0);
 }
 
+/* a[0] -> curr, a[1] -> curr->next, a[2] -> curr->next->next */
 void ps_token_list_node_destroy(t_token **tok, t_token *del)
 {
-	t_token *curr;
+	t_token *a[3];
 
-	if (!tok || !tok[0] || !tok[1] || !del)
+	if (!tok || !*tok || !del)
 		return;
-	curr = tok[0];
-	while (curr && curr != del)
-		curr = curr->next;
-	if (!curr)
+	a[0] = *tok;
+	if (a[0] == del)
+	{
+		a[1] = a[0]->next;
+		free(a[0]->word);
+		free(a[0]);
+		*tok = a[1];
 		return;
-	if (curr->prev)
-		curr->prev->next = curr->next;
-	if (curr->next)
-		curr->next->prev = curr->prev;
-	free(curr->word);
-	if (del == tok[0])
-		tok[0] = curr->next;
-	if (del == tok[1])
-		tok[1] = curr->prev;
-	free(curr);
+	}
+	while (a[0] && a[1])
+	{
+		a[1] = a[0]->next;
+		if (a[1])
+			a[2] = a[1]->next;
+		if (a[1] == del)
+		{
+			free(a[1]->word);
+			free(a[1]);
+			a[0]->next = a[2];
+			return;
+		}
+		a[0] = a[1];
+	}
 }
 
 void ps_token_list_free_all(t_token **tok)
@@ -118,16 +134,15 @@ t_token **ps_token_list_from_array(char *s)
 
 	if (!s || !*s)
 		return (NULL);
-	tok = malloc(2 * sizeof(t_token *));
+	tok = malloc(sizeof(t_token *));
 	if (!tok)
 		return (NULL);
 	tok[0] = NULL;
-	tok[1] = NULL;
+	buf[1] = '\0';
 	while (*s)
 	{
 		buf[0] = *s++;
-		buf[1] = '\0';
-		if (ps_token_list_node_add(tok, ps_token_list_node_create(buf)) < 0)
+		if (ps_token_list_node_add(tok, ps_token_list_node_create(buf)))
 			return (ps_token_list_free_all(tok), NULL);
 	}
 	return (tok);
@@ -607,6 +622,7 @@ int parsing(t_glb *glb)
 t_glb *init_glb(char **envp)
 {
 	t_glb *glb;
+
 	glb = malloc(sizeof(t_glb));
 	if (!glb)
 		return (NULL);
@@ -616,3 +632,58 @@ t_glb *init_glb(char **envp)
 		return (free(glb), NULL);
 	return (glb);
 }
+
+int main(int ac, char *av[], char *ep[])
+{
+	(void) ac;
+	(void) av;
+	t_glb *glb;
+	char  *buf;
+
+
+	while (1)
+	{
+		buf = readline("MSH $ ");
+		if (!buf)
+			break;
+		if (!*buf)
+			continue;
+		if (!ps_line_has_balanced_quotes(buf))
+		{
+			f_perror(SYNTAX);
+			continue;
+		}
+		else
+		{
+			add_history(buf);
+			glb->tok = ps_token_list_from_array(buf);
+			if (!glb->tok)
+				continue;
+		}
+		if (!parsing(glb))
+			exec(glb);
+		if (glb->tok)
+			ps_token_list_free_all(glb->tok);
+		free(buf);
+	}
+	/* FIXME: Free all */
+	if (buf)
+		free(buf);
+	// cleanup(glb);
+	rl_clear_history();
+	return (EXIT_SUCCESS);
+}
+
+
+/* t_glb *init_glb(char **envp)
+{
+	t_glb *glb;
+	glb = malloc(sizeof(t_glb));
+	if (!glb)
+		return (NULL);
+	glb->env = env_init(envp);
+	glb->tok = NULL;
+	if (!glb->env)
+		return (free(glb), NULL);
+	return (glb);
+} */

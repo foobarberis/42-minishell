@@ -18,8 +18,12 @@ void blt_export__array_print(t_env *env)
 
 // WARNING: When doing "export TEST", TEST does not show up in env but does
 // show up in export.
+
+/* TODO: Check if key is */
 int blt_export(t_glb *glb, char *key)
 {
+	if (!env_list_is_valid_id(key))
+		return (1);
 	if (!key)
 		return (env_array_print(glb->env), 0);
 	else

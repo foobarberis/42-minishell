@@ -74,7 +74,7 @@ int main(int ac, char *av[], char *ep[])
 	/* FIXME: Free all */
 	if (buf)
 		free(buf);
-	cleanup(glb);
+	// cleanup(glb);
 	rl_clear_history();
 	return (EXIT_SUCCESS);
 }

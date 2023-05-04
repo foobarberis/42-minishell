@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/03 11:46:47 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/04 12:56:06 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,14 @@ enum e_quote_state
 
 struct s_env
 {
-	char **envp;
-	size_t size;
+	char    *key;
+	char    *value;
+	t_env   *next;
 };
 
 struct s_glb
 {
-	t_env    *env;
+	t_env **env;
 	t_token **tok;
 };
 
@@ -66,21 +67,15 @@ struct s_token
 	size_t   word_index;
 	size_t   cmd_index;
 	t_token *next;
-	t_token *prev;
 };
 
 /* ENV*/
-int    env_export(t_env *env, char *key);
-int    env_unset(t_env *env, char *key);
-void   env_array_free(char **envp, size_t size);
-void   env_array_print(t_env *env);
-char **env_array_dup(char **envp, size_t size);
-int    env_key_search(t_env *env, char *key);
-char  *env_extract_value(t_env *env, char *s);
-int    env_key_add(t_env *env, char *key);
-int    env_key_del(t_env *env, int pos);
-size_t env_key_get_len(char *key);
-t_env *env_init(char **envp);
+t_env *env_list_node_create(char *key, char *value);
+void   env_list_node_destroy(t_env *node);
+void   env_list_node_add(t_env **env, t_env *node);
+void   env_list_node_rm(t_env **env, t_env *node);
+void   env_list_free_all(t_env **env);
+t_env *env_list_goto_last(t_env **env);
 
 /* BUILTINS */
 int blt_export(t_glb *glb, char *key);
