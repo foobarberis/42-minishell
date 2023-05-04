@@ -16,14 +16,16 @@ static int exec(t_glb *glob)
 	final_tok_lst = split_tok_into_cmd(glob->tok[0], glob->multiple_cmd);
 	glob->tok = final_tok_lst;
 	cmd = malloc(sizeof(t_cmd) * glob->multiple_cmd);
-	initialisation_cmds(cmd, glob);
-	execution(&cmd[i], glob->multiple_cmd);
+	ps_initialisation_cmds(cmd, glob);
+	ex_execution(&cmd[i], glob->multiple_cmd);
 	i = 0;
 	while (i < glob->multiple_cmd)
 	{
 		waitpid(cmd[i].pid, NULL, 0);
 		i++;
 	}
+	ps_token_list_free_all(final_tok_lst);
+	free_t_cmd(cmd, glob->multiple_cmd);
 	return (0);
 }
 

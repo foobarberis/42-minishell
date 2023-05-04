@@ -1,7 +1,7 @@
 #include "execution.h"
 #include "minishell.h"
 
-void	exec_builtin(int builtin, char **arg)
+void	ex_builtin(int builtin, char **arg)
 {
 	if (builtin == ECHO)
 		ex_echo(arg);

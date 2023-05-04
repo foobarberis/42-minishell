@@ -5,27 +5,25 @@ char	*ft_strdup(const char *s1);
 int		open_input(t_input *files);
 int		open_output(t_output *files);
 
-int	open_all_redirects(t_input *input, t_output *output, int *final_output, int *final_input)
+int	ps_open_redirect(t_input *in, t_output *out, int *final_out, int *final_in)
 {
-	int valid;
+	int	valid;
 
-	valid = open_input(input);
-	dprintf(2, "valid input = %d\n", valid);
+	valid = open_input(in);
 	if (valid == ERROR_REDIRECT)
 		return (ERROR_REDIRECT);
-	*final_input = valid;
-	valid = open_output(output);
-	dprintf(2, "valid output = %d\n", valid);
+	*final_in = valid;
+	valid = open_output(out);
 	if (valid == ERROR_REDIRECT)
 		return (ERROR_REDIRECT);
-	*final_output = valid;
+	*final_out = valid;
 	return (valid);
 }
 
 int	open_input(t_input *files)
 {
 	int	i;
-	int count;
+	int	count;
 	int	valid;
 
 	i = 0;
@@ -37,6 +35,8 @@ int	open_input(t_input *files)
 	{
 		if (files[i].type == R_INPUT)
 			valid = open(files[i].input, O_RDONLY);
+		else
+			ps_here_doc(files->limiter);
 		if (valid < SUCCESS)
 		{
 			perror(files[i].input);
@@ -69,10 +69,7 @@ int	open_output(t_output *files)
 		else
 			valid = open(files[i].output, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		if (valid < SUCCESS)
-		{
-			perror(files[i].output);
-			return (ERROR_REDIRECT);
-		}
+			return (perror(files[i].output), ERROR_REDIRECT);
 		if (i + 1 < count)
 			close(valid);
 		i++;

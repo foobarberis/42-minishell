@@ -4,17 +4,18 @@
 char	*ft_grep_path(char **envp);
 char	*ft_compute_path(char **path, char *cmd);
 
-int	get_path_cmd(char *cmd, char **envp, char **path_cmd)
+int	ps_get_path_cmd(char *cmd, char **envp, char **path_cmd)
 {
-    char    *path;
-    char    **split_path;
+	char	*path;
+	char	**split_path;
+
 	if (cmd == NULL)
-    {
-        printf(": command not found:\n");
+	{
+		printf(": command not found:\n");
 		return (ERROR);
-    }
+	}
 	path = ft_grep_path(envp);
-    split_path = ft_split(path, ':');
+	split_path = ft_split(path, ':');
 	if (split_path == NULL || path == NULL)
 	{
 		printf(" : no such file or directory: %s\n", cmd);

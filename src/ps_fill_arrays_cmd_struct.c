@@ -1,7 +1,7 @@
 #include "../inc/execution.h"
 #include "minishell.h"
 
-int	fill_input_array(t_token *tok, t_input *input, int nb_input)
+int	ps_fill_struct_input(t_token *tok, t_input *input, int nb_input)
 {
 	while (tok)
 	{
@@ -32,7 +32,7 @@ int	fill_input_array(t_token *tok, t_input *input, int nb_input)
 	return (SUCCESS);
 }
 
-int	fill_output_array(t_token *tok, t_output *output, int nb_output)
+int	ps_fill_struct_output(t_token *tok, t_output *output, int nb_output)
 {
 	while (tok)
 	{
@@ -61,9 +61,9 @@ int	fill_output_array(t_token *tok, t_output *output, int nb_output)
 	return (SUCCESS);
 }
 
-int	fill_cmd_array(t_token *tok, char **cmd, int nb_args)
+int	ps_fill_args_array(t_token *tok, char **cmd, int nb_args)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tok && i < nb_args)

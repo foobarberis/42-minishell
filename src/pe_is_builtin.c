@@ -1,7 +1,7 @@
 #include "../inc/minishell.h"
 #include "../inc/execution.h"
 
-int	is_builtin(char *cmd)
+int	ps_is_builtin(char *cmd)
 {
 	if (ft_strcmp(cmd, "echo") == 0)
 		return (ECHO);

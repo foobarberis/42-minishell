@@ -6,7 +6,7 @@
 #    By: vburton <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/04/27 15:27:31 by vburton          ###   ########.fr        #
+#    Updated: 2023/05/04 18:57:52 by vburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 
 # Edit the $(NAME) and $(SRCS) variables as necessary.
 NAME		:=	minishell
-SRCS		:=	main_test_exec.c ps_fill_cmd_struct.c ps_fill_arrays_cmd_struct.c pe_get_cmd_path.c pe_redirects.c pe_fill_all_cmd.c pe_is_builtin.c ex_execution.c main.c parsing.c env.c
+SRCS		:=	utility_fonction.c free.c ps_here_doc.c ps_fill_cmd_struct.c ps_fill_arrays_cmd_struct.c pe_get_cmd_path.c pe_redirects.c pe_fill_all_cmd.c pe_is_builtin.c ex_execution.c main.c parsing.c env.c
 
 CC			:=	cc
 RM			:=	rm
@@ -63,6 +63,24 @@ clean:
 
 fclean: clean
 	$(REMOVE) $(NAME)
+
+leaks:	all
+		echo	"{"	>	valgrind_ignore_leaks.txt
+		echo	"leak readline"	>>	valgrind_ignore_leaks.txt
+		echo "    Memcheck:Leak" >> valgrind_ignore_leaks.txt
+		echo "    ..." >> valgrind_ignore_leaks.txt
+		echo "    fun:readline" >> valgrind_ignore_leaks.txt
+		echo "}" >> valgrind_ignore_leaks.txt
+		echo "{" >> valgrind_ignore_leaks.txt
+		echo "    leak add_history" >> valgrind_ignore_leaks.txt
+		echo "    Memcheck:Leak" >> valgrind_ignore_leaks.txt
+		echo "    ..." >> valgrind_ignore_leaks.txt
+		echo "    fun:add_history" >> valgrind_ignore_leaks.txt
+		echo "}" >> valgrind_ignore_leaks.txt
+		valgrind --suppressions=valgrind_ignore_leaks.txt --leak-check=full \
+					--show-leak-kinds=all --track-fds=yes \
+					--show-mismatched-frees=yes --read-var-info=yes \
+					--log-file=valgrind.txt ./${NAME}
 
 re: fclean all
 

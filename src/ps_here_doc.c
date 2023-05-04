@@ -1,15 +1,15 @@
-#include "execution.h"
-#include "minishell.h"
+#include "../inc/execution.h"
+#include "../inc/minishell.h"
 
 void	fils_here_doc(char *limiter, int *fd);
 
-void	here_doc(char *limiter)
+void	ps_here_doc(char *limiter)
 {
 	int		fd[2];
 	int		pid;
 	
 	if (pipe(fd) == -1)
-		return (1);
+		return ;
 	pid = fork();
 	if (pid == -1)
 		perror("An error as occured while attempting to fork");
@@ -20,7 +20,7 @@ void	here_doc(char *limiter)
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
-		waitpid(pid, NULL, 0);
+		waitpid(-1, NULL, 0);
 	}
 }
 
