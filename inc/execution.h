@@ -105,8 +105,7 @@ int 	open_all_redirects(t_input *input, t_output *output, int *final_output, int
 void	exec_builtin(int builtin, char **arg);
 
 /*** ex_execution ***/
-int		single_execution(t_cmd cmd);
-int		multiple_execution(t_cmd *cmd, int nb_cmd);
+int		execution(t_cmd *cmd, int nb_cmd);
 
 /*** main_test_exec ***/
 char	*ft_strdup(const char *s);

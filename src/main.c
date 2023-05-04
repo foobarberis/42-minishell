@@ -17,10 +17,7 @@ static int exec(t_glb *glob)
 	glob->tok = final_tok_lst;
 	cmd = malloc(sizeof(t_cmd) * glob->multiple_cmd);
 	initialisation_cmds(cmd, glob);
-	if (glob->multiple_cmd == 1)
-		single_execution(cmd[i]);
-	else
-		multiple_execution(&cmd[i], glob->multiple_cmd);
+	execution(&cmd[i], glob->multiple_cmd);
 	i = 0;
 	while (i < glob->multiple_cmd)
 	{
