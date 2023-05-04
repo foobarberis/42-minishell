@@ -209,7 +209,6 @@ t_env *env_list_key_search(t_env **env, char *key)
 	return (NULL);
 }
 
-/* FIXME: Error checking */
 void env_list_key_add(t_env **env, char *key)
 {
 	t_env *curr;

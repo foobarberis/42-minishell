@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/04 12:56:06 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/04 14:19:08 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,15 @@ void   env_list_node_add(t_env **env, t_env *node);
 void   env_list_node_rm(t_env **env, t_env *node);
 void   env_list_free_all(t_env **env);
 t_env *env_list_goto_last(t_env **env);
+
+bool    env_list_is_valid_id(char *s);
+int     env_split_key_value(char **arr, char *s);
+char   *env_getenv(t_env **env, const char *key);
+void    env_list_print(t_env **env);
+t_env **env_list_from_array(char **ep);
+t_env  *env_list_key_search(t_env **env, char *key);
+void    env_list_key_add(t_env **env, char *key);
+void    env_list_key_del(t_env **env, char *key);
 
 /* BUILTINS */
 int blt_export(t_glb *glb, char *key);
