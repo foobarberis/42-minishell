@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/05 10:54:44 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/05 11:16:59 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,10 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
 	$(COMPILE.c) $< -o $@
 
-all: libft $(NAME)
+all:
+	gcc -Wall -Wextra -g3 $(SOURCES) ./mlc/libft.a -I./inc -I./mlc/inc -lreadline -o minishell
+
+#libft $(NAME)
 
 $(OBJECTS): $(HEADERS) Makefile
 
@@ -69,7 +72,6 @@ clean:
 
 fclean: clean
 	$(REMOVE) $(NAME)
-	make -C $(MLCDIR) fclean
 
 re: fclean all
 

@@ -1,16 +1,40 @@
-#include "minishell.h"
+#include "../inc/minishell.h"
+#include "../inc/execution.h"
 
-// gcc -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address -lreadline main.c parsing.c env.c ../mlc/libft.a -I../inc -I../mlc/inc
+int find_nb_cmd(t_token *tok);
+t_token	**split_tok_into_cmd(t_token *tok, size_t nb_cmd);
+void	end_tok_lst(t_token *tok, size_t i);
 
-static int exec(t_glb *glb)
+static int exec(t_glb *glob)
 {
-	return 0;
+	int i;
+	t_cmd	*cmd;
+	t_token **final_tok_lst;
+
+	i = 0;
+	glob->multiple_cmd = find_nb_cmd(glob->tok[0]);
+	final_tok_lst = split_tok_into_cmd(glob->tok[0], glob->multiple_cmd);
+	glob->tok = final_tok_lst;
+	cmd = malloc(sizeof(t_cmd) * glob->multiple_cmd);
+	ps_initialisation_cmds(cmd, glob);
+	ex_execution(&cmd[i], glob->multiple_cmd);
+	i = 0;
+	while (i < glob->multiple_cmd)
+	{
+		waitpid(cmd[i].pid, NULL, 0);
+		i++;
+	}
+	ps_token_list_free_all(final_tok_lst);
+	free_t_cmd(cmd, glob->multiple_cmd);
+	return (0);
 }
 
 static t_glb *msh_init(char **envp)
 {
 	t_glb *glb;
 
+	(void)ac;
+	(void)av;
 	glb = malloc(sizeof(t_glb));
 	if (!glb)
 		return (NULL);
@@ -87,4 +111,44 @@ int main(int ac, char *av[], char *ep[])
 	}
 	msh_exit(glb);
 	return (EXIT_SUCCESS);
+}
+
+
+int find_nb_cmd(t_token *tok)
+{
+	int nb;
+
+	nb = 0;
+	while (tok)
+	{
+		nb = (int)tok->cmd_index;
+		tok = tok->next;
+	}
+	return (nb + 1);
+}
+
+t_token	**split_tok_into_cmd(t_token *tok, size_t nb_cmd)
+{
+	size_t	i;
+	t_token **final_tok_lst;
+
+	i = 0;
+	final_tok_lst = malloc(sizeof(t_token *) * nb_cmd);
+	while(tok)
+	{
+		final_tok_lst[i] = tok;
+		while(tok && tok->cmd_index == i)
+			tok = tok->next;
+		end_tok_lst(final_tok_lst[i], i + 1);
+		i++;
+	}
+	return (final_tok_lst);
+}
+
+void	end_tok_lst(t_token *tok, size_t i)
+{
+	while (tok && tok->cmd_index < i)
+		tok = tok->next;
+	if (tok)
+		tok->prev->next = NULL;
 }

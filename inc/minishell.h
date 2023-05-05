@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/05 10:28:23 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/05 11:14:34 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 #define MINISHELL_H
 
 #include "mlc.h"
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <signal.h>  /* signal, sigaction etc. */
-#include <stdbool.h> /* bool */
-#include <stddef.h>  /* size_t, int64_t etc. */
-#include <stdio.h>   /* DEBUG */
-#include <stdlib.h>  /* malloc, free */
-#include <string.h>  /* DEBUG */
-#include <unistd.h>  /* write, sleep, usleep */
+#include <stdio.h>             /* DEBUG */
+#include <readline/readline.h> /* readline */
+#include <readline/history.h> /* history readline */
+#include <signal.h>            /* signal, sigaction etc. */
+#include <stdbool.h>           /* bool */
+#include <stddef.h>            /* size_t, int64_t etc. */
+#include <stdlib.h>            /* malloc, free */
+#include <string.h>            /* DEBUG */
+#include <unistd.h>            /* write, sleep, usleep */
+#include <sys/types.h>
+#include <sys/wait.h>
 
 typedef struct s_token t_token;
 typedef struct s_env   t_env;
@@ -56,7 +58,8 @@ struct s_env
 
 struct s_glb
 {
-	t_env   **env;
+	t_env    *env;
+	int 	multiple_cmd;
 	t_token **tok;
 };
 
