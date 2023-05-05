@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
+#    By: vburton <vburton@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/05 11:51:38 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/05 16:34:10 by vburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,6 @@
 NAME		:=	minishell
 SRCS		:=	env.c \
 				env_list_utils.c \
-				ex_builtin.c \
 				ex_execution.c \
 				free.c \
 				main.c \
@@ -29,7 +28,6 @@ SRCS		:=	env.c \
 				ps_here_doc.c \
 				ps_is_builtin.c \
 				ps_redirects.c \
-				signal.c \
 				token_list_utils.c \
 				utility_function.c
 

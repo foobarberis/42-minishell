@@ -33,7 +33,7 @@ int	open_input(t_input *files)
 	valid = -1;
 	while (i < count)
 	{
-		if (files[i].type == R_INPUT)
+		if (files[i].type == S_INPUT)
 			valid = open(files[i].input, O_RDONLY);
 		else
 			ps_here_doc(files->limiter);
@@ -64,7 +64,7 @@ int	open_output(t_output *files)
 	valid = -1;
 	while (i < count)
 	{
-		if (files[i].type == R_OUTPUT)
+		if (files[i].type == S_OUTPUT)
 			valid = open(files[i].output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		else
 			valid = open(files[i].output, O_WRONLY | O_APPEND | O_CREAT, 0644);

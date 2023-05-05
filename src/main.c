@@ -4,6 +4,7 @@
 int find_nb_cmd(t_token *tok);
 t_token	**split_tok_into_cmd(t_token *tok, size_t nb_cmd);
 void	end_tok_lst(t_token *tok, size_t i);
+void	free_lst_tok(t_token **tok, int nb_cmd);
 
 static int exec(t_glb *glob)
 {
@@ -14,9 +15,8 @@ static int exec(t_glb *glob)
 	i = 0;
 	glob->multiple_cmd = find_nb_cmd(glob->tok[0]);
 	final_tok_lst = split_tok_into_cmd(glob->tok[0], glob->multiple_cmd);
-	glob->tok = final_tok_lst;
 	cmd = malloc(sizeof(t_cmd) * glob->multiple_cmd);
-	ps_initialisation_cmds(cmd, glob);
+	ps_initialisation_cmds(cmd, glob, final_tok_lst);
 	ex_execution(&cmd[i], glob->multiple_cmd);
 	i = 0;
 	while (i < glob->multiple_cmd)
@@ -24,7 +24,6 @@ static int exec(t_glb *glob)
 		waitpid(cmd[i].pid, NULL, 0);
 		i++;
 	}
-	ps_token_list_free_all(final_tok_lst);
 	free_t_cmd(cmd, glob->multiple_cmd);
 	return (0);
 }
@@ -72,12 +71,12 @@ int main(int ac, char *av[], char *ep[])
 	(void) av;
 	t_glb *glb;
 	char  *buf;
-
 	glb = msh_init(ep);
+	glb->env_temp = ep;			//Rustine le temps de tester l'exec. A revoir pour toujours avoir l'env actualise pendant l'exec.
 	if (!glb)
 		return (EXIT_FAILURE);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, sigint_handler);
+	// signal(SIGQUIT, SIG_IGN);
+	// signal(SIGINT, sigint_handler);
 	while (1)
 	{
 		buf = readline("MSH $ ");
@@ -125,6 +124,13 @@ int find_nb_cmd(t_token *tok)
 	return (nb + 1);
 }
 
+void	end_tok_lst(t_token *tok, size_t i)
+{
+	while (tok->next && tok->next->cmd_index < i)
+		tok = tok->next;
+	tok->next = NULL;
+}
+
 t_token	**split_tok_into_cmd(t_token *tok, size_t nb_cmd)
 {
 	size_t	i;
@@ -135,18 +141,16 @@ t_token	**split_tok_into_cmd(t_token *tok, size_t nb_cmd)
 	while(tok)
 	{
 		final_tok_lst[i] = tok;
-		while(tok && tok->cmd_index == i)
+		while(tok->next && tok->next->cmd_index == i)
 			tok = tok->next;
+		tok = tok->next;
+		i++;
+	}
+	i = 0;
+	while (i < nb_cmd -1)
+	{
 		end_tok_lst(final_tok_lst[i], i + 1);
 		i++;
 	}
 	return (final_tok_lst);
-}
-
-void	end_tok_lst(t_token *tok, size_t i)
-{
-	while (tok && tok->cmd_index < i)
-		tok = tok->next;
-	if (tok)
-		tok->prev->next = NULL;
 }

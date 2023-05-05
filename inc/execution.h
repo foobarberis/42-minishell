@@ -61,7 +61,7 @@ struct	s_cmd
 	int			fd[2];
 	int			pid;
 	int			builtin;
-	t_env		*env;
+	char		**env;
 	char		**args;
 	char		*path_cmd;
 	int			final_input;
@@ -77,7 +77,7 @@ int		ps_is_builtin(char *cmd);
 int		ps_get_path_cmd(char *cmd, char **envp, char **path_cmd);
 
 /*** pe_fill_all_cmd ***/
-int		ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
+int		ps_initialisation_cmds(t_cmd *cmd, t_glb *glob, t_token **tok);
 
 /*** ex_here_doc ***/
 void	ps_here_doc(char *limiter);

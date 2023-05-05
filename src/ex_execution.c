@@ -59,7 +59,7 @@ void	child_exec(t_cmd *cmd, int i, int nb_cmd)
 		close(cmd[i - 1].fd[0]);
 	close(cmd[i].fd[0]);
 	close (cmd[i].fd[1]);
-	execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env->envp);
+	execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env);
 	exit(1);
 }
 

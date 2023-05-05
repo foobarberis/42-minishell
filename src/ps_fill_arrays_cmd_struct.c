@@ -5,9 +5,8 @@ int	ps_fill_struct_input(t_token *tok, t_input *input, int nb_input)
 {
 	while (tok)
 	{
-		if (tok->type == S_INPUT_CHEVRON)
+		if (tok->type == S_INPUT)
 		{
-			tok = tok->next;
 			input->type = tok->type;
 			input->limiter = NULL;
 			input->input = f_strdup(tok->word);
@@ -16,9 +15,8 @@ int	ps_fill_struct_input(t_token *tok, t_input *input, int nb_input)
 				return (ERROR);
 			input++;
 		}
-		else if (tok->type == D_INPUT_CHEVRON)
+		else if (tok->type == D_INPUT)
 		{
-			tok = tok->next;
 			input->input = NULL;
 			input->type = tok->type;
 			input->limiter = f_strdup(tok->word);
@@ -36,9 +34,8 @@ int	ps_fill_struct_output(t_token *tok, t_output *output, int nb_output)
 {
 	while (tok)
 	{
-		if (tok->type == S_OUTPUT_CHEVRON)
+		if (tok->type == S_OUTPUT)
 		{
-			tok = tok->next;
 			output->output = strdup(tok->word);
 			output->type = tok->type;
 			output->fd_output = nb_output;
@@ -46,9 +43,8 @@ int	ps_fill_struct_output(t_token *tok, t_output *output, int nb_output)
 				return (ERROR);
 			output++;
 		}
-		else if (tok->type == D_OUTPUT_CHEVRON)
+		else if (tok->type == D_OUTPUT)
 		{
-			tok = tok->next;
 			output->output = f_strdup(tok->word);
 			output->type = tok->type;
 			output->fd_output = nb_output;

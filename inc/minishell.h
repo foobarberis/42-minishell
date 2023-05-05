@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/05 11:39:57 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/05 17:25:02 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ struct s_env
 
 struct s_glb
 {
+	char 	**env_temp;
 	t_env   **env;
 	t_token **tok;
 	int       multiple_cmd;
@@ -128,6 +129,6 @@ int  ps_token_list_has_syntax_error(t_token **tok);
 int  parsing(t_glb *glb);
 
 /* SIGNAL.C */
-void sigint_handler(int sig);
+// void sigint_handler(int sig);
 
 #endif
