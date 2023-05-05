@@ -100,14 +100,14 @@ void	ex_builtin(int builtin, char **arg);
 int		ex_execution(t_cmd *cmd, int nb_cmd);
 
 /*** tility_fonctions ***/
-char	*ft_strdup(const char *s);
-size_t	ft_strlen(const char *s);
+char	*f_strdup(const char *s);
+size_t	f_strlen(const char *s);
 char	**ft_split(char const *s, char c);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*f_strjoin(char const *s1, char const *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_free_split(char **array);
 void	print_double_array(char **array, char *title);
-int		ft_strcmp(const char *s1, const char *s2);
+int		f_strcmp(const char *s1, const char *s2);
 char	*get_next_line(int fd);
 
 /*** free ***/

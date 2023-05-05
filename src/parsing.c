@@ -513,23 +513,3 @@ int parsing(t_glb *glb)
 		return (1);
 	return (0);
 }
-
-/* t_token **ps_token_list_from_array(t_token **tok, char *s)
-{
-    char      buf[2];
-    t_token **tok;
-
-    if (!s)
-        return (NULL);
-    tok = malloc(sizeof(t_token *));
-    if (!tok)
-        return (NULL);
-    tok[0] = NULL;
-    buf[1] = '\0';
-    while (*s)
-    {
-        buf[0] = *s++;
-        ps_token_list_node_add(tok, ps_token_list_node_create(buf));
-    }
-    return (tok);
-} */

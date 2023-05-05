@@ -10,7 +10,7 @@ int	ps_fill_struct_input(t_token *tok, t_input *input, int nb_input)
 			tok = tok->next;
 			input->type = tok->type;
 			input->limiter = NULL;
-			input->input = ft_strdup(tok->word);
+			input->input = f_strdup(tok->word);
 			input->fd_input = nb_input;
 			if (!input->input)
 				return (ERROR);
@@ -21,7 +21,7 @@ int	ps_fill_struct_input(t_token *tok, t_input *input, int nb_input)
 			tok = tok->next;
 			input->input = NULL;
 			input->type = tok->type;
-			input->limiter = ft_strdup(tok->word);
+			input->limiter = f_strdup(tok->word);
 			input->fd_input = nb_input;
 			if (!input->input)
 				return (ERROR);
@@ -49,7 +49,7 @@ int	ps_fill_struct_output(t_token *tok, t_output *output, int nb_output)
 		else if (tok->type == D_OUTPUT_CHEVRON)
 		{
 			tok = tok->next;
-			output->output = ft_strdup(tok->word);
+			output->output = f_strdup(tok->word);
 			output->type = tok->type;
 			output->fd_output = nb_output;
 			if (!output->output)
@@ -70,7 +70,7 @@ int	ps_fill_args_array(t_token *tok, char **cmd, int nb_args)
 	{
 		if (tok->type == BASIC)
 		{
-			cmd[i] = ft_strdup(tok->word);
+			cmd[i] = f_strdup(tok->word);
 			if (!cmd[i] && tok->type == BASIC)
 				return (ERROR);
 			i++;

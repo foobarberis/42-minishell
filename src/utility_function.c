@@ -12,36 +12,6 @@ void	print_double_array(char **array, char *title)
 	}
 }
 
-char	*ft_strdup(const char *s)
-{
-	char	*ptr;
-	size_t	len;
-	int		i;
-
-	i = 0;
-	len = ft_strlen(s);
-	ptr = (char *)malloc((len + 1) * sizeof(char));
-	if (ptr == NULL)
-		return (NULL);
-	while (s[i])
-	{
-		ptr[i] = s[i];
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
 static size_t	ft_count(char const *s, char c);
 static size_t	ft_sublen(char const *s, char c);
 static char		**ft_free(char **ptr);
@@ -138,33 +108,6 @@ static size_t	ft_count(char const *s, char c)
 	return (count);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	len1;
-	size_t	len2;
-	char	*ptr;
-	int		i;
-
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	ptr = (char *)malloc((len1 + len2 + 1) * sizeof(char));
-	if (ptr == 0)
-		return (ptr);
-	i = 0;
-	while (s1[i])
-	{
-		ptr[i] = s1[i];
-		i++;
-	}
-	while (s2[i - len1])
-	{
-		ptr[i] = s2[i - len1];
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
-}
-
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t				i;
@@ -197,67 +140,9 @@ void	ft_free_split(char **array)
 	}
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	if (!s1 || !s2)
-		return (-1);
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-	{
-		i++;
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-	}
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
-
-void	*ft_memset(void *b, int c, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len)
-	{
-		((unsigned char *)b)[i] = (unsigned char)c;
-		i++;
-	}
-	return (b);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == (char)c)
-			return ((char *)&s[i]);
-		i++;
-	}
-	if (c == 0)
-		return ((char *)&s[i]);
-	return (NULL);
-}
-
 void	ft_bzero(void *b, size_t n)
 {
-	ft_memset(b, 0, n);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*res;
-
-	if (count > SIZE_MAX / size)
-		return (NULL);
-	res = malloc(size * count);
-	if (!res)
-		return (NULL);
-	ft_bzero(res, size * count);
-	return (res);
+	f_memset(b, 0, n);
 }
 
 char	*ft_next_keep(char *keep)
@@ -272,10 +157,10 @@ char	*ft_next_keep(char *keep)
 		return (free(keep), keep = NULL, NULL);
 	while (keep[i] != '\n' && keep[i])
 		i++;
-	next = ft_calloc((ft_strlen(keep) - i + 1), 1);
+	next = f_calloc((f_strlen(keep) - i + 1), 1);
 	if (!next)
 		return (free(keep), keep = NULL, NULL);
-	if (i != ft_strlen(keep))
+	if (i != f_strlen(keep))
 		i++;
 	while (keep[i])
 		next[j++] = keep[i++];
@@ -294,7 +179,7 @@ char	*ft_nl(char *keep)
 		i++;
 	if (keep[i] == '\n')
 		i++;
-	res = ft_calloc(i + 1, 1);
+	res = f_calloc(i + 1, 1);
 	if (!res)
 		return (NULL);
 	i = 0;
@@ -317,7 +202,7 @@ char	*ft_add_str(char *keep, char *buffer, size_t r)
 	while (i < r)
 		i++;
 	buffer[i] = '\0';
-	tmp = ft_strjoin(keep, buffer);
+	tmp = f_strjoin(keep, buffer);
 	return (free(keep), keep = NULL, tmp);
 }
 
@@ -327,7 +212,7 @@ char	*seek(int fd, char *keep)
 	char	*buffer;
 
 	r = 1;
-	buffer = ft_calloc(BUFFER_SIZE + 1, 1);
+	buffer = f_calloc(BUFFER_SIZE + 1, 1);
 	if (!buffer)
 		return (free(keep), keep = NULL, NULL);
 	while (r != 0)
@@ -338,7 +223,7 @@ char	*seek(int fd, char *keep)
 		keep = ft_add_str(keep, buffer, r);
 		if (!keep)
 			return (free(buffer), buffer = NULL, NULL);
-		if (ft_strchr(keep, '\n'))
+		if (f_strchr(keep, '\n'))
 			break ;
 	}
 	if (buffer != keep)

@@ -46,15 +46,15 @@ char	*ft_compute_path(char **path, char *cmd)
 	i = 0;
 	if (access(cmd, X_OK) == 0)
 	{
-		ft_strdup(cmd);
+		f_strdup(cmd);
 		return (cmd);
 	}
 	while (path[i])
 	{
-		buff = ft_strjoin(path[i], "/");
+		buff = f_strjoin(path[i], "/");
 		if (buff == NULL)
 			return (NULL);
-		path_test = ft_strjoin(buff, cmd);
+		path_test = f_strjoin(buff, cmd);
 		free(buff);
 		if (path_test == NULL)
 			return (NULL);

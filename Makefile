@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/05 11:16:59 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/05 11:51:38 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,21 @@
 NAME		:=	minishell
 SRCS		:=	env.c \
 				env_list_utils.c \
+				ex_builtin.c \
+				ex_execution.c \
+				free.c \
 				main.c \
 				parsing.c \
+				ps_fill_all_cmd.c \
+				ps_fill_arrays_cmd_struct.c \
+				ps_fill_cmd_struct.c \
+				ps_get_cmd_path.c \
+				ps_here_doc.c \
+				ps_is_builtin.c \
+				ps_redirects.c \
 				signal.c \
-				token_list_utils.c
+				token_list_utils.c \
+				utility_function.c
 
 CC			:=	cc
 RM			:=	rm
@@ -40,7 +51,7 @@ LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 
 # Edit the $(HEADERS) variable as necessary.
-HEADERS		:=	$(INCDIR)/minishell.h
+HEADERS		:=	$(INCDIR)/minishell.h $(INCDIR)/execution.h
 
 LINK.o		:=	$(CC) $(LDFLAGS)
 COMPILE.c	:=	$(CC) $(INCFLAGS) $(LIBFLAGS) -c

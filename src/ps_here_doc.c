@@ -7,7 +7,7 @@ void	ps_here_doc(char *limiter)
 {
 	int		fd[2];
 	int		pid;
-	
+
 	if (pipe(fd) == -1)
 		return ;
 	pid = fork();
@@ -33,14 +33,14 @@ void	fils_here_doc(char *limiter, int *fd)
 	while (1)
 	{
 		next_line = get_next_line(STDIN_FILENO);
-		if (!next_line || ft_strcmp(next_line, limiter) == 0)
+		if (!next_line || f_strcmp(next_line, limiter) == 0)
 		{
 			free(next_line);
 			close (fd[1]);
 			break ;
 		}
 		write(1, "pipe heredoc>", 13);
-		write(fd[1], next_line, ft_strlen(next_line));
+		write(fd[1], next_line, f_strlen(next_line));
 		write(fd[1], "\n", 1);
 		free(next_line);
 	}

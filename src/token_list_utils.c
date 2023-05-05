@@ -67,6 +67,7 @@ void ps_token_list_node_rm(t_token **tok, t_token *node)
 	}
 }
 
+/* WARNING: Free tok when finished */
 void ps_token_list_free_all(t_token **tok)
 {
 	t_token *curr;

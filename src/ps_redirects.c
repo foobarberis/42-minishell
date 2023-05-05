@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "../inc/execution.h"
 
-char	*ft_strdup(const char *s1);
+char	*f_strdup(const char *s1);
 int		open_input(t_input *files);
 int		open_output(t_output *files);
 

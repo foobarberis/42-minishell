@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:59:04 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/01 10:59:42 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/05 11:56:07 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void		*f_memrchr(const void *s, int c, size_t n);
 /* STDLIB */
 /* standard */
 int			f_atoi(const char *s);
+void		*f_calloc(size_t n, size_t m);
 /* non-standard */
 double		f_atof(const char *s);
 

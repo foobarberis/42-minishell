@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/05 11:21:40 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/05 11:39:57 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ struct s_env
 
 struct s_glb
 {
-	t_env    *env;
-	int       multiple_cmd;
+	t_env   **env;
 	t_token **tok;
+	int       multiple_cmd;
 };
 
 struct s_token

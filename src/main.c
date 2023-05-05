@@ -33,8 +33,6 @@ static t_glb *msh_init(char **envp)
 {
 	t_glb *glb;
 
-	(void)ac;
-	(void)av;
 	glb = malloc(sizeof(t_glb));
 	if (!glb)
 		return (NULL);

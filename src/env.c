@@ -75,7 +75,7 @@ void env_list_print(t_env **env)
 
 void env_list_from_array(t_env **env, char **ep)
 {
-	char   *tmp[2];
+	char *tmp[2];
 
 	if (!env || !ep)
 		return;
@@ -141,46 +141,3 @@ void env_list_key_del(t_env **env, char *key)
 	free(tmp[0]);
 	free(tmp[1]);
 }
-
-/* int main(int ac, char *av[], char *ep[])
-{
-	t_env **env;
-
-	env = env_list_from_array(ep);
-	if (!env)
-		return (1);
-	char *s = f_strdup("PAGER=more");
-	env_list_key_add(env, s);
-	printf("\nADD\n");
-	env_list_print(env);
-	printf("\nREMOVE\n");
-	env_list_key_del(env, s);
-	env_list_print(env);
-	free(s);
-	env_list_free_all(env);
-	return (0);
-} */
-
-
-/* t_env **env_list_from_array(char **ep)
-{
-	char   *tmp[2];
-	t_env **env;
-
-	if (!ep)
-		return (NULL);
-	env = malloc(sizeof(t_env *));
-	if (!env)
-		return (NULL);
-	*env = NULL;
-	while (*ep)
-	{
-		tmp[0] = NULL;
-		tmp[1] = NULL;
-		if (env_split_key_value(tmp, *ep))
-			return (env_list_free_all(env), NULL);
-		env_list_node_add(env, env_list_node_create(tmp[0], tmp[1]));
-		ep++;
-	}
-	return (env);
-} */
