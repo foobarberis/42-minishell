@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/04/17 10:48:58 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/05 10:54:44 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,27 +15,35 @@
 
 # Edit the $(NAME) and $(SRCS) variables as necessary.
 NAME		:=	minishell
-SRCS		:=	main.c parsing.c
+SRCS		:=	env.c \
+				env_list_utils.c \
+				main.c \
+				parsing.c \
+				signal.c \
+				token_list_utils.c
 
 CC			:=	cc
 RM			:=	rm
 
-CFLAGS		:=	-Wall -Wextra -lreadline -g3 -fsanitize=address # -Werror
-LDFLAGS		:=	$(CFLAGS)
-RMFLAGS		:=	-f
-
 SRCDIR		:=	src
 OBJDIR		:=	obj
 INCDIR		:=	inc
-LFTDIR		:=	mlc
+SYSINC		:=	/usr/include
+SYSLIB		:=	/usr/lib
+MLCDIR		:=	mlc
+
+INCFLAGS	:= -I$(INCDIR) -I$(SYSINC) -I$(MLCDIR)/inc
+LIBFLAGS	:= -L$(MLCDIR) -lreadline -lft -static-libasan
+# CFLAGS	:=	-Wall -Wextra -Werror
+CFLAGS		:= -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address
+LDFLAGS		:=	$(CFLAGS)
+RMFLAGS		:=	-f
 
 # Edit the $(HEADERS) variable as necessary.
 HEADERS		:=	$(INCDIR)/minishell.h
 
-INCFLAGS	:= -I$(INCDIR) -I$(LFTDIR)/inc
-
 LINK.o		:=	$(CC) $(LDFLAGS)
-COMPILE.c	:=	$(CC) $(INCFLAGS) $(CFLAGS) -c
+COMPILE.c	:=	$(CC) $(INCFLAGS) $(LIBFLAGS) -c
 REMOVE		:=	$(RM) $(RMFLAGS)
 
 SOURCES		:=	$(addprefix $(SRCDIR)/, $(SRCS))
@@ -50,16 +58,18 @@ all: libft $(NAME)
 $(OBJECTS): $(HEADERS) Makefile
 
 $(NAME): $(OBJECTS)
-	$(LINK.o) -o $(NAME) $^
+	$(CC) $(OBJECTS) $(INCFLAGS) $(LIBFLAGS) -o $(NAME)
 
 libft:
-	make -C $(LFTDIR)
+	make -C $(MLCDIR)
 
 clean:
 	$(REMOVE) $(OBJECTS)
+	make -C $(MLCDIR) clean
 
 fclean: clean
 	$(REMOVE) $(NAME)
+	make -C $(MLCDIR) fclean
 
 re: fclean all
 

@@ -1,29 +1,17 @@
 #include "minishell.h"
 
-t_token *ps_token_list_goto_last(t_token **tok)
-{
-	t_token *curr;
-
-	curr = *tok;
-	while (curr)
-	{
-		if (!curr->next)
-			return (curr);
-		curr = curr->next;
-	}
-	return (NULL);
-}
-
 t_token *ps_token_list_node_create(char *s)
 {
 	t_token *new;
 
+	if (!s)
+		return (NULL);
 	new = malloc(sizeof(t_token));
 	if (!new)
 		return (NULL);
 	new->word = f_strdup(s);
 	if (!new->word)
-		return (NULL);
+		return (free(new), NULL);
 	new->type = BASIC;
 	new->quote = NONE;
 	new->word_index = 0;
@@ -32,81 +20,81 @@ t_token *ps_token_list_node_create(char *s)
 	return (new);
 }
 
-int ps_token_list_node_add(t_token **tok, t_token *new)
+void ps_token_list_node_destroy(t_token *node)
 {
-	t_token *tail;
-
-	if (!tok || !new)
-		return (1);
-	if (!*tok)
-		*tok = new;
-	else
-	{
-		tail = ps_token_list_goto_last(tok);
-		if (tail)
-			tail->next = new;
-	}
-	return (0);
+	if (!node)
+		return;
+	if (node->word)
+		free(node->word);
+	free(node);
 }
 
-/* a[0] -> curr, a[1] -> curr->next, a[2] -> curr->next->next */
-void ps_token_list_node_destroy(t_token **tok, t_token *del)
+void ps_token_list_node_add(t_token **tok, t_token *node)
 {
-	t_token *a[3];
+	t_token *last;
 
-	if (!tok || !*tok || !del)
+	if (!tok || !node)
 		return;
-	a[0] = *tok;
-	if (a[0] == del)
+	if (!*tok)
+		*tok = node;
+	else
 	{
-		a[1] = a[0]->next;
-		free(a[0]->word);
-		free(a[0]);
-		*tok = a[1];
-		return;
+		last = ps_token_list_goto_last(tok);
+		if (last)
+			last->next = node;
 	}
-	while (a[0] && a[1])
+}
+
+void ps_token_list_node_rm(t_token **tok, t_token *node)
+{
+	t_token *curr;
+	t_token *next;
+
+	if (!tok || !node)
+		return;
+	curr = *tok;
+	while (curr)
 	{
-		a[1] = a[0]->next;
-		if (a[1])
-			a[2] = a[1]->next;
-		if (a[1] == del)
+		next = curr->next;
+		if (next == node)
 		{
-			free(a[1]->word);
-			free(a[1]);
-			a[0]->next = a[2];
-			return;
+			if (tok[0] == node)
+				tok[0] = tok[0]->next;
+			curr->next = next->next;
+			return (ps_token_list_node_destroy(next));
 		}
-		a[0] = a[1];
+		curr = next;
 	}
 }
 
 void ps_token_list_free_all(t_token **tok)
 {
-	if (!tok || !tok[0] || !tok[1])
+	t_token *curr;
+	t_token *next;
+
+	if (!tok)
 		return;
-	while (tok[0])
-		ps_token_list_node_destroy(tok, tok[0]);
-	free(tok);
+	curr = *tok;
+	while (curr)
+	{
+		next = curr->next;
+		ps_token_list_node_destroy(curr);
+		curr = next;
+	}
 }
 
-t_token **ps_token_list_from_array(char *s)
+t_token *ps_token_list_goto_last(t_token **tok)
 {
-	char      buf[2];
-	t_token **tok;
+	t_token *curr;
 
-	if (!s || !*s)
-		return (NULL);
-	tok = malloc(sizeof(t_token *));
 	if (!tok)
 		return (NULL);
-	tok[0] = NULL;
-	buf[1] = '\0';
-	while (*s)
+	curr = *tok;
+	while (curr)
 	{
-		buf[0] = *s++;
-		if (ps_token_list_node_add(tok, ps_token_list_node_create(buf)))
-			return (ps_token_list_free_all(tok), NULL);
+		if (!curr->next)
+			return (curr);
+		curr = curr->next;
 	}
-	return (tok);
+	return (NULL);
 }

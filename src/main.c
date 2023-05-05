@@ -7,32 +7,42 @@ static int exec(t_glb *glb)
 	return 0;
 }
 
-static void cleanup(t_glb *glb)
+static t_glb *msh_init(char **envp)
+{
+	t_glb *glb;
+
+	glb = malloc(sizeof(t_glb));
+	if (!glb)
+		return (NULL);
+	glb->tok = malloc(sizeof(t_token *));
+	if (!glb->tok)
+		return (free(glb), NULL);
+	glb->env = malloc(sizeof(t_env *));
+	if (!glb->env)
+		return (free(glb->tok), free(glb), NULL);
+	glb->env[0] = NULL;
+	env_list_from_array(glb->env, envp);
+	glb->tok[0] = NULL;
+	return (glb);
+}
+
+static void msh_exit(t_glb *glb)
 {
 	if (!glb)
 		return;
-	if (glb->env && glb->env->envp)
+	if (glb->env)
 	{
-		env_array_free(glb->env->envp, glb->env->size);
+		env_list_free_all(glb->env);
 		free(glb->env);
 	}
 	if (glb->tok)
-		ps_token_list_free_all(glb->tok);
-	free(glb);
-}
-
-/* FIXME: Be careful of return code when using ctrl-c */
-static void signal_handler(int sig)
-{
-	if (sig == SIGINT)
 	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		ps_token_list_free_all(glb->tok);
+		free(glb->tok);
 	}
+	free(glb);
+	rl_clear_history();
 }
-
 
 int main(int ac, char *av[], char *ep[])
 {
@@ -41,11 +51,11 @@ int main(int ac, char *av[], char *ep[])
 	t_glb *glb;
 	char  *buf;
 
-	glb = init_glb(ep);
+	glb = msh_init(ep);
 	if (!glb)
 		return (EXIT_FAILURE);
-	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sigint_handler);
 	while (1)
 	{
 		buf = readline("MSH $ ");
@@ -55,26 +65,26 @@ int main(int ac, char *av[], char *ep[])
 			continue;
 		if (!ps_line_has_balanced_quotes(buf))
 		{
-			f_perror(SYNTAX);
+			f_perror(ERR_SYNTAX);
 			continue;
 		}
 		else
 		{
 			add_history(buf);
-			glb->tok = ps_token_list_from_array(buf);
+			ps_token_list_from_array(glb->tok, buf);
 			if (!glb->tok)
 				continue;
 		}
-		if (!parsing(glb))
-			exec(glb);
-		if (glb->tok)
-			ps_token_list_free_all(glb->tok);
+		if (parsing(glb))
+		{
+			f_perror(ERR_PARSING);
+			continue;
+		}
+		exec(glb);
+		ps_token_list_free_all(glb->tok);
+		glb->tok[0] = NULL;
 		free(buf);
 	}
-	/* FIXME: Free all */
-	if (buf)
-		free(buf);
-	// cleanup(glb);
-	rl_clear_history();
+	msh_exit(glb);
 	return (EXIT_SUCCESS);
 }

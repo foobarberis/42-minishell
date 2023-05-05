@@ -78,7 +78,7 @@ int main(int argc, char *argv[], char *envp[])
 	char buf[BUF_SIZE];
 	t_glb *glb;
 
-	glb = init_glb(envp);
+	glb = msh_init(envp);
 	if (!glb)
 		return (EXIT_FAILURE);
 	env_unset(glb->env, "HOME");
