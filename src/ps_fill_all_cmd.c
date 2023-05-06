@@ -1,4 +1,4 @@
-#include "../inc/execution.h"
+#include "../inc/minishell.h"
 
 char	*f_strdup(const char *s1);
 char	**convert_t_env_to_array(t_env **env);

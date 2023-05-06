@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/06 10:12:51 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/06 12:53:46 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 
 # Edit the $(HEADERS) variable as necessary.
-HEADERS		:=	$(INCDIR)/minishell.h $(INCDIR)/execution.h
+HEADERS		:=	$(INCDIR)/minishell.h
 
 REMOVE		:=	$(RM) $(RMFLAGS)
 

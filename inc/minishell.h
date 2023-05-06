@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/06 11:00:14 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/06 12:53:18 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define MINISHELL_H
 
 #include "mlc.h"
+#include <fcntl.h>             /* ?? */
 #include <readline/history.h>  /* history readline */
 #include <readline/readline.h> /* readline */
 #include <signal.h>            /* signal, sigaction etc. */
@@ -22,17 +23,35 @@
 #include <stdio.h>             /* DEBUG */
 #include <stdlib.h>            /* malloc, free */
 #include <string.h>            /* DEBUG */
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h> /* write, sleep, usleep */
+#include <sys/stat.h>          /* ?? */
+#include <sys/types.h>         /* ?? */
+#include <sys/wait.h>          /* ?? */
+#include <unistd.h>            /* write, sleep, usleep */
 
-typedef struct s_token t_token;
-typedef struct s_env   t_env;
-typedef struct s_glb   t_glb;
+typedef struct s_token  t_token;
+typedef struct s_env    t_env;
+typedef struct s_glb    t_glb;
+typedef struct s_input  t_input;
+typedef struct s_output t_output;
+typedef struct s_cmd    t_cmd;
 
+/*
+ * DEFINE
+ */
 #define ERR_SYNTAX "minishell: syntax error.\n"
 #define ERR_PARSING "minishell: parsing error\n"
+#define SUCCESS 0
+#define ERROR -2
+#define ERROR_REDIRECT -3
+#define NO_REDIRECTION -4
+#define REDIRECTION 0
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE 1000
+#endif
 
+/*
+ * ENUM
+ */
 enum e_types
 {
 	BASIC,
@@ -49,6 +68,26 @@ enum e_quote_state
 	DOUBLE
 };
 
+enum e_builtin
+{
+	ECHO = 1,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT = -1,
+};
+
+enum e_redirect
+{
+	TRUNC,
+	HERE_DOC,
+};
+
+/*
+ * STRUCT
+ */
 struct s_env
 {
 	char  *key;
@@ -74,6 +113,38 @@ struct s_token
 	t_token *next;
 };
 
+struct s_input
+{
+	char *input;
+	char *limiter;
+	int   type;
+	int   fd_input;
+};
+
+struct s_output
+{
+	char *output;
+	int   type;
+	int   fd_output;
+};
+
+struct s_cmd
+{
+	int       fd[2];
+	int       pid;
+	int       builtin;
+	char    **env;
+	char    **args;
+	char     *path_cmd;
+	int       final_input;
+	int       final_output;
+	t_input  *struct_input;
+	t_output *struct_output;
+};
+
+/*
+ * PROTOTYPES
+ */
 /* ENV_LIST_UTILS.C */
 t_env *env_list_node_create(char *key, char *value);
 void   env_list_node_destroy(t_env *node);
@@ -134,5 +205,45 @@ int  parsing(t_glb *glb);
 
 /* SIGNAL.C */
 void sigint_handler(int sig);
+
+/* EXEC */
+/*** pe_is_builtin ***/
+int ps_is_builtin(char *cmd);
+
+/*** pe_get_cmd_path ***/
+int ps_get_path_cmd(char *cmd, char **envp, char **path_cmd);
+
+/*** pe_fill_all_cmd ***/
+int ps_initialisation_cmds(t_cmd *cmd, t_glb *glob, t_token **tok);
+
+/*** ex_here_doc ***/
+void ps_here_doc(char *limiter);
+
+/*** ps_fill_arrays_struct_cmd ***/
+int ps_fill_struct_input(t_token *tok, t_input *input, int nb_input);
+int ps_fill_struct_output(t_token *tok, t_output *output, int nb_output);
+int ps_fill_args_array(t_token *tok, char **cmd, int nb_args);
+
+/*** ps_fill_cmd_struct ***/
+int ps_fill_cmd_struct(t_cmd *cmd, t_token *tok);
+
+/*** pe_redirect ***/
+int ps_open_redirect(t_input *in, t_output *out, int *final_out, int *final_in);
+
+/*** ex_builtin ***/
+void ex_builtin(int builtin, char **arg);
+
+/*** ex_execution ***/
+int ex_execution(t_cmd *cmd, int nb_cmd);
+
+/*** tility_fonctions ***/
+char **ft_split(char const *s, char c);
+int    ft_strncmp(const char *s1, const char *s2, size_t n);
+void   ft_free_split(char **array);
+void   print_double_array(char **array, char *title);
+char  *get_next_line(int fd);
+
+/*** free ***/
+void free_t_cmd(t_cmd *cmd, int nb_cmd);
 
 #endif

@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../inc/execution.h"
+#include "../inc/minishell.h"
 
 char	*f_strdup(const char *s1);
 int		open_input(t_input *files);

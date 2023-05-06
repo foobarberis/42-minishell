@@ -1,4 +1,4 @@
-#include "../inc/execution.h"
+#include "../inc/minishell.h"
 
 void	print_double_array(char **array, char *title)
 {

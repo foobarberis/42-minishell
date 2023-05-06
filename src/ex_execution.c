@@ -1,4 +1,4 @@
-#include "../inc/execution.h"
+#include "../inc/minishell.h"
 
 void	nothing_to_redirect(t_cmd *cmd, int i, int nb_cmd);
 void	in_out_redirect(t_cmd *cmd, int i);

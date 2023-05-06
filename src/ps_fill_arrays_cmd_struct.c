@@ -1,4 +1,4 @@
-#include "../inc/execution.h"
+#include "../inc/minishell.h"
 #include "minishell.h"
 
 int	ps_fill_struct_input(t_token *tok, t_input *input, int nb_input)

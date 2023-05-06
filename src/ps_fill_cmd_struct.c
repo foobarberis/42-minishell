@@ -1,4 +1,4 @@
-#include "../inc/execution.h"
+#include "../inc/minishell.h"
 
 int	count_type(t_token *tok, int type1, int type2)
 {

@@ -1,4 +1,4 @@
-#include "../inc/execution.h"
+#include "../inc/minishell.h"
 #include "../inc/minishell.h"
 
 int       find_nb_cmd(t_token *tok);

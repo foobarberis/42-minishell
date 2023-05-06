@@ -1,4 +1,4 @@
-#include "../inc/execution.h"
+#include "../inc/minishell.h"
 
 void free_double_array(char **args);
 void free_t_output(t_output *output);
