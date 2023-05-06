@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/06 08:23:24 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/06 11:00:14 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ struct s_env
 
 struct s_glb
 {
-	char    **env_temp;
+	char    **ep;
 	t_env   **env;
 	t_token **tok;
 	int       multiple_cmd;
@@ -81,6 +81,7 @@ void   env_list_node_add(t_env **env, t_env *node);
 void   env_list_node_rm(t_env **env, t_env *node);
 void   env_list_free_all(t_env **env);
 t_env *env_list_goto_last(t_env **env);
+size_t env_list_get_size(t_env **env);
 
 /* TOKEN_LIST_UTILS.C */
 t_token *ps_token_list_node_create(char *s);
@@ -97,8 +98,11 @@ char  *env_getenv(t_env **env, const char *key);
 void   env_list_print(t_env **env);
 void   env_list_from_array(t_env **env, char **ep);
 t_env *env_list_key_search(t_env **env, char *key);
-void   env_list_key_add(t_env **env, char *key);
-void   env_list_key_del(t_env **env, char *key);
+void   env_list_key_add(t_glb *glb, char *key);
+void   env_list_key_del(t_glb *glb, char *key);
+char  *env_join_key_value(t_env *node);
+void   env_envp_del(char **envp);
+void   env_envp_update(t_glb *glb);
 
 /* BUILTINS */
 int blt_export(t_glb *glb, char *key);
@@ -129,6 +133,6 @@ int  ps_token_list_has_syntax_error(t_token **tok);
 int  parsing(t_glb *glb);
 
 /* SIGNAL.C */
-void sigint_handler(void);
+void sigint_handler(int sig);
 
 #endif

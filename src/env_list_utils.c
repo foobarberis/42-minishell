@@ -95,3 +95,20 @@ t_env *env_list_goto_last(t_env **env)
 	}
 	return (NULL);
 }
+
+size_t env_list_get_size(t_env **env)
+{
+	size_t i;
+	t_env *curr;
+
+	if (!env)
+		return (0);
+	i = 0;
+	curr = *env;
+	while (curr)
+	{
+		i++;
+		curr = curr->next;
+	}
+	return (i);
+}

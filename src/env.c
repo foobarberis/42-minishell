@@ -105,16 +105,16 @@ t_env *env_list_key_search(t_env **env, char *key)
 	return (NULL);
 }
 
-void env_list_key_add(t_env **env, char *key)
+void env_list_key_add(t_glb *glb, char *key)
 {
 	t_env *curr;
 	char  *tmp[2];
 
 	tmp[0] = NULL;
 	tmp[1] = NULL;
-	if (!env || !key || env_split_key_value(tmp, key))
+	if (!glb || !glb->env || !key || env_split_key_value(tmp, key))
 		return;
-	curr = env_list_key_search(env, tmp[0]);
+	curr = env_list_key_search(glb->env, tmp[0]);
 	if (curr)
 	{
 		if (curr->value)
@@ -123,21 +123,74 @@ void env_list_key_add(t_env **env, char *key)
 		free(tmp[0]);
 	}
 	else
-		env_list_node_add(env, env_list_node_create(tmp[0], tmp[1]));
+		env_list_node_add(glb->env, env_list_node_create(tmp[0], tmp[1]));
+	env_envp_update(glb);
 }
 
-void env_list_key_del(t_env **env, char *key)
+void env_list_key_del(t_glb *glb, char *key)
 {
 	t_env *curr;
 	char  *tmp[2];
 
 	tmp[0] = NULL;
 	tmp[1] = NULL;
-	if (!env || !key || env_split_key_value(tmp, key))
+	if (!glb || !glb->env || !key || env_split_key_value(tmp, key))
 		return;
-	curr = env_list_key_search(env, tmp[0]);
+	curr = env_list_key_search(glb->env, tmp[0]);
 	if (curr)
-		env_list_node_rm(env, curr);
+		env_list_node_rm(glb->env, curr);
 	free(tmp[0]);
 	free(tmp[1]);
+	env_envp_update(glb);
+}
+
+char *env_join_key_value(t_env *node)
+{
+	char *p;
+	char *q;
+
+	if (!node || !node->key || !node->value)
+		return (NULL);
+	p = f_strjoin(node->key, "=");
+	if (!p)
+		return (NULL);
+	q = f_strjoin(p, node->value);
+	return (free(p), q);
+}
+
+void env_envp_del(char **envp)
+{
+	size_t i;
+
+	if (!envp)
+		return;
+	i = 0;
+	while (envp[i])
+		free(envp[i++]);
+	free(envp);
+}
+
+/* Transform the env LL in a char ** and free the old one */
+void env_envp_update(t_glb *glb)
+{
+	char **new;
+	size_t i;
+	t_env *curr;
+
+	if (!glb)
+		return;
+	i = env_list_get_size(glb->env);
+	new = malloc((i + 1) * sizeof(char *));
+	if (!new)
+		return;
+	new[i] = NULL;
+	i = 0;
+	curr = glb->env[0];
+	while (curr)
+	{
+		new[i++] = env_join_key_value(curr);
+		curr = curr->next;
+	}
+	env_envp_del(glb->ep);
+	glb->ep = new;
 }

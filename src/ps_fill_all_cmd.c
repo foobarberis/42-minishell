@@ -25,7 +25,7 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob, t_token **tok)
 	while (i < glob->multiple_cmd)
 	{
 		init_to_null_cmd_struct(&cmd[i]);
-		cmd[i].env = glob->env_temp;
+		cmd[i].env = glob->ep;
 		ps_fill_cmd_struct(&cmd[i], tok[i]);
 		cmd[i].builtin = ps_is_builtin(cmd[i].args[0]);
 		ps_open_redirect(cmd[i].struct_input, \
