@@ -19,7 +19,7 @@ void blt_export__array_print(t_env *env)
 // WARNING: When doing "export TEST", TEST does not show up in env but does
 // show up in export.
 
-/* TODO: Check if key is */
+/* FIXME: Check if key has a valid identifier before proceeding */
 int blt_export(t_glb *glb, char *key)
 {
 	if (!env_list_is_valid_id(key))
@@ -71,7 +71,7 @@ int blt_cd(int argc, char **argv, t_glb *glb)
 
 #define BUF_SIZE 1024
 
-int main(int argc, char *argv[], char *envp[])
+/* int main(int argc, char *argv[], char *envp[])
 {
 	(void)argc;
 
@@ -89,4 +89,4 @@ int main(int argc, char *argv[], char *envp[])
 	free(glb->env);
 	free(glb);
 	return (0);
-}
+} */

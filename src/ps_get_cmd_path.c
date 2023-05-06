@@ -3,6 +3,7 @@
 char	*ft_grep_path(char **envp);
 char	*ft_compute_path(char **path, char *cmd);
 
+/* FIXME: Can this be replaced with env_getenv ? */
 int	ps_get_path_cmd(char *cmd, char **envp, char **path_cmd)
 {
 	char	*path;

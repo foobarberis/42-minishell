@@ -4,6 +4,9 @@
 /* WARNING: `cat |<env.c grep void -> cat: write error: Broken pipe */
 
 /* TODO: Add support for ~ expansion */
+/* TODO: In `<file cat`, '<' should be deleted. */
+/* TODO: >| -> parsing error, but |> should not be an error. */
+/* TODO: Expand special variables i.e $? or $0 */
 /* TODO: Run all examples from the example sheet */
 /* TODO: Deal with all remaining FIXME */
 /*
