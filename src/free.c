@@ -25,6 +25,8 @@ void	free_t_cmd(t_cmd *cmd, int nb_cmd)
 
 void	free_t_input(t_input *input)
 {
+	if (!input)
+		return;
 	if (input->input)
 		free(input->input);
 	if (input->limiter)
@@ -34,6 +36,8 @@ void	free_t_input(t_input *input)
 
 void free_t_output(t_output *output)
 {
+	if (!output)
+		return;
 	if (output->output)
 		free(output->output);
 	free(output);
@@ -43,6 +47,8 @@ void free_double_array(char **args)
 {
 	int i;
 
+	if (!args)
+		return;
 	i = 0;
 	while (args[i])
 	{
