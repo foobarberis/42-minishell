@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vburton <vburton@student.42.fr>            +#+  +:+       +#+         #
+#    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/05 16:34:10 by vburton          ###   ########.fr        #
+#    Updated: 2023/05/06 08:23:41 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS		:=	env.c \
 				ps_here_doc.c \
 				ps_is_builtin.c \
 				ps_redirects.c \
+				signal.c \
 				token_list_utils.c \
 				utility_function.c
 
@@ -49,7 +50,7 @@ LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 
 # Edit the $(HEADERS) variable as necessary.
-HEADERS		:=	$(INCDIR)/minishell.h $(INCDIR)/execution.h
+HEADERS		:=	$(INCDIR)/minishell.h
 
 LINK.o		:=	$(CC) $(LDFLAGS)
 COMPILE.c	:=	$(CC) $(INCFLAGS) $(LIBFLAGS) -c
@@ -62,10 +63,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
 	$(COMPILE.c) $< -o $@
 
-all:
-	gcc -Wall -Wextra -g3 $(SOURCES) ./mlc/libft.a -I./inc -I./mlc/inc -lreadline -o minishell
-
-#libft $(NAME)
+all: libft $(NAME)
 
 $(OBJECTS): $(HEADERS) Makefile
 
@@ -81,6 +79,7 @@ clean:
 
 fclean: clean
 	$(REMOVE) $(NAME)
+	make -C $(MLCDIR) fclean
 
 re: fclean all
 
