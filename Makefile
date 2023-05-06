@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/06 08:23:41 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/06 10:12:51 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,17 +43,15 @@ SYSLIB		:=	/usr/lib
 MLCDIR		:=	mlc
 
 INCFLAGS	:= -I$(INCDIR) -I$(SYSINC) -I$(MLCDIR)/inc
-LIBFLAGS	:= -L$(MLCDIR) -lreadline -lft -static-libasan
+LIBFLAGS	:= -L$(MLCDIR) -lreadline -lft
 # CFLAGS	:=	-Wall -Wextra -Werror
 CFLAGS		:= -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address
 LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 
 # Edit the $(HEADERS) variable as necessary.
-HEADERS		:=	$(INCDIR)/minishell.h
+HEADERS		:=	$(INCDIR)/minishell.h $(INCDIR)/execution.h
 
-LINK.o		:=	$(CC) $(LDFLAGS)
-COMPILE.c	:=	$(CC) $(INCFLAGS) $(LIBFLAGS) -c
 REMOVE		:=	$(RM) $(RMFLAGS)
 
 SOURCES		:=	$(addprefix $(SRCDIR)/, $(SRCS))
@@ -61,14 +59,14 @@ OBJECTS		:=	$(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SOURCES))
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(@D)
-	$(COMPILE.c) $< -o $@
+	$(CC) $(CFLAGS) $(INCFLAGS) -c $< $(LIBFLAGS) -o $@
 
 all: libft $(NAME)
 
 $(OBJECTS): $(HEADERS) Makefile
 
 $(NAME): $(OBJECTS)
-	$(CC) $(OBJECTS) $(INCFLAGS) $(LIBFLAGS) -o $(NAME)
+	$(CC) $(OBJECTS) $(CFLAGS) $(INCFLAGS) $(LIBFLAGS) -o $(NAME)
 
 libft:
 	make -C $(MLCDIR)
