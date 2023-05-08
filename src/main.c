@@ -70,6 +70,13 @@ static void msh_exit(t_glb *glb)
 
 int rval = 0; /* return value of the last command or pipeline */
 
+static void reset(t_glb *glb, char *buf)
+{
+	ps_token_list_free_all(glb->tok);
+	glb->tok[0] = NULL;
+	free(buf);
+}
+
 int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
@@ -88,27 +95,22 @@ int main(int ac, char *av[], char *ep[])
 			break;
 		if (!*buf)
 			continue;
-		if (!ps_line_has_balanced_quotes(buf))
+		if (!ps_line_has_balanced_quotes(buf) || buf[0] == '|')
 		{
 			f_perror(ERR_SYNTAX);
 			continue;
 		}
-		else
-		{
-			add_history(buf);
-			ps_token_list_from_array(glb->tok, buf);
-			if (!glb->tok)
-				continue;
-		}
+		add_history(buf);
+		ps_token_list_from_array(glb->tok, buf);
+		if (!glb->tok)
+			continue;
 		if (parsing(glb))
 		{
-			// f_perror(ERR_PARSING);
+			reset(glb, buf);
 			continue;
 		}
 		// exec(glb);
-		ps_token_list_free_all(glb->tok);
-		glb->tok[0] = NULL;
-		free(buf);
+		reset(glb, buf);
 	}
 	msh_exit(glb);
 	return (EXIT_SUCCESS);

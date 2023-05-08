@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/08 10:29:51 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/08 14:00:43 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ typedef struct s_glb    t_glb;
 typedef struct s_input  t_input;
 typedef struct s_output t_output;
 typedef struct s_cmd    t_cmd;
-
-
 
 /*
  * DEFINE
@@ -183,16 +181,15 @@ int blt_unset(t_glb *glb, char *key);
 int blt_cd(int argc, char **argv, t_glb *glb);
 
 /* PARSING.C */
-bool ismeta(int c);
-int  is_legal_var_char(int c);
+int  ismeta(int c);
+int  islegal(int c);
 int  ps_token_list_update_quote_state(char c, int state);
-bool ps_line_has_balanced_quotes(char *s);
+bool  ps_line_has_balanced_quotes(char *s);
 void ps_token_list_from_array(t_token **tok, char *s);
 void ps_token_list_print(t_token **tok);
 void ps_token_list_mark_quotes(t_token **tok);
 void ps_token_list_set_index_word(t_token **tok);
 void ps_token_list_set_index_cmd(t_token **tok);
-void ps_token_list_update_indices(t_token **tok);
 void ps_token_list_delete_unquoted_spaces(t_token **tok);
 void ps_token_list_delete_unquoted_quotes(t_token **tok);
 void ps_token_list_delete_unquoted_pipes(t_token **tok);

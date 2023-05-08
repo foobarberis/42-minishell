@@ -34,7 +34,7 @@ static int ps_token_list_parse(t_glb *glb)
 	ps_token_list_delete_unquoted_spaces(glb->tok);
 	ps_token_list_set_index_cmd(glb->tok);
 	if (ps_token_list_has_syntax_error(glb->tok))
-	 	return (1);
+	 	return (f_perror(ERR_SYNTAX), 1);
 	// ps_token_list_update_indices(glb->tok);
 	// ps_token_list_delete_unquoted_pipes(glb->tok);
 	// ps_token_list_recreate_variables(glb->tok);
