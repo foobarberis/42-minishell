@@ -3,12 +3,6 @@
 /* WARNING: Quoted vs unquoted here-doc limiter */
 /* WARNING: `cat |<env.c grep void -> cat: write error: Broken pipe */
 
-/* TODO: Add support for ~ expansion */
-/* TODO: In `<file cat`, '<' should be deleted. */
-/* TODO: >| -> parsing error, but |> should not be an error. */
-/* TODO: Expand special variables i.e $? or $0 */
-/* TODO: Run all examples from the example sheet */
-/* TODO: Deal with all remaining FIXME */
 /*
  * - Turn the readline buffer into a doubly-linked list with one char per
  *   node.
@@ -30,7 +24,12 @@
  *   permission etc.).
  */
 
-/* PARSING */
+
+/* TODO: Add support for ~ expansion */
+/* TODO: >| -> parsing error, but |> should not be an error. */
+/* TODO: Add support for $? */
+/* TODO: Run all examples from the example sheet */
+/* TODO: Deal with all remaining FIXME */
 void ps_token_list_from_array(t_token **tok, char *s)
 {
 	char buf[2];
@@ -62,7 +61,6 @@ void ps_token_list_print(t_token **tok)
 	f_printf("\n");
 }
 
-/* PARSING */
 bool ismeta(int c)
 {
 	return (c == '<' || c == '>' || c == '|' || c == ' ' || c == '\t' || c == '\n');
@@ -296,6 +294,7 @@ void ps_token_list_delete_unquoted_brackets(t_token **tok)
 	if (!tok)
 		return;
 	curr = *tok;
+
 	while (curr)
 	{
 		next = curr->next;

@@ -53,13 +53,16 @@ void ps_token_list_node_rm(t_token **tok, t_token *node)
 	if (!tok || !node)
 		return;
 	curr = *tok;
+	if (curr == node)
+	{
+		*tok = curr->next;
+		return (ps_token_list_node_destroy(curr));
+	}
 	while (curr)
 	{
 		next = curr->next;
 		if (next == node)
 		{
-			if (tok[0] == node)
-				tok[0] = tok[0]->next;
 			curr->next = next->next;
 			return (ps_token_list_node_destroy(next));
 		}

@@ -1,5 +1,4 @@
 #include "../inc/minishell.h"
-#include "../inc/minishell.h"
 
 int       find_nb_cmd(t_token *tok);
 t_token **split_tok_into_cmd(t_token *tok, size_t nb_cmd);
@@ -68,6 +67,8 @@ static void msh_exit(t_glb *glb)
 	free(glb);
 	rl_clear_history();
 }
+
+int rval = 0; /* return value of the last command or pipeline */
 
 int main(int ac, char *av[], char *ep[])
 {

@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/06 12:53:18 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/08 09:01:17 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef struct s_glb    t_glb;
 typedef struct s_input  t_input;
 typedef struct s_output t_output;
 typedef struct s_cmd    t_cmd;
+
+
 
 /*
  * DEFINE
