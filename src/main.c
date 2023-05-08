@@ -102,10 +102,10 @@ int main(int ac, char *av[], char *ep[])
 		}
 		if (parsing(glb))
 		{
-			f_perror(ERR_PARSING);
+			// f_perror(ERR_PARSING);
 			continue;
 		}
-		exec(glb);
+		// exec(glb);
 		ps_token_list_free_all(glb->tok);
 		glb->tok[0] = NULL;
 		free(buf);

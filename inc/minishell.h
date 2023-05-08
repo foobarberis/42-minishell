@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/08 09:01:17 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/08 10:29:51 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ void ps_token_list_recreate_variables(t_token **tok);
 void ps_token_list_fill_type(t_token **tok);
 void ps_token_list_expand_variables(t_token **tok, t_env **env);
 void ps_token_list_group_words(t_token **tok);
-int  ps_token_list_has_syntax_error(t_token **tok);
+bool  ps_token_list_has_syntax_error(t_token **tok);
 int  parsing(t_glb *glb);
 
 /* SIGNAL.C */

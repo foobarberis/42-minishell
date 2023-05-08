@@ -1,0 +1,100 @@
+#include "minishell.h"
+
+void ps_token_list_delete_unquoted_spaces(t_token **tok)
+{
+	t_token *next;
+	t_token *curr;
+
+	if (!tok || !*tok)
+		return;
+	curr = *tok;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->quote == NONE && f_isspace(curr->word[0]))
+			ps_token_list_node_rm(tok, curr);
+		curr = next;
+	}
+}
+
+void ps_token_list_delete_unquoted_quotes(t_token **tok)
+{
+	t_token *next;
+	t_token *curr;
+
+	if (!tok || !*tok)
+		return;
+	curr = *tok;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->quote == NONE && (curr->word[0] == '\'' || curr->word[0] == '"'))
+		{
+			if (next && (next->word[0] == curr->word[0]))
+			{
+				curr->word[0] = '\0';
+				ps_token_list_node_rm(tok, next);
+				curr = curr->next;
+			}
+			else
+			{
+				ps_token_list_node_rm(tok, curr);
+				curr = next;
+			}
+		}
+		else
+			curr = curr->next;
+	}
+}
+
+void ps_token_list_delete_unquoted_dollar(t_token **tok)
+{
+	t_token *next;
+	t_token *curr;
+
+	if (!tok || !*tok)
+		return;
+	curr = *tok;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->quote == NONE && curr->word[0] == '$' && !curr->word[1])
+			ps_token_list_node_rm(tok, curr);
+		curr = next;
+	}
+}
+
+void ps_token_list_delete_unquoted_brackets(t_token **tok)
+{
+	t_token *next;
+	t_token *curr;
+
+	if (!tok || !*tok)
+		return;
+	curr = *tok;
+
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->quote == NONE && curr->type == BASIC && (curr->word[0] == '<' || curr->word[0] == '>'))
+			ps_token_list_node_rm(tok, curr);
+		curr = next;
+	}
+}
+
+void ps_token_list_delete_unquoted_pipes(t_token **tok)
+{
+	t_token *next;
+	t_token *curr;
+
+	if (!tok || !*tok)
+		return;
+	curr = *tok;
+	while (curr)
+	{
+		next = curr->next;
+		if (next && curr->quote == NONE && curr->word[0] == '|' && !ismeta(next->word[0]))
+			ps_token_list_node_rm(tok, curr);
+		curr = next;
+	}
+}
