@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/08 11:55:10 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/08 12:35:57 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,10 @@
 
 # Edit the $(NAME) and $(SRCS) variables as necessary.
 NAME		:=	minishell
-SRCS		:=	exec/ex_execution.c \
+SRCS		:=	env/env.c \
+				env/environ.c \
+				env/env_list_utils.c \
+				exec/ex_execution.c \
 				exec/free.c \
 				exec/ps_fill_all_cmd.c \
 				exec/ps_fill_arrays_cmd_struct.c \
@@ -25,8 +28,6 @@ SRCS		:=	exec/ex_execution.c \
 				exec/ps_is_builtin.c \
 				exec/ps_redirects.c \
 				exec/utility_function.c \
-				misc/env.c \
-				misc/env_list_utils.c \
 				misc/signal.c \
 				parsing/delete.c \
 				parsing/index.c \

@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-/* ENV */
 bool env_list_is_valid_id(char *s)
 {
 	if (!s || !*s)
@@ -41,7 +40,7 @@ int env_split_key_value(char **arr, char *s)
 	return (0);
 }
 
-/* WARNING: Free the pointer if it is not needed anymore */
+/* WARNING: The t_env **env must be free'd by the caller  */
 char *env_getenv(t_env **env, const char *key)
 {
 	t_env *curr;
@@ -142,55 +141,4 @@ void env_list_key_del(t_glb *glb, char *key)
 	free(tmp[0]);
 	free(tmp[1]);
 	env_envp_update(glb);
-}
-
-char *env_join_key_value(t_env *node)
-{
-	char *p;
-	char *q;
-
-	if (!node || !node->key || !node->value)
-		return (NULL);
-	p = f_strjoin(node->key, "=");
-	if (!p)
-		return (NULL);
-	q = f_strjoin(p, node->value);
-	return (free(p), q);
-}
-
-void env_envp_del(char **envp)
-{
-	size_t i;
-
-	if (!envp)
-		return;
-	i = 0;
-	while (envp[i])
-		free(envp[i++]);
-	free(envp);
-}
-
-/* Transform the env LL in a char ** and free the old one */
-void env_envp_update(t_glb *glb)
-{
-	char **new;
-	size_t i;
-	t_env *curr;
-
-	if (!glb)
-		return;
-	i = env_list_get_size(glb->env);
-	new = malloc((i + 1) * sizeof(char *));
-	if (!new)
-		return;
-	new[i] = NULL;
-	i = 0;
-	curr = glb->env[0];
-	while (curr)
-	{
-		new[i++] = env_join_key_value(curr);
-		curr = curr->next;
-	}
-	env_envp_del(glb->ep);
-	glb->ep = new;
 }
