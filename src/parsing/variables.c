@@ -1,10 +1,8 @@
 #include "minishell.h"
 
 /* TODO: Add support for ~ expansion */
-/* TODO: Add support for $? */
-/* FIXME: Handle $?USER -> 0USER, check if curr->word[0] == '$' &&
-curr->word[1] == '?' if true call special function */
-/* FIXME: echo $''HOME -> HOME */
+/* TODO: Add support for $?. $? is expanded first */
+
 
 void ps_token_list_recreate_variables(t_token **tok)
 {

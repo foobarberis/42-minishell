@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/08 14:00:43 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/08 15:16:42 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,13 +187,14 @@ int  ps_token_list_update_quote_state(char c, int state);
 bool  ps_line_has_balanced_quotes(char *s);
 void ps_token_list_from_array(t_token **tok, char *s);
 void ps_token_list_print(t_token **tok);
-void ps_token_list_mark_quotes(t_token **tok);
+void ps_token_list_set_index_quote(t_token **tok);
 void ps_token_list_set_index_word(t_token **tok);
 void ps_token_list_set_index_cmd(t_token **tok);
-void ps_token_list_delete_unquoted_spaces(t_token **tok);
-void ps_token_list_delete_unquoted_quotes(t_token **tok);
-void ps_token_list_delete_unquoted_pipes(t_token **tok);
-void ps_token_list_delete_unquoted_dollar(t_token **tok);
+void ps_token_list_delete_space(t_token **tok);
+void ps_token_list_delete_quote(t_token **tok);
+void ps_token_list_delete_pipe(t_token **tok);
+void ps_token_list_delete_dollar(t_token **tok);
+void ps_token_list_delete_bracket(t_token **tok);
 void ps_token_list_recreate_words(t_token **tok);
 void ps_token_list_recreate_variables(t_token **tok);
 void ps_token_list_fill_type(t_token **tok);

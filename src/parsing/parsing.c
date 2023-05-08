@@ -1,10 +1,5 @@
 #include "minishell.h"
 
-/* WARNING: Quoted vs unquoted here-doc limiter */
-/* WARNING: `cat |<env.c grep void -> cat: write error: Broken pipe */
-/* TODO: Run all examples from the example sheet */
-/* TODO: Deal with all remaining FIXME */
-
 /*
  * - Turn the readline buffer into a doubly-linked list with one char per
  *   node.
@@ -28,28 +23,29 @@
 
 static int ps_token_list_parse(t_glb *glb)
 {
-	ps_token_list_mark_quotes(glb->tok);
-	ps_token_list_delete_unquoted_quotes(glb->tok);
+	ps_token_list_set_index_quote(glb->tok);
 	ps_token_list_set_index_word(glb->tok);
-	ps_token_list_delete_unquoted_spaces(glb->tok);
 	ps_token_list_set_index_cmd(glb->tok);
+	ps_token_list_delete_quote(glb->tok);
+	ps_token_list_delete_space(glb->tok);
 	if (ps_token_list_has_syntax_error(glb->tok))
-	 	return (f_perror(ERR_SYNTAX), 1);
-	// ps_token_list_update_indices(glb->tok);
-	// ps_token_list_delete_unquoted_pipes(glb->tok);
-	// ps_token_list_recreate_variables(glb->tok);
-	// ps_token_list_expand_variables(glb->tok, glb->env);
-	// ps_token_list_recreate_words(glb->tok);
-	// ps_token_list_fill_type(glb->tok);
-	// ps_token_list_delete_unquoted_dollar(glb->tok);
-	// ps_token_list_delete_unquoted_brackets(glb->tok);
-	// ps_token_list_group_words(glb->tok);
+	  	return (f_perror(ERR_SYNTAX), 1);
+	ps_token_list_delete_pipe(glb->tok);
+	ps_token_list_recreate_variables(glb->tok);
+	ps_token_list_expand_variables(glb->tok, glb->env);
+	ps_token_list_recreate_words(glb->tok);
+	ps_token_list_fill_type(glb->tok);
+	ps_token_list_delete_dollar(glb->tok);
+	ps_token_list_delete_bracket(glb->tok);
+	ps_token_list_group_words(glb->tok);
 	ps_token_list_print(glb->tok);
 	return (0);
 }
 
 int parsing(t_glb *glb)
 {
+	if (!glb || !glb->tok || !(glb->tok[0]))
+		return (0);
 	if (ps_token_list_parse(glb))
 		return (1);
 	return (0);

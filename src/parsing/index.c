@@ -14,7 +14,7 @@ int ps_token_list_update_quote_state(char c, int state)
 	return (state);
 }
 
-void ps_token_list_mark_quotes(t_token **tok)
+void ps_token_list_set_index_quote(t_token **tok)
 {
 	t_token *curr;
 	int      state;
@@ -72,12 +72,12 @@ void ps_token_list_set_index_word(t_token **tok)
 	curr = *tok;
 	while (curr)
 	{
-		if (ismeta(curr->word[0]) && !sep)
+		if ((ismeta(curr->word[0]) || f_isspace(curr->word[0])) && !sep)
 		{
 			sep = true;
 			word++;
 		}
-		else if (!ismeta(curr->word[0]) && sep)
+		else if (!(ismeta(curr->word[0]) || f_isspace(curr->word[0])) && sep)
 		{
 			sep = false;
 			word++;
