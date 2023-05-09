@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/08 15:16:42 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/09 09:57:57 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 #include <sys/types.h>         /* ?? */
 #include <sys/wait.h>          /* ?? */
 #include <unistd.h>            /* write, sleep, usleep */
+
+extern int rval; /* return value of the last command or pipeline */
 
 typedef struct s_token  t_token;
 typedef struct s_env    t_env;
@@ -183,6 +185,7 @@ int blt_cd(int argc, char **argv, t_glb *glb);
 /* PARSING.C */
 int  ismeta(int c);
 int  islegal(int c);
+char *f_itoa(intmax_t n);
 int  ps_token_list_update_quote_state(char c, int state);
 bool  ps_line_has_balanced_quotes(char *s);
 void ps_token_list_from_array(t_token **tok, char *s);

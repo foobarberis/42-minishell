@@ -1,5 +1,44 @@
 #include "minishell.h"
 
+static size_t f_ndigit(intmax_t n, int baselen)
+{
+	size_t l;
+
+	l = 0;
+	if (n <= 0)
+		l += 1;
+	while (n)
+	{
+		l++;
+		n /= baselen;
+	}
+	return (l);
+}
+
+char *f_itoa(intmax_t n)
+{
+	size_t    l;
+	uintmax_t nb;
+	char     *s;
+
+	l = f_ndigit(n, 10);
+	s = malloc(l + 1);
+	if (!s)
+		return (NULL);
+	s[l] = '\0';
+	if (n < 0)
+		s[0] = '-';
+	else if (!n)
+		s[0] = '0';
+	nb = f_abs(n);
+	while (nb)
+	{
+		s[--l] = (char)(nb % 10 + '0');
+		nb /= 10;
+	}
+	return (s);
+}
+
 int ismeta(int c)
 {
 	return (c == '<' || c == '>' || c == '|');
@@ -14,7 +53,7 @@ int ismeta(int c)
  */
 int islegal(int c)
 {
-	return (!ismeta(c) && isprint(c)); /* FIXME: Replace with f_isprint */
+	return (!ismeta(c) && isprint(c) && c != '"' && c != '\''); /* FIXME: Replace with f_isprint */
 }
 
 void ps_token_list_from_array(t_token **tok, char *s)

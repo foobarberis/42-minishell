@@ -68,21 +68,20 @@ static void msh_exit(t_glb *glb)
 	rl_clear_history();
 }
 
-int rval = 0; /* return value of the last command or pipeline */
-
 static void reset(t_glb *glb, char *buf)
 {
 	ps_token_list_free_all(glb->tok);
 	glb->tok[0] = NULL;
 	free(buf);
 }
-
+int rval = 0; /* Global variable init */
 int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
 	(void) av;
 	t_glb *glb;
 	char  *buf;
+
 	glb = msh_init(ep);
 	if (!glb)
 		return (EXIT_FAILURE);

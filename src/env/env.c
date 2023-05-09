@@ -40,7 +40,6 @@ int env_split_key_value(char **arr, char *s)
 	return (0);
 }
 
-/* WARNING: The t_env **env must be free'd by the caller  */
 char *env_getenv(t_env **env, const char *key)
 {
 	t_env *curr;

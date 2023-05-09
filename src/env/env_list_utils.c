@@ -64,6 +64,7 @@ void env_list_node_rm(t_env **env, t_env *node)
 	}
 }
 
+/* WARNING: The t_env **env must be free'd by the caller  */
 void env_list_free_all(t_env **env)
 {
 	t_env *curr;

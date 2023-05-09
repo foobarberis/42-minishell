@@ -44,7 +44,7 @@ static int ps_token_list_parse(t_glb *glb)
 
 int parsing(t_glb *glb)
 {
-	if (!glb || !glb->tok || !(glb->tok[0]))
+	if (!glb || !glb->tok || !glb->env)
 		return (0);
 	if (ps_token_list_parse(glb))
 		return (1);
