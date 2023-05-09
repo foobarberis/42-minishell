@@ -1,8 +1,18 @@
 #include "minishell.h"
 
-static int is_legal_var_char(int c)
+static int is_legal(int c)
 {
-	return (f_isalnum(c) || c == '_');
+	return (f_isalnum(c) || c == '_' || c == '?' || c == 0);
+}
+
+static int recreate_variables_cond(t_token *curr, t_token *next)
+{
+	if (!curr || !next)
+		return (0);
+	return (curr->word[0] == '$'
+			&& is_legal(next->word[0])
+			&& (curr->word_index == next->word_index)
+			&& (curr->quote == next->quote));
 }
 
 void ps_token_list_recreate_variables(t_token **tok)
@@ -17,14 +27,14 @@ void ps_token_list_recreate_variables(t_token **tok)
 	while (curr)
 	{
 		next = curr->next;
-		while (next && curr->word && curr->word[0] == '$' && next->word[0] != '$' && (is_legal_var_char(next->word[0]) ||  next->word[0] == '?') && (curr->word_index == next->word_index) && (curr->quote == next->quote))
+		while (recreate_variables_cond(curr, next))
 		{
 			tmp = f_strjoin(curr->word, next->word);
 			free(curr->word);
 			curr->word = tmp;
 			ps_token_list_node_rm(tok, next);
 			next = curr->next;
-			if (curr->word[0] == '$' && curr->word[1] == '?')
+			if ((curr->word[0] == '$' && curr->word[1] == '?') || (curr->word[0] == '$' && curr->word[1] == 0))
 				break;
 		}
 		curr = next;
@@ -41,9 +51,9 @@ void ps_token_list_expand_variables(t_token **tok, t_env **env)
 	curr = *tok;
 	while (curr)
 	{
-		if (curr->word && curr->word[0] == '$' && curr->word[1] && curr->quote != SIMPLE)
+		if (curr->word[0] == '$' && curr->quote != SIMPLE)
 		{
-			if (curr->word && curr->word[0] == '$' && curr->word[1] == '?')
+			if (curr->word[0] == '$' && curr->word[1] == '?')
 				value = f_itoa(rval);
 			else
 				value = env_getenv(env, &curr->word[1]);

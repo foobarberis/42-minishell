@@ -29,7 +29,16 @@ void ps_token_list_delete_quote(t_token **tok)
 	{
 		next = curr->next;
 		if (curr->quote == NONE && (curr->word[0] == '\'' || curr->word[0] == '"'))
-			ps_token_list_node_rm(tok, curr);
+		{
+			if (next && (curr->word[0] == next->word[0]))
+			{
+				curr->word[0] = 0;
+				next = next->next;
+				ps_token_list_node_rm(tok, curr->next);
+			}
+			else
+				ps_token_list_node_rm(tok, curr);
+		}
 		curr = next;
 	}
 }

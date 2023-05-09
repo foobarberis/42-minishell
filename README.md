@@ -1,5 +1,6 @@
 # 42-minishell
 
+TODO: Fix echo $
 Unlike Bash, `echo [$HOME]` should not expand since `[` is actually a
 built-in that we don't have to handle. Therefore `[` and `[[` are
 treated as litteral characters. This goes for `echo \$HOME` which

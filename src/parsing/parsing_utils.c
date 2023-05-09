@@ -81,7 +81,12 @@ void ps_token_list_print(t_token **tok)
 	while (curr)
 	{
 		if (curr->word)
-			printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", curr->type, curr->quote, curr->word, curr->word_index, curr->cmd_index);
+		{
+			if (curr->word[0])
+				printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", curr->type, curr->quote, curr->word, curr->word_index, curr->cmd_index);
+			else
+				printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", curr->type, curr->quote, "(empty)", curr->word_index, curr->cmd_index);
+		}
 		curr = curr->next;
 	}
 	f_printf("\n");
