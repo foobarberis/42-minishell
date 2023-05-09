@@ -128,16 +128,13 @@ void env_list_key_add(t_glb *glb, char *key)
 void env_list_key_del(t_glb *glb, char *key)
 {
 	t_env *curr;
-	char  *tmp[2];
 
-	tmp[0] = NULL;
-	tmp[1] = NULL;
-	if (!glb || !glb->env || !key || env_split_key_value(tmp, key))
+	if (!glb || !glb->env || !key)
 		return;
-	curr = env_list_key_search(glb->env, tmp[0]);
+	curr = env_list_key_search(glb->env, key);
 	if (curr)
+	{
 		env_list_node_rm(glb->env, curr);
-	free(tmp[0]);
-	free(tmp[1]);
-	env_envp_update(glb);
+		env_envp_update(glb);
+	}
 }

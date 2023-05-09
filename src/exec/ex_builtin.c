@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ex_builtin(int builtin, char **arg)
+/* void	ex_builtin(int builtin, char **arg)
 {
 	if (builtin == ECHO)
 		ex_echo(arg);
@@ -16,4 +16,4 @@ void	ex_builtin(int builtin, char **arg)
 		ex_env();
 	else if (builtin == EXIT)
 		ex_exit();
-}
+} */

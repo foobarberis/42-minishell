@@ -17,7 +17,6 @@ void ps_token_list_delete_space(t_token **tok)
 	}
 }
 
-/* FIXME: Make shorter */
 void ps_token_list_delete_quote(t_token **tok)
 {
 	t_token *next;
@@ -80,40 +79,8 @@ void ps_token_list_delete_pipe(t_token **tok)
 	while (curr)
 	{
 		next = curr->next;
-		if (next && curr->quote == NONE && curr->word[0] == '|' && !ismeta(next->word[0]))
+		if (next && curr->quote == NONE && curr->word[0] == '|')
 			ps_token_list_node_rm(tok, curr);
 		curr = next;
 	}
 }
-
-
-/* void ps_token_list_delete_quote(t_token **tok)
-{
-	t_token *next;
-	t_token *curr;
-
-	if (!tok || !*tok)
-		return;
-	curr = *tok;
-	while (curr)
-	{
-		next = curr->next;
-		if (curr->quote == NONE && (curr->word[0] == '\'' || curr->word[0] == '"'))
-		{
-			if (next && (next->word[0] == curr->word[0]))
-			{
-				curr->word[0] = '\0';
-				ps_token_list_node_rm(tok, next);
-				curr = curr->next;
-			}
-			else
-			{
-				ps_token_list_node_rm(tok, curr);
-				curr = next;
-			}
-		}
-		else
-			curr = curr->next;
-	}
-}
- */

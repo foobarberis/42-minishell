@@ -1,5 +1,10 @@
 #include "minishell.h"
 
+static int is_legal_var_char(int c)
+{
+	return (f_isalnum(c) || c == '_');
+}
+
 void ps_token_list_recreate_variables(t_token **tok)
 {
 	char    *tmp;
@@ -12,7 +17,7 @@ void ps_token_list_recreate_variables(t_token **tok)
 	while (curr)
 	{
 		next = curr->next;
-		while (next && curr->word && curr->word[0] == '$' && next->word[0] != '$' && islegal(next->word[0]) && (curr->word_index == next->word_index) && (curr->quote == next->quote))
+		while (next && curr->word && curr->word[0] == '$' && next->word[0] != '$' && (is_legal_var_char(next->word[0]) ||  next->word[0] == '?') && (curr->word_index == next->word_index) && (curr->quote == next->quote))
 		{
 			tmp = f_strjoin(curr->word, next->word);
 			free(curr->word);

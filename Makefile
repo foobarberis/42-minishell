@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/08 12:35:57 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/09 12:26:36 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,17 @@
 
 # Edit the $(NAME) and $(SRCS) variables as necessary.
 NAME		:=	minishell
-SRCS		:=	env/env.c \
+SRCS		:=	builtins/blt_utils.c \
+				builtins/cd.c \
+				builtins/echo.c \
+				builtins/env.c \
+				builtins/exit.c \
+				builtins/export_unset.c \
+				builtins/pwd.c \
 				env/environ.c \
 				env/env_list_utils.c \
+				env/env_utils.c \
+				exec/ex_builtin.c \
 				exec/ex_execution.c \
 				exec/free.c \
 				exec/ps_fill_all_cmd.c \

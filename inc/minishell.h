@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/09 09:57:57 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/09 12:25:08 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ typedef struct s_cmd    t_cmd;
  * DEFINE
  */
 #define ERR_SYNTAX "minishell: syntax error.\n"
-#define ERR_PARSING "minishell: parsing error\n"
+#define ERR_PARSING "minishell: parsing error.\n"
+#define ERR_ID "minishell: export: not a valid identifier.\n"
 #define SUCCESS 0
 #define ERROR -2
 #define ERROR_REDIRECT -3
@@ -147,7 +148,7 @@ struct s_cmd
 /*
  * PROTOTYPES
  */
-/* ENV_LIST_UTILS.C */
+/* ENV */
 t_env *env_list_node_create(char *key, char *value);
 void   env_list_node_destroy(t_env *node);
 void   env_list_node_add(t_env **env, t_env *node);
@@ -156,15 +157,6 @@ void   env_list_free_all(t_env **env);
 t_env *env_list_goto_last(t_env **env);
 size_t env_list_get_size(t_env **env);
 
-/* TOKEN_LIST_UTILS.C */
-t_token *ps_token_list_node_create(char *s);
-void     ps_token_list_node_destroy(t_token *node);
-void     ps_token_list_node_add(t_token **tok, t_token *node);
-void     ps_token_list_node_rm(t_token **tok, t_token *node);
-void     ps_token_list_free_all(t_token **tok);
-t_token *ps_token_list_goto_last(t_token **tok);
-
-/* ENV.C */
 bool   env_list_is_valid_id(char *s);
 int    env_split_key_value(char **arr, char *s);
 char  *env_getenv(t_env **env, const char *key);
@@ -178,35 +170,44 @@ void   env_envp_del(char **envp);
 void   env_envp_update(t_glb *glb);
 
 /* BUILTINS */
-int blt_export(t_glb *glb, char *key);
-int blt_unset(t_glb *glb, char *key);
-int blt_cd(int argc, char **argv, t_glb *glb);
+int    blt_export(t_glb *glb, char **argv);
+int    blt_unset(t_glb *glb, char **argv);
+int    blt_cd(int argc, char **argv, t_glb *glb);
+size_t blt_compute_argc(char **argv);
 
-/* PARSING.C */
-int  ismeta(int c);
-int  islegal(int c);
+/* PARSING */
+t_token *ps_token_list_node_create(char *s);
+void     ps_token_list_node_destroy(t_token *node);
+void     ps_token_list_node_add(t_token **tok, t_token *node);
+void     ps_token_list_node_rm(t_token **tok, t_token *node);
+void     ps_token_list_free_all(t_token **tok);
+t_token *ps_token_list_goto_last(t_token **tok);
+
+int   ismeta(int c);
+int   islegal(int c);
 char *f_itoa(intmax_t n);
-int  ps_token_list_update_quote_state(char c, int state);
+int   ps_token_list_update_quote_state(char c, int state);
 bool  ps_line_has_balanced_quotes(char *s);
-void ps_token_list_from_array(t_token **tok, char *s);
-void ps_token_list_print(t_token **tok);
-void ps_token_list_set_index_quote(t_token **tok);
-void ps_token_list_set_index_word(t_token **tok);
-void ps_token_list_set_index_cmd(t_token **tok);
-void ps_token_list_delete_space(t_token **tok);
-void ps_token_list_delete_quote(t_token **tok);
-void ps_token_list_delete_pipe(t_token **tok);
-void ps_token_list_delete_dollar(t_token **tok);
-void ps_token_list_delete_bracket(t_token **tok);
-void ps_token_list_recreate_words(t_token **tok);
-void ps_token_list_recreate_variables(t_token **tok);
-void ps_token_list_fill_type(t_token **tok);
-void ps_token_list_expand_variables(t_token **tok, t_env **env);
-void ps_token_list_group_words(t_token **tok);
+void  ps_token_list_from_array(t_token **tok, char *s);
+void  ps_token_list_print(t_token **tok);
+void  ps_token_list_set_index_quote(t_token **tok);
+void  ps_token_list_set_index_word(t_token **tok);
+void  ps_token_list_update_index_word(t_token **tok);
+void  ps_token_list_set_index_cmd(t_token **tok);
+void  ps_token_list_delete_space(t_token **tok);
+void  ps_token_list_delete_quote(t_token **tok);
+void  ps_token_list_delete_pipe(t_token **tok);
+void  ps_token_list_delete_dollar(t_token **tok);
+void  ps_token_list_delete_bracket(t_token **tok);
+void  ps_token_list_recreate_words(t_token **tok);
+void  ps_token_list_recreate_variables(t_token **tok);
+void  ps_token_list_fill_type(t_token **tok);
+void  ps_token_list_expand_variables(t_token **tok, t_env **env);
+void  ps_token_list_group_words(t_token **tok);
 bool  ps_token_list_has_syntax_error(t_token **tok);
-int  parsing(t_glb *glb);
+int   parsing(t_glb *glb);
 
-/* SIGNAL.C */
+/* MISC */
 void sigint_handler(int sig);
 
 /* EXEC */

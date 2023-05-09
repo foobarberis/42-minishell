@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 int ps_token_list_update_quote_state(char c, int state)
 {
 	if (c == '\'' && state == SIMPLE)
@@ -58,7 +57,6 @@ void ps_token_list_set_index_cmd(t_token **tok)
 	}
 }
 
-/* FIXME: In `ls |<file cat` |< should be counted as two words  */
 void ps_token_list_set_index_word(t_token **tok)
 {
 	bool     sep;
@@ -84,5 +82,25 @@ void ps_token_list_set_index_word(t_token **tok)
 		}
 		curr->word_index = word;
 		curr = curr->next;
+	}
+}
+
+void ps_token_list_update_index_word(t_token **tok)
+{
+	size_t   i;
+	t_token *curr;
+	t_token *next;
+
+	if (!tok)
+		return;
+	i = 0;
+	curr = *tok;
+	while (curr)
+	{
+		next = curr->next;
+		curr->word_index += i;
+		if (next && curr->word[0] == '|' && (next->word[0] == '<' || next->word[0] == '>'))
+			i++;
+		curr = next;
 	}
 }
