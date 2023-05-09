@@ -82,7 +82,7 @@ void env_list_from_array(t_env **env, char **ep)
 		tmp[0] = NULL;
 		tmp[1] = NULL;
 		env_split_key_value(tmp, *ep);
-		env_list_node_add(env, env_list_node_create(tmp[0], tmp[1]));
+		env_list_node_add(env, env_list_node_create(tmp[0], tmp[1])); /* FIXME: Error checking */
 		ep++;
 	}
 }
@@ -121,7 +121,7 @@ void env_list_key_add(t_glb *glb, char *key)
 		free(tmp[0]);
 	}
 	else
-		env_list_node_add(glb->env, env_list_node_create(tmp[0], tmp[1]));
+		env_list_node_add(glb->env, env_list_node_create(tmp[0], tmp[1])); /* FIXME: Error checking */
 	env_envp_update(glb);
 }
 

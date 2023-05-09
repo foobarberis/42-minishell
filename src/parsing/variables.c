@@ -29,12 +29,12 @@ void ps_token_list_recreate_variables(t_token **tok)
 		next = curr->next;
 		while (recreate_variables_cond(curr, next))
 		{
-			tmp = f_strjoin(curr->word, next->word);
+			tmp = f_strjoin(curr->word, next->word); /* FIXME: Error checking */
 			free(curr->word);
 			curr->word = tmp;
 			ps_token_list_node_rm(tok, next);
 			next = curr->next;
-			if ((curr->word[0] == '$' && curr->word[1] == '?') || (curr->word[0] == '$' && curr->word[1] == 0))
+			if (curr->word[0] == '$' && (curr->word[1] == '?' || curr->word[1] == 0))
 				break;
 		}
 		curr = next;
@@ -53,16 +53,16 @@ void ps_token_list_expand_variables(t_token **tok, t_env **env)
 	{
 		if (curr->word[0] == '$' && curr->quote != SIMPLE)
 		{
-			if (curr->word[0] == '$' && curr->word[1] == '?')
-				value = f_itoa(rval);
+			if (curr->word[1] == '?')
+				value = f_itoa(rval); /* FIXME: Error checking */
 			else
-				value = env_getenv(env, &curr->word[1]);
+				value = env_getenv(env, &curr->word[1]); /* FIXME: Error checking */
 			free(curr->word);
 			if (value)
 				curr->word = value;
 			else
 			{
-				curr->word = f_strdup("");
+				curr->word = f_strdup(""); /* FIXME: Error checking */
 				free(value);
 			}
 		}

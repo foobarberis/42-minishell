@@ -66,7 +66,7 @@ void ps_token_list_from_array(t_token **tok, char *s)
 	while (*s)
 	{
 		buf[0] = *s++;
-		ps_token_list_node_add(tok, ps_token_list_node_create(buf));
+		ps_token_list_node_add(tok, ps_token_list_node_create(buf)); /* FIXME: Error checking */
 	}
 }
 
