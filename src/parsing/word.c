@@ -7,8 +7,6 @@ void ps_token_list_group_words(t_token **tok)
 	t_token *curr;
 	t_token *next;
 
-	if (!tok || !*tok)
-		return;
 	curr = *tok;
 	next = curr->next;
 	while (curr)
@@ -32,8 +30,6 @@ void ps_token_list_recreate_words(t_token **tok)
 	t_token *curr;
 	t_token *next;
 
-	if (!tok || !*tok)
-		return;
 	curr = *tok;
 	next = curr->next;
 	while (curr)

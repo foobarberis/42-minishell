@@ -1,6 +1,12 @@
 # 42-minishell
 
-TODO: Fix echo $
+- TODO: Remove if (!tok || !*tok) return;
+- TODO: Add security checks when malloc is involved in parsing and env.
+- TODO: Deal with all remaining FIXME
+- TODO: Run parsing related tests from minishell-test-cases.pdf
+- TODO: Fix Norme for all files in parsing and env.
+- TODO: Implement proper signal handling.
+
 Unlike Bash, `echo [$HOME]` should not expand since `[` is actually a
 built-in that we don't have to handle. Therefore `[` and `[[` are
 treated as litteral characters. This goes for `echo \$HOME` which

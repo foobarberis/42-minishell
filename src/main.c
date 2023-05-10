@@ -74,6 +74,7 @@ static void reset(t_glb *glb, char *buf)
 	glb->tok[0] = NULL;
 	free(buf);
 }
+
 int rval = 0; /* Global variable init */
 int main(int ac, char *av[], char *ep[])
 {

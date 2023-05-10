@@ -5,8 +5,6 @@ void ps_token_list_delete_space(t_token **tok)
 	t_token *next;
 	t_token *curr;
 
-	if (!tok || !*tok)
-		return;
 	curr = *tok;
 	while (curr)
 	{
@@ -22,8 +20,6 @@ void ps_token_list_delete_quote(t_token **tok)
 	t_token *next;
 	t_token *curr;
 
-	if (!tok || !*tok)
-		return;
 	curr = *tok;
 	while (curr)
 	{
@@ -43,13 +39,12 @@ void ps_token_list_delete_quote(t_token **tok)
 	}
 }
 
+/* FIXME: Might be unecessary */
 void ps_token_list_delete_dollar(t_token **tok)
 {
 	t_token *next;
 	t_token *curr;
 
-	if (!tok || !*tok)
-		return;
 	curr = *tok;
 	while (curr)
 	{
@@ -65,8 +60,6 @@ void ps_token_list_delete_bracket(t_token **tok)
 	t_token *next;
 	t_token *curr;
 
-	if (!tok || !*tok)
-		return;
 	curr = *tok;
 	while (curr)
 	{
@@ -82,8 +75,6 @@ void ps_token_list_delete_pipe(t_token **tok)
 	t_token *next;
 	t_token *curr;
 
-	if (!tok || !*tok)
-		return;
 	curr = *tok;
 	while (curr)
 	{

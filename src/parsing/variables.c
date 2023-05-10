@@ -21,8 +21,6 @@ void ps_token_list_recreate_variables(t_token **tok)
 	t_token *curr;
 	t_token *next;
 
-	if (!tok || !*tok)
-		return;
 	curr = *tok;
 	while (curr)
 	{
@@ -46,8 +44,6 @@ void ps_token_list_expand_variables(t_token **tok, t_env **env)
 	char    *value;
 	t_token *curr;
 
-	if (!tok || !env)
-		return;
 	curr = *tok;
 	while (curr)
 	{

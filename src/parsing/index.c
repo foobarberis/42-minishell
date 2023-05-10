@@ -18,8 +18,6 @@ void ps_token_list_set_index_quote(t_token **tok)
 	t_token *curr;
 	int      state;
 
-	if (!tok || !*tok)
-		return;
 	curr = *tok;
 	state = NONE;
 	while (curr)
@@ -44,8 +42,6 @@ void ps_token_list_set_index_cmd(t_token **tok)
 	size_t   cmd;
 	t_token *curr;
 
-	if (!tok || !*tok)
-		return;
 	cmd = 0;
 	curr = *tok;
 	while (curr)
@@ -63,8 +59,6 @@ void ps_token_list_set_index_word(t_token **tok)
 	size_t   word;
 	t_token *curr;
 
-	if (!tok || !*tok)
-		return;
 	word = 0;
 	sep = false;
 	curr = *tok;
