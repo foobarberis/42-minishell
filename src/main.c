@@ -1,10 +1,5 @@
 #include "../inc/minishell.h"
 
-int       find_nb_cmd(t_token *tok);
-t_token **split_tok_into_cmd(t_token *tok, size_t nb_cmd);
-void      end_tok_lst(t_token *tok, size_t i);
-void      free_lst_tok(t_token **tok, int nb_cmd);
-
 static int exec(t_glb *glob)
 {
 	int       i;
@@ -63,8 +58,6 @@ static void msh_exit(t_glb *glb)
 		ps_token_list_free(glb->tok);
 		free(glb->tok);
 	}
-/* 	for (size_t i = 0; glb->environ[i]; i++)
-		printf("%s\n", glb->environ[i]); */
 	if (glb->environ)
 		env_environ_free(glb->environ);
 	free(glb);
@@ -122,48 +115,4 @@ int main(int ac, char *av[], char *ep[])
 	}
 	msh_exit(glb);
 	return (EXIT_SUCCESS);
-}
-
-int find_nb_cmd(t_token *tok)
-{
-	int nb;
-
-	nb = 0;
-	while (tok)
-	{
-		nb = (int) tok->cmd_index;
-		tok = tok->next;
-	}
-	return (nb + 1);
-}
-
-void end_tok_lst(t_token *tok, size_t i)
-{
-	while (tok->next && tok->next->cmd_index < i)
-		tok = tok->next;
-	tok->next = NULL;
-}
-
-t_token **split_tok_into_cmd(t_token *tok, size_t nb_cmd)
-{
-	size_t    i;
-	t_token **final_tok_lst;
-
-	i = 0;
-	final_tok_lst = malloc(sizeof(t_token *) * nb_cmd); /* WARNING: Leaks */
-	while (tok)
-	{
-		final_tok_lst[i] = tok;
-		while (tok->next && tok->next->cmd_index == i)
-			tok = tok->next;
-		tok = tok->next;
-		i++;
-	}
-	i = 0;
-	while (i < nb_cmd - 1)
-	{
-		end_tok_lst(final_tok_lst[i], i + 1);
-		i++;
-	}
-	return (final_tok_lst);
 }
