@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/09 12:25:08 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/10 17:37:13 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ struct s_glb
 	char    **ep;
 	t_env   **env;
 	t_token **tok;
-	int       multiple_cmd;
+	size_t  multiple_cmd;
 };
 
 struct s_token
@@ -118,10 +118,12 @@ struct s_token
 
 struct s_input
 {
-	char *input;
-	char *limiter;
-	int   type;
-	int   fd_input;
+	char	*input;
+	char	*limiter;
+	int		type;
+	int		is_here_doc;
+	char 	*string_here_doc;
+	int		fd_input;
 };
 
 struct s_output
@@ -218,18 +220,18 @@ int ps_is_builtin(char *cmd);
 int ps_get_path_cmd(char *cmd, char **envp, char **path_cmd);
 
 /*** pe_fill_all_cmd ***/
-int ps_initialisation_cmds(t_cmd *cmd, t_glb *glob, t_token **tok);
+int ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
 
 /*** ex_here_doc ***/
-void ps_here_doc(char *limiter);
+char *here_doc(char *limiter);
 
 /*** ps_fill_arrays_struct_cmd ***/
-int ps_fill_struct_input(t_token *tok, t_input *input, int nb_input);
-int ps_fill_struct_output(t_token *tok, t_output *output, int nb_output);
-int ps_fill_args_array(t_token *tok, char **cmd, int nb_args);
+int ps_fill_struct_input(t_token *tok, t_input *input, int nb_input, size_t index);
+int ps_fill_struct_output(t_token *tok, t_output *output, int nb_output, size_t index);
+int ps_fill_args_array(t_token *tok, char **cmd, int nb_args, size_t index);
 
 /*** ps_fill_cmd_struct ***/
-int ps_fill_cmd_struct(t_cmd *cmd, t_token *tok);
+int ps_fill_cmd_struct(t_cmd *cmd, t_token *tok, size_t i);
 
 /*** pe_redirect ***/
 int ps_open_redirect(t_input *in, t_output *out, int *final_out, int *final_in);
@@ -238,7 +240,7 @@ int ps_open_redirect(t_input *in, t_output *out, int *final_out, int *final_in);
 void ex_builtin(int builtin, char **arg);
 
 /*** ex_execution ***/
-int ex_execution(t_cmd *cmd, int nb_cmd);
+int ex_execution(t_cmd *cmd, size_t nb_cmd);
 
 /*** tility_fonctions ***/
 char **ft_split(char const *s, char c);

@@ -1,29 +1,23 @@
 #include "../inc/minishell.h"
 
-int       find_nb_cmd(t_token *tok);
-t_token **split_tok_into_cmd(t_token *tok, size_t nb_cmd);
-void      end_tok_lst(t_token *tok, size_t i);
-void      free_lst_tok(t_token **tok, int nb_cmd);
-
 static int exec(t_glb *glob)
 {
-	int       i;
-	t_cmd    *cmd;
-	t_token **final_tok_lst;
+	size_t       i;
+	t_cmd    	*cmd;
 
 	i = 0;
-	glob->multiple_cmd = find_nb_cmd(glob->tok[0]);
-	final_tok_lst = split_tok_into_cmd(glob->tok[0], glob->multiple_cmd);
+	glob->multiple_cmd = ps_token_list_goto_last(glob->tok)->cmd_index + 1;
 	cmd = malloc(sizeof(t_cmd) * glob->multiple_cmd);
-	ps_initialisation_cmds(cmd, glob, final_tok_lst);
+	ps_initialisation_cmds(cmd, glob);
 	ex_execution(&cmd[i], glob->multiple_cmd);
 	i = 0;
 	while (i < glob->multiple_cmd)
 	{
-		waitpid(cmd[i].pid, NULL, 0);
+		if (cmd[i].struct_input[cmd[i].final_input].is_here_doc == 0)
+			waitpid(cmd[i].pid, NULL, 0);
 		i++;
 	}
-	free_t_cmd(cmd, glob->multiple_cmd);
+	free_t_cmd(cmd, (int)glob->multiple_cmd);
 	return (0);
 }
 
@@ -74,7 +68,9 @@ static void reset(t_glb *glb, char *buf)
 	glb->tok[0] = NULL;
 	free(buf);
 }
+
 int rval = 0; /* Global variable init */
+
 int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
@@ -108,53 +104,9 @@ int main(int ac, char *av[], char *ep[])
 			reset(glb, buf);
 			continue;
 		}
-		// exec(glb);
+		exec(glb);
 		reset(glb, buf);
 	}
 	msh_exit(glb);
 	return (EXIT_SUCCESS);
-}
-
-int find_nb_cmd(t_token *tok)
-{
-	int nb;
-
-	nb = 0;
-	while (tok)
-	{
-		nb = (int) tok->cmd_index;
-		tok = tok->next;
-	}
-	return (nb + 1);
-}
-
-void end_tok_lst(t_token *tok, size_t i)
-{
-	while (tok->next && tok->next->cmd_index < i)
-		tok = tok->next;
-	tok->next = NULL;
-}
-
-t_token **split_tok_into_cmd(t_token *tok, size_t nb_cmd)
-{
-	size_t    i;
-	t_token **final_tok_lst;
-
-	i = 0;
-	final_tok_lst = malloc(sizeof(t_token *) * nb_cmd); /* WARNING: Leaks */
-	while (tok)
-	{
-		final_tok_lst[i] = tok;
-		while (tok->next && tok->next->cmd_index == i)
-			tok = tok->next;
-		tok = tok->next;
-		i++;
-	}
-	i = 0;
-	while (i < nb_cmd - 1)
-	{
-		end_tok_lst(final_tok_lst[i], i + 1);
-		i++;
-	}
-	return (final_tok_lst);
 }

@@ -39,7 +39,7 @@ static int ps_token_list_parse(t_glb *glb)
 	ps_token_list_delete_dollar(glb->tok);
 	ps_token_list_delete_bracket(glb->tok);
 	ps_token_list_group_words(glb->tok);
-	ps_token_list_print(glb->tok);
+//	ps_token_list_print(glb->tok);
 	return (0);
 }
 

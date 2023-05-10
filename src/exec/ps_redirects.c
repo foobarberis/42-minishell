@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "../inc/minishell.h"
 
 char	*f_strdup(const char *s1);
 int		open_input(t_input *files);
@@ -36,13 +35,17 @@ int	open_input(t_input *files)
 		if (files[i].type == S_INPUT)
 			valid = open(files[i].input, O_RDONLY);
 		else
-			ps_here_doc(files->limiter);
+		{
+			files[i].string_here_doc = here_doc(files[i].limiter);
+			files[i].is_here_doc = 1;
+			valid = 0;
+		}
 		if (valid < SUCCESS)
 		{
 			perror(files[i].input);
 			return (ERROR_REDIRECT);
 		}
-		if (i + 1 < count)
+		if (i + 1 < count && files->is_here_doc == 0)
 			close(valid);
 		i++;
 	}

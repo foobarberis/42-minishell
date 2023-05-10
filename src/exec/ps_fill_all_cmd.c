@@ -1,7 +1,6 @@
 #include "../inc/minishell.h"
 
 char	*f_strdup(const char *s1);
-char	**convert_t_env_to_array(t_env **env);
 
 void	init_to_null_cmd_struct(t_cmd *cmd)
 {
@@ -17,16 +16,16 @@ void	init_to_null_cmd_struct(t_cmd *cmd)
 	cmd->final_input = -1;
 }
 
-int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob, t_token **tok)
+int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < glob->multiple_cmd)
 	{
 		init_to_null_cmd_struct(&cmd[i]);
 		cmd[i].env = glob->ep;
-		ps_fill_cmd_struct(&cmd[i], tok[i]);
+		ps_fill_cmd_struct(&cmd[i], glob->tok[0], i);
 		cmd[i].builtin = ps_is_builtin(cmd[i].args[0]);
 		ps_open_redirect(cmd[i].struct_input, \
 		cmd[i].struct_output, &cmd[i].final_output, &cmd[i].final_input);

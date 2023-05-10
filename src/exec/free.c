@@ -25,21 +25,36 @@ void	free_t_cmd(t_cmd *cmd, int nb_cmd)
 
 void	free_t_input(t_input *input)
 {
+//	int i;
+//
+//	i = 0;
 	if (!input)
 		return;
-	if (input->input)
-		free(input->input);
-	if (input->limiter)
-		free(input->limiter);
+//	while (i < input[i].fd_input) {
+		if (input->input)
+			free(input->input);
+		if (input->limiter)
+			free(input->limiter);
+		if (input->string_here_doc)
+			free(input->string_here_doc);
+//		i++;
+//	}
 	free(input);
 }
 
 void free_t_output(t_output *output)
 {
+//	int i;
+//
+//	i = 0;
 	if (!output)
 		return;
-	if (output->output)
-		free(output->output);
+//	while (i < output[i].fd_output)
+//	{
+		if (output->output)
+			free(output->output);
+//		i++;
+//	}
 	free(output);
 }
 
