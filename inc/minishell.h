@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/10 10:27:35 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/10 10:53:19 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void   env_list_key_add(t_glb *glb, char *key);
 void   env_list_key_del(t_glb *glb, char *key);
 char  *env_join_key_value(t_env *node);
 void   env_envp_del(char **envp);
-void   env_envp_update(t_glb *glb);
+int    env_envp_update(t_glb *glb);
 
 /* BUILTINS */
 int    blt_export(t_glb *glb, char **argv);
@@ -190,7 +190,7 @@ int   ismeta(int c);
 int   islegal(int c);
 char *f_itoa(intmax_t n);
 bool  ps_line_has_balanced_quotes(char *s);
-int  ps_token_list_from_array(t_token **tok, char *s);
+int   ps_token_list_from_array(t_token **tok, char *s);
 void  ps_token_list_print(t_token **tok);
 void  ps_token_list_set_index_quote(t_token **tok);
 void  ps_token_list_set_index_word(t_token **tok);

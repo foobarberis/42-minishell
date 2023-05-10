@@ -104,6 +104,7 @@ t_env *env_list_key_search(t_env **env, char *key)
 	return (NULL);
 }
 
+/* FIXME: Error checking */
 void env_list_key_add(t_glb *glb, char *key)
 {
 	t_env *curr;
@@ -126,6 +127,7 @@ void env_list_key_add(t_glb *glb, char *key)
 	env_envp_update(glb);
 }
 
+/* FIXME: Error checking */
 void env_list_key_del(t_glb *glb, char *key)
 {
 	t_env *curr;

@@ -45,6 +45,7 @@ static t_glb *msh_init(char **envp)
 	glb->ep = NULL;
 	env_list_from_array(glb->env, envp);
 	env_envp_update(glb);
+	
 	return (glb);
 }
 
