@@ -40,6 +40,7 @@ int env_split_key_value(char **arr, char *s)
 	return (0);
 }
 
+/* If the key is found, return the associated value. If not found, return the empty string. */
 char *env_getenv(t_env **env, const char *key)
 {
 	t_env *curr;
@@ -53,7 +54,7 @@ char *env_getenv(t_env **env, const char *key)
 			return (f_strdup(curr->value));
 		curr = curr->next;
 	}
-	return (NULL);
+	return (f_strdup(""));
 }
 
 void env_list_print(t_env **env)

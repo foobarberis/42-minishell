@@ -39,22 +39,6 @@ void ps_token_list_delete_quote(t_token **tok)
 	}
 }
 
-/* FIXME: Might be unecessary */
-void ps_token_list_delete_dollar(t_token **tok)
-{
-	t_token *next;
-	t_token *curr;
-
-	curr = *tok;
-	while (curr)
-	{
-		next = curr->next;
-		if (curr->quote == NONE && curr->word[0] == '$' && !curr->word[1])
-			ps_token_list_node_rm(tok, curr);
-		curr = next;
-	}
-}
-
 void ps_token_list_delete_bracket(t_token **tok)
 {
 	t_token *next;

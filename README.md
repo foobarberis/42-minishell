@@ -1,6 +1,5 @@
 # 42-minishell
 
-- TODO: Remove if (!tok || !*tok) return;
 - TODO: Add security checks when malloc is involved in parsing and env.
 - TODO: Deal with all remaining FIXME
 - TODO: Run parsing related tests from minishell-test-cases.pdf

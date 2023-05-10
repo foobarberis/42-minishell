@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int ps_token_list_update_quote_state(char c, int state)
+static int ps_token_list_update_quote_state(char c, int state)
 {
 	if (c == '\'' && state == SIMPLE)
 		state = NONE;

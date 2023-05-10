@@ -56,18 +56,24 @@ int islegal(int c)
 	return (!ismeta(c) && isprint(c) && c != '"' && c != '\''); /* FIXME: Replace with f_isprint */
 }
 
-void ps_token_list_from_array(t_token **tok, char *s)
+int ps_token_list_from_array(t_token **tok, char *s)
 {
 	char buf[2];
+	t_token *tmp;
 
 	if (!tok || !s)
-		return;
+		return (1);
 	buf[1] = '\0';
+	tmp = NULL;
 	while (*s)
 	{
 		buf[0] = *s++;
-		ps_token_list_node_add(tok, ps_token_list_node_create(buf)); /* FIXME: Error checking */
+		tmp = ps_token_list_node_create(buf);
+		if (!tmp)
+			return (f_perror(ERR_MALLOC), 1);
+		ps_token_list_node_add(tok, tmp);
 	}
+	return (0);
 }
 
 void ps_token_list_print(t_token **tok)

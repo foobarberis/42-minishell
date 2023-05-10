@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/09 12:26:36 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/10 09:26:32 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS		:=	builtins/blt_utils.c \
 				misc/signal.c \
 				parsing/delete.c \
 				parsing/index.c \
+				parsing/memory.c \
 				parsing/parsing.c \
 				parsing/parsing_utils.c \
 				parsing/syntax.c \

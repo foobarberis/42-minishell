@@ -40,15 +40,15 @@ static t_glb *msh_init(char **envp)
 	glb->env = malloc(sizeof(t_env *));
 	if (!glb->env)
 		return (free(glb->tok), free(glb), NULL);
+	glb->tok[0] = NULL;
 	glb->env[0] = NULL;
 	glb->ep = NULL;
 	env_list_from_array(glb->env, envp);
 	env_envp_update(glb);
-	glb->tok[0] = NULL;
 	return (glb);
 }
 
-static void msh_exit(t_glb *glb)
+static void msh_exit(t_glb *glb, char *buf)
 {
 	if (!glb)
 		return;
@@ -66,6 +66,8 @@ static void msh_exit(t_glb *glb)
 		env_envp_del(glb->ep);
 	free(glb);
 	rl_clear_history();
+	if (buf)
+		free(buf);
 }
 
 static void reset(t_glb *glb, char *buf)
@@ -82,6 +84,7 @@ int main(int ac, char *av[], char *ep[])
 	(void) av;
 	t_glb *glb;
 	char  *buf;
+	int    pars;
 
 	glb = msh_init(ep);
 	if (!glb)
@@ -101,18 +104,22 @@ int main(int ac, char *av[], char *ep[])
 			continue;
 		}
 		add_history(buf);
-		ps_token_list_from_array(glb->tok, buf);
-		if (!glb->tok)
+		if (ps_token_list_from_array(glb->tok, buf))
+			break;
+		if (!glb->tok) /* WRONG */
 			continue;
-		if (parsing(glb))
+		pars = parsing(glb);
+		if (pars == 1)
 		{
 			reset(glb, buf);
 			continue;
 		}
+		else if (pars == 2)
+			break;
 		// exec(glb);
 		reset(glb, buf);
 	}
-	msh_exit(glb);
+	msh_exit(glb, buf);
 	return (EXIT_SUCCESS);
 }
 

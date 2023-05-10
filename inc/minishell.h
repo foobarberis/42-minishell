@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/09 12:25:08 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/10 10:27:35 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_cmd    t_cmd;
 #define ERR_SYNTAX "minishell: syntax error.\n"
 #define ERR_PARSING "minishell: parsing error.\n"
 #define ERR_ID "minishell: export: not a valid identifier.\n"
+#define ERR_MALLOC "minishell: malloc() failed.\n"
 #define SUCCESS 0
 #define ERROR -2
 #define ERROR_REDIRECT -3
@@ -183,12 +184,13 @@ void     ps_token_list_node_rm(t_token **tok, t_token *node);
 void     ps_token_list_free_all(t_token **tok);
 t_token *ps_token_list_goto_last(t_token **tok);
 
+int ps_token_list_check_for_null(t_token **tok);
+
 int   ismeta(int c);
 int   islegal(int c);
 char *f_itoa(intmax_t n);
-int   ps_token_list_update_quote_state(char c, int state);
 bool  ps_line_has_balanced_quotes(char *s);
-void  ps_token_list_from_array(t_token **tok, char *s);
+int  ps_token_list_from_array(t_token **tok, char *s);
 void  ps_token_list_print(t_token **tok);
 void  ps_token_list_set_index_quote(t_token **tok);
 void  ps_token_list_set_index_word(t_token **tok);
@@ -197,7 +199,6 @@ void  ps_token_list_set_index_cmd(t_token **tok);
 void  ps_token_list_delete_space(t_token **tok);
 void  ps_token_list_delete_quote(t_token **tok);
 void  ps_token_list_delete_pipe(t_token **tok);
-void  ps_token_list_delete_dollar(t_token **tok);
 void  ps_token_list_delete_bracket(t_token **tok);
 void  ps_token_list_recreate_words(t_token **tok);
 void  ps_token_list_recreate_variables(t_token **tok);
