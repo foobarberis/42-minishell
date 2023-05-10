@@ -30,8 +30,6 @@ void env_list_node_add(t_env **env, t_env *node)
 {
 	t_env *last;
 
-	if (!env || !node)
-		return;
 	if (!*env)
 		*env = node;
 	else
@@ -47,8 +45,6 @@ void env_list_node_rm(t_env **env, t_env *node)
 	t_env *curr;
 	t_env *next;
 
-	if (!env || !node)
-		return;
 	curr = *env;
 	while (curr)
 	{
@@ -65,13 +61,11 @@ void env_list_node_rm(t_env **env, t_env *node)
 }
 
 /* WARNING: The t_env **env must be free'd by the caller  */
-void env_list_free_all(t_env **env)
+void env_list_free(t_env **env)
 {
 	t_env *curr;
 	t_env *next;
 
-	if (!env)
-		return;
 	curr = *env;
 	while (curr)
 	{
@@ -85,8 +79,6 @@ t_env *env_list_goto_last(t_env **env)
 {
 	t_env *curr;
 
-	if (!env)
-		return (NULL);
 	curr = *env;
 	while (curr)
 	{

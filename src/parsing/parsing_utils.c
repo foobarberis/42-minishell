@@ -61,8 +61,6 @@ int ps_token_list_from_array(t_token **tok, char *s)
 	char buf[2];
 	t_token *tmp;
 
-	if (!tok || !s)
-		return (1);
 	buf[1] = '\0';
 	tmp = NULL;
 	while (*s)

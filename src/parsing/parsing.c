@@ -21,25 +21,6 @@
  *   permission etc.).
  */
 
-static int ps_token_critical_section(t_glb *glb)
-{
-	ps_token_list_recreate_variables(glb->tok);
-	if (ps_token_list_check_for_null(glb->tok))
-		return (1);
-	ps_token_list_expand_variables(glb->tok, glb->env);
-	if (ps_token_list_check_for_null(glb->tok))
-		return (1);
-	ps_token_list_recreate_words(glb->tok);
-	if (ps_token_list_check_for_null(glb->tok))
-		return (1);
-	ps_token_list_fill_type(glb->tok);
-	ps_token_list_delete_bracket(glb->tok);
-	ps_token_list_group_words(glb->tok);
-	if (ps_token_list_check_for_null(glb->tok))
-		return (1);
-	return (0);
-}
-
 static int ps_token_list_parse(t_glb *glb)
 {
 	ps_token_list_set_index_quote(glb->tok);
@@ -51,8 +32,12 @@ static int ps_token_list_parse(t_glb *glb)
 	  	return (f_perror(ERR_SYNTAX), 1);
 	ps_token_list_update_index_word(glb->tok);
 	ps_token_list_delete_pipe(glb->tok);
-	if (ps_token_critical_section(glb))
-		return (f_perror(ERR_MALLOC), 2);
+	ps_token_list_recreate_variables(glb);
+	ps_token_list_expand_variables(glb);
+	ps_token_list_recreate_words(glb);
+	ps_token_list_fill_type(glb->tok);
+	ps_token_list_delete_bracket(glb->tok);
+	ps_token_list_group_words(glb);
 	ps_token_list_print(glb->tok);
 	return (0);
 }

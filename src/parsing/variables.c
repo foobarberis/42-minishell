@@ -15,22 +15,24 @@ static int recreate_variables_cond(t_token *curr, t_token *next)
 			&& (curr->quote == next->quote));
 }
 
-void ps_token_list_recreate_variables(t_token **tok)
+void ps_token_list_recreate_variables(t_glb *glb)
 {
 	char    *tmp;
 	t_token *curr;
 	t_token *next;
 
-	curr = *tok;
+	curr = glb->tok[0];
 	while (curr)
 	{
 		next = curr->next;
 		while (recreate_variables_cond(curr, next))
 		{
 			tmp = f_strjoin(curr->word, next->word);
+			if (!tmp)
+				panic(glb, CODE_MALLOC);
 			free(curr->word);
 			curr->word = tmp;
-			ps_token_list_node_rm(tok, next);
+			ps_token_list_node_rm(glb->tok, next);
 			next = curr->next;
 			if (curr->word && curr->word[0] == '$' && (curr->word[1] == '?' || curr->word[1] == 0))
 				break;
@@ -39,12 +41,12 @@ void ps_token_list_recreate_variables(t_token **tok)
 	}
 }
 
-void ps_token_list_expand_variables(t_token **tok, t_env **env)
+void ps_token_list_expand_variables(t_glb *glb)
 {
 	char    *value;
 	t_token *curr;
 
-	curr = *tok;
+	curr = glb->tok[0];
 	while (curr)
 	{
 		if (curr->word[0] == '$' && curr->word[1] && curr->quote != SIMPLE)
@@ -52,7 +54,9 @@ void ps_token_list_expand_variables(t_token **tok, t_env **env)
 			if (curr->word[1] == '?')
 				value = f_itoa(rval);
 			else
-				value = env_getenv(env, &curr->word[1]);
+				value = env_getenv(glb->env, &curr->word[1]);
+			if (!value)
+				panic(glb, CODE_MALLOC);
 			free(curr->word);
 			curr->word = value;
 		}

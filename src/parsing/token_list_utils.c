@@ -33,8 +33,6 @@ void ps_token_list_node_add(t_token **tok, t_token *node)
 {
 	t_token *last;
 
-	if (!tok || !node)
-		return;
 	if (!*tok)
 		*tok = node;
 	else
@@ -50,8 +48,6 @@ void ps_token_list_node_rm(t_token **tok, t_token *node)
 	t_token *curr;
 	t_token *next;
 
-	if (!tok || !node)
-		return;
 	curr = *tok;
 	if (curr == node)
 	{
@@ -71,13 +67,11 @@ void ps_token_list_node_rm(t_token **tok, t_token *node)
 }
 
 /* WARNING: Free tok when finished */
-void ps_token_list_free_all(t_token **tok)
+void ps_token_list_free(t_token **tok)
 {
 	t_token *curr;
 	t_token *next;
 
-	if (!tok)
-		return;
 	curr = *tok;
 	while (curr)
 	{
@@ -91,8 +85,6 @@ t_token *ps_token_list_goto_last(t_token **tok)
 {
 	t_token *curr;
 
-	if (!tok)
-		return (NULL);
 	curr = *tok;
 	while (curr)
 	{

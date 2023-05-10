@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/10 09:26:32 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/10 12:59:15 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRCS		:=	builtins/blt_utils.c \
 				env/environ.c \
 				env/env_list_utils.c \
 				env/env_utils.c \
+				env/key.c \
 				exec/ex_builtin.c \
 				exec/ex_execution.c \
 				exec/free.c \

@@ -5,8 +5,6 @@ size_t env_list_get_size(t_env **env)
 	size_t i;
 	t_env *curr;
 
-	if (!env)
-		return (0);
 	i = 0;
 	curr = *env;
 	while (curr)
@@ -22,8 +20,6 @@ char *env_join_key_value(t_env *node)
 	char *p;
 	char *q;
 
-	if (!node || !node->key || !node->value)
-		return (NULL);
 	p = f_strjoin(node->key, "="); /* FIXME: Error checking */
 	if (!p)
 		return (NULL);
@@ -31,12 +27,11 @@ char *env_join_key_value(t_env *node)
 	return (free(p), q);
 }
 
-void env_envp_del(char **envp)
+/* This function free's char **envp */
+void env_environ_free(char **envp)
 {
 	size_t i;
 
-	if (!envp)
-		return;
 	i = 0;
 	while (envp[i])
 		free(envp[i++]);
@@ -44,29 +39,27 @@ void env_envp_del(char **envp)
 }
 
 /* FIXME: Error checking */
-int env_envp_update(t_glb *glb)
+void env_envp_update(t_glb *glb)
 {
 	char **new;
 	size_t i;
 	t_env *curr;
 
-	if (!glb)
-		return (0);
-	env_envp_del(glb->ep);
 	i = env_list_get_size(glb->env);
 	new = malloc((i + 1) * sizeof(char *));
-	glb->ep = new;
 	if (!new)
-		return (1);
+		panic(glb, CODE_MALLOC);
 	new[i] = NULL;
 	i = 0;
 	curr = glb->env[0];
 	while (curr)
 	{
-		new[i] = NULL; // env_join_key_value(curr); /* FIXME: Error checking */
-		if (!new[i])
-			return (env_envp_del(new), 1);
+		new[i] = env_join_key_value(curr);
+		if (!new[i++])
+			return (env_environ_free(new), panic(glb, CODE_MALLOC));
 		curr = curr->next;
 	}
-	return (0);
+	if (glb->environ)
+		env_environ_free(glb->environ);
+	glb->environ = new;
 }

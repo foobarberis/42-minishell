@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/10 10:53:19 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/10 13:32:35 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_cmd    t_cmd;
 #define ERR_PARSING "minishell: parsing error.\n"
 #define ERR_ID "minishell: export: not a valid identifier.\n"
 #define ERR_MALLOC "minishell: malloc() failed.\n"
+#define CODE_MALLOC 2
 #define SUCCESS 0
 #define ERROR -2
 #define ERROR_REDIRECT -3
@@ -101,9 +102,10 @@ struct s_env
 
 struct s_glb
 {
-	char    **ep;
+	char    **environ;
 	t_env   **env;
 	t_token **tok;
+	char     *rl;
 	int       multiple_cmd;
 };
 
@@ -149,12 +151,15 @@ struct s_cmd
 /*
  * PROTOTYPES
  */
+
+void panic(t_glb *glb, int code);
+
 /* ENV */
 t_env *env_list_node_create(char *key, char *value);
 void   env_list_node_destroy(t_env *node);
 void   env_list_node_add(t_env **env, t_env *node);
 void   env_list_node_rm(t_env **env, t_env *node);
-void   env_list_free_all(t_env **env);
+void   env_list_free(t_env **env);
 t_env *env_list_goto_last(t_env **env);
 size_t env_list_get_size(t_env **env);
 
@@ -162,13 +167,13 @@ bool   env_list_is_valid_id(char *s);
 int    env_split_key_value(char **arr, char *s);
 char  *env_getenv(t_env **env, const char *key);
 void   env_list_print(t_env **env);
-void   env_list_from_array(t_env **env, char **ep);
+void   env_list_from_array(t_glb *glb, char **ep);
 t_env *env_list_key_search(t_env **env, char *key);
 void   env_list_key_add(t_glb *glb, char *key);
 void   env_list_key_del(t_glb *glb, char *key);
 char  *env_join_key_value(t_env *node);
-void   env_envp_del(char **envp);
-int    env_envp_update(t_glb *glb);
+void   env_environ_free(char **envp);
+void    env_envp_update(t_glb *glb);
 
 /* BUILTINS */
 int    blt_export(t_glb *glb, char **argv);
@@ -181,7 +186,7 @@ t_token *ps_token_list_node_create(char *s);
 void     ps_token_list_node_destroy(t_token *node);
 void     ps_token_list_node_add(t_token **tok, t_token *node);
 void     ps_token_list_node_rm(t_token **tok, t_token *node);
-void     ps_token_list_free_all(t_token **tok);
+void     ps_token_list_free(t_token **tok);
 t_token *ps_token_list_goto_last(t_token **tok);
 
 int ps_token_list_check_for_null(t_token **tok);
@@ -200,11 +205,11 @@ void  ps_token_list_delete_space(t_token **tok);
 void  ps_token_list_delete_quote(t_token **tok);
 void  ps_token_list_delete_pipe(t_token **tok);
 void  ps_token_list_delete_bracket(t_token **tok);
-void  ps_token_list_recreate_words(t_token **tok);
-void  ps_token_list_recreate_variables(t_token **tok);
+void  ps_token_list_recreate_words(t_glb *glb);
+void  ps_token_list_recreate_variables(t_glb *glb);
 void  ps_token_list_fill_type(t_token **tok);
-void  ps_token_list_expand_variables(t_token **tok, t_env **env);
-void  ps_token_list_group_words(t_token **tok);
+void  ps_token_list_expand_variables(t_glb *glb);
+void  ps_token_list_group_words(t_glb *glb);
 bool  ps_token_list_has_syntax_error(t_token **tok);
 int   parsing(t_glb *glb);
 

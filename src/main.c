@@ -33,49 +33,58 @@ static t_glb *msh_init(char **envp)
 
 	glb = malloc(sizeof(t_glb));
 	if (!glb)
-		return (NULL);
+		panic(glb, CODE_MALLOC);
 	glb->tok = malloc(sizeof(t_token *));
-	if (!glb->tok)
-		return (free(glb), NULL);
 	glb->env = malloc(sizeof(t_env *));
-	if (!glb->env)
-		return (free(glb->tok), free(glb), NULL);
+	if (!glb->tok || !glb->env)
+		panic(glb, CODE_MALLOC);
 	glb->tok[0] = NULL;
 	glb->env[0] = NULL;
-	glb->ep = NULL;
-	env_list_from_array(glb->env, envp);
+	glb->environ = NULL;
+	glb->rl = NULL;
+	env_list_from_array(glb, envp);
 	env_envp_update(glb);
-	
 	return (glb);
 }
 
-static void msh_exit(t_glb *glb, char *buf)
+static void msh_exit(t_glb *glb)
 {
 	if (!glb)
 		return;
+	if (glb->rl)
+		free(glb->rl);
 	if (glb->env)
 	{
-		env_list_free_all(glb->env);
+		env_list_free(glb->env);
 		free(glb->env);
 	}
 	if (glb->tok)
 	{
-		ps_token_list_free_all(glb->tok);
+		ps_token_list_free(glb->tok);
 		free(glb->tok);
 	}
-	if (glb->ep)
-		env_envp_del(glb->ep);
+/* 	for (size_t i = 0; glb->environ[i]; i++)
+		printf("%s\n", glb->environ[i]); */
+	if (glb->environ)
+		env_environ_free(glb->environ);
 	free(glb);
 	rl_clear_history();
-	if (buf)
-		free(buf);
 }
 
-static void reset(t_glb *glb, char *buf)
+void panic(t_glb *glb, int code)
 {
-	ps_token_list_free_all(glb->tok);
+	msh_exit(glb);
+	if (code == CODE_MALLOC)
+		f_perror(ERR_MALLOC);
+	exit(code);
+}
+
+static void reset(t_glb *glb)
+{
+	ps_token_list_free(glb->tok);
 	glb->tok[0] = NULL;
-	free(buf);
+	free(glb->rl);
+	glb->rl = NULL;
 }
 
 int rval = 0; /* Global variable init */
@@ -84,43 +93,34 @@ int main(int ac, char *av[], char *ep[])
 	(void) ac;
 	(void) av;
 	t_glb *glb;
-	char  *buf;
-	int    pars;
 
 	glb = msh_init(ep);
-	if (!glb)
-		return (EXIT_FAILURE);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sigint_handler);
 	while (1)
 	{
-		buf = readline("MSH $ ");
-		if (!buf)
+		glb->rl = readline("MSH $ ");
+		if (!glb->rl)
 			break;
-		if (!*buf)
+		if (!glb->rl[0])
 			continue;
-		if (!ps_line_has_balanced_quotes(buf) || buf[0] == '|')
+		if (!ps_line_has_balanced_quotes(glb->rl) || glb->rl[0] == '|')
 		{
 			f_perror(ERR_SYNTAX);
 			continue;
 		}
-		add_history(buf);
-		if (ps_token_list_from_array(glb->tok, buf))
-			break;
-		if (!glb->tok) /* WRONG */
-			continue;
-		pars = parsing(glb);
-		if (pars == 1)
+		add_history(glb->rl);
+		if (ps_token_list_from_array(glb->tok, glb->rl))
+			panic(glb, EXIT_FAILURE);
+		if (parsing(glb))
 		{
-			reset(glb, buf);
+			reset(glb);
 			continue;
 		}
-		else if (pars == 2)
-			break;
 		// exec(glb);
-		reset(glb, buf);
+		reset(glb);
 	}
-	msh_exit(glb, buf);
+	msh_exit(glb);
 	return (EXIT_SUCCESS);
 }
 
