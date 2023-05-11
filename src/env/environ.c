@@ -20,10 +20,10 @@ char *env_join_key_value(t_env *node)
 	char *p;
 	char *q;
 
-	p = f_strjoin(node->key, "="); /* FIXME: Error checking */
+	p = f_strjoin(node->key, "=");
 	if (!p)
 		return (NULL);
-	q = f_strjoin(p, node->value); /* FIXME: Error checking */
+	q = f_strjoin(p, node->value);
 	return (free(p), q);
 }
 
@@ -38,7 +38,6 @@ void env_environ_free(char **envp)
 	free(envp);
 }
 
-/* FIXME: Error checking */
 void env_envp_update(t_glb *glb)
 {
 	char **new;

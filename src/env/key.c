@@ -1,14 +1,17 @@
 #include "minishell.h"
 
-/* FIXME: Error checking */
 static int env_list_key_add__add(t_glb *glb, char *key, char *value)
 {
 	t_env *tmp;
 
 	tmp = env_list_node_create(key, value);
 	if (!tmp)
+	{
+		free(key);
+		free(value);
 		panic(glb, CODE_MALLOC);
-	env_list_node_add(glb->env, tmp); /* FIXME: Error checking */
+	}
+	env_list_node_add(glb->env, tmp);
 	return (0);
 }
 
@@ -34,7 +37,6 @@ void  env_list_key_add(t_glb *glb, char *key)
 	env_envp_update(glb);
 }
 
-/* FIXME: Error checking */
 void env_list_key_del(t_glb *glb, char *key)
 {
 	t_env *curr;

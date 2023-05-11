@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int exec(t_glb *glob)
+/* static int exec(t_glb *glob)
 {
 	int       i;
 	t_cmd    *cmd;
@@ -20,4 +20,4 @@ static int exec(t_glb *glob)
 	}
 	free_t_cmd(cmd, glob->multiple_cmd);
 	return (0);
-}
+} */

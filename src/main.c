@@ -66,6 +66,9 @@ int main(int ac, char *av[], char *ep[])
 	t_glb *glb;
 
 	glb = msh_init(ep);
+	env_list_key_add(glb, "TEST=hello_world");
+	for (size_t i = 0; glb->environ[i]; i++)
+		printf("%s\n", glb->environ[i]);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sigint_handler);
 	while (1)

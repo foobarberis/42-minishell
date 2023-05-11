@@ -58,10 +58,15 @@ void env_list_from_array(t_glb *glb, char **ep)
 	{
 		arr[0] = NULL;
 		arr[1] = NULL;
-		env_split_key_value(arr, *ep);
+		if (env_split_key_value(arr, *ep))
+			panic(glb, CODE_MALLOC);
 		tmp = env_list_node_create(arr[0], arr[1]);
 		if (!tmp)
+		{
+			free(arr[0]);
+			free(arr[1]);
 			panic(glb, CODE_MALLOC);
+		}
 		env_list_node_add(glb->env, tmp);
 		ep++;
 	}
