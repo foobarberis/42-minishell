@@ -32,13 +32,13 @@ void	parent_exec(t_cmd *cmd, size_t i)
 {
 	if (cmd[i].final_input >= REDIRECTION && cmd[i].final_output > REDIRECTION)
 	{
-		if (cmd[i].struct_input && cmd[i].struct_input[cmd[i].final_input].is_here_doc == 0)
+		if (cmd[i].struct_input[cmd[i].nb_input - 1].is_here_doc == 0)
 			close (cmd[i].final_input);
 		close(cmd[i].final_output);
 	}
 	else if (cmd[i].final_input >= REDIRECTION)
 	{
-		if (cmd[i].struct_input && cmd[i].struct_input[cmd[i].final_input].is_here_doc == 0)
+		if (cmd[i].struct_input[cmd[i].nb_input - 1].is_here_doc == 0)
 			close(cmd[i].final_input);
 	}
 	else if (cmd[i].final_output > REDIRECTION)
@@ -77,9 +77,9 @@ void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 
 void	in_out_redirect(t_cmd *cmd, size_t i)
 {
-	if (cmd[i].struct_input && cmd[i].struct_input[cmd->final_input].is_here_doc)
+	if (cmd[i].struct_input[cmd[i].nb_input - 1].is_here_doc)
 	{
-		write(cmd[i].fd[1], cmd[i].struct_input[cmd->final_input].string_here_doc, f_strlen(cmd[i].struct_input[cmd->final_input].string_here_doc));
+		write(cmd[i].fd[1], cmd[i].struct_input[cmd[i].nb_input - 1].string_here_doc, f_strlen(cmd[i].struct_input[cmd[i].nb_input].string_here_doc));
 		dup2(cmd[i].fd[0], STDIN_FILENO);
 	}
 	else
@@ -93,9 +93,9 @@ void	in_out_redirect(t_cmd *cmd, size_t i)
 
 void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 {
-	if (cmd[i].struct_input && cmd[i].struct_input[cmd->final_input].is_here_doc)
+	if (cmd[i].struct_input[cmd[i].nb_input - 1].is_here_doc)
 	{
-		write(cmd[i].fd[1], cmd[i].struct_input[cmd->final_input].string_here_doc, f_strlen(cmd[i].struct_input[cmd->final_input].string_here_doc));
+		write(cmd[i].fd[1], cmd[i].struct_input[cmd->nb_input - 1].string_here_doc, f_strlen(cmd[i].struct_input[cmd->nb_input - 1].string_here_doc));
 		dup2(cmd[i].fd[0], STDIN_FILENO);
 	}
 	else

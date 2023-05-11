@@ -29,6 +29,7 @@ int	open_input(t_input *files)
 	count = 0;
 	if (files)
 		count = files[i].fd_input;
+	dprintf(2,"count = %d\n", count);
 	valid = -1;
 	while (i < count)
 	{

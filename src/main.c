@@ -13,8 +13,7 @@ static int exec(t_glb *glob)
 	i = 0;
 	while (i < glob->multiple_cmd)
 	{
-		if (cmd[i].struct_input[cmd[i].final_input].is_here_doc == 0)
-			waitpid(cmd[i].pid, NULL, 0);
+		waitpid(cmd[i].pid, NULL, 0);
 		i++;
 	}
 	free_t_cmd(cmd, (int)glob->multiple_cmd);

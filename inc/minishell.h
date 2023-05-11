@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/10 17:37:13 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/11 10:59:26 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ struct s_cmd
 	char    **env;
 	char    **args;
 	char     *path_cmd;
+	int 	nb_input;
 	int       final_input;
 	int       final_output;
 	t_input  *struct_input;

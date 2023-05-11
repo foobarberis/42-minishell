@@ -17,7 +17,6 @@ int	count_type(t_token *tok, int type1, int type2, size_t i)
 int	ps_fill_cmd_struct(t_cmd *cmd, t_token *tok, size_t i)
 {
 	int	nb_args;
-	int	nb_input;
 	int	nb_output;
 
 	nb_args = count_type(tok, BASIC, BASIC, i) + 1;
@@ -26,11 +25,11 @@ int	ps_fill_cmd_struct(t_cmd *cmd, t_token *tok, size_t i)
 		return (ERROR);
 	if (ps_get_path_cmd(cmd->args[0], cmd->env, &cmd->path_cmd) == ERROR)
 		return (ERROR);
-	nb_input = count_type(tok, S_INPUT, D_INPUT, i);
-	if (nb_input > 0)
+	cmd->nb_input = count_type(tok, S_INPUT, D_INPUT, i);
+	if (cmd->nb_input > 0)
 	{
-		cmd->struct_input = malloc(sizeof(t_input) * nb_input);
-		if (ps_fill_struct_input(tok, cmd->struct_input, nb_input, i))
+		cmd->struct_input = malloc(sizeof(t_input) * cmd->nb_input);
+		if (ps_fill_struct_input(tok, cmd->struct_input, cmd->nb_input, i))
 			return (ERROR);
 	}
 	nb_output = count_type(tok, S_OUTPUT, D_OUTPUT, i);
