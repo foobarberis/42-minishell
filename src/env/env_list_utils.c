@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:41:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:41:40 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/11 12:25:30 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,16 @@ void	env_list_node_rm(t_env **env, t_env *node)
 	t_env	*next;
 
 	curr = *env;
+	if (curr == node)
+	{
+		*env = curr->next;
+		return (env_list_node_destroy(curr));
+	}
 	while (curr)
 	{
 		next = curr->next;
 		if (next == node)
 		{
-			if (env[0] == node)
-				env[0] = env[0]->next;
 			curr->next = next->next;
 			return (env_list_node_destroy(next));
 		}
