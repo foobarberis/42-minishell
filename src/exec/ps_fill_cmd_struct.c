@@ -14,30 +14,90 @@ int	count_type(t_token *tok, int type1, int type2, size_t i)
 	return (nb_redirect);
 }
 
-int	ps_fill_cmd_struct(t_cmd *cmd, t_token *tok, size_t i)
+int	ps_get_args_cmd(t_token *tok, char **cmd, int nb_args, size_t index)
 {
-	int	nb_args;
-	int	nb_output;
+	int	i;
 
-	nb_args = count_type(tok, BASIC, BASIC, i) + 1;
-	cmd->args = malloc(sizeof(char *) * nb_args);
-	if (ps_fill_args_array(tok, cmd->args, nb_args, i) == ERROR)
-		return (ERROR);
-	if (ps_get_path_cmd(cmd->args[0], cmd->env, &cmd->path_cmd) == ERROR)
-		return (ERROR);
-	cmd->nb_input = count_type(tok, S_INPUT, D_INPUT, i);
-	if (cmd->nb_input > 0)
+	i = 0;
+	while (tok && i < nb_args)
 	{
-		cmd->struct_input = malloc(sizeof(t_input) * cmd->nb_input);
-		if (ps_fill_struct_input(tok, cmd->struct_input, cmd->nb_input, i))
-			return (ERROR);
+		if (tok->type == BASIC && tok->cmd_index == index)
+		{
+			cmd[i] = f_strdup(tok->word);
+			if (!cmd[i] && tok->type == BASIC)
+				return (ERROR);
+			i++;
+		}
+		tok = tok->next;
 	}
-	nb_output = count_type(tok, S_OUTPUT, D_OUTPUT, i);
-	if (nb_output > 0)
-	{
-		cmd->struct_output = malloc(sizeof(t_output) * nb_output);
-		if (ps_fill_struct_output(tok, cmd->struct_output, nb_output, i))
-			return (ERROR);
-	}
+	cmd[i] = NULL;
 	return (SUCCESS);
+}
+void ps_get_here_doc(t_token *tok, t_cmd *cmd, size_t index)
+{
+	while (tok)
+	{
+		if (tok->type == D_INPUT && tok->cmd_index == index)
+		{
+			cmd->input = NULL;
+			cmd->type_in = tok->type;
+			cmd->is_here_doc = 1;
+			cmd->final_input = 3;
+			cmd->limiter = f_strdup(tok->word);
+			if (cmd->string_here_doc)
+				free(cmd->string_here_doc);
+			here_doc(cmd->limiter, &cmd->string_here_doc);
+		}
+		tok = tok->next;
+	}
+}
+
+void	ps_get_input(t_token *tok, t_cmd *cmd, size_t index)
+{
+	while (tok)
+	{
+		if (tok->type == S_INPUT && tok->cmd_index == index)
+		{
+			if (cmd->input)
+				free(cmd->input);
+			cmd->input = f_strdup(tok->word);
+			cmd->type_in = tok->type;
+			cmd->limiter = NULL;
+			cmd->is_here_doc = 0;
+			cmd->final_input = open_input(cmd);
+		}
+		else if (tok->type == D_INPUT && tok->cmd_index == index)
+		{
+			if (cmd->input)
+				free(cmd->input);
+			cmd->input = NULL;
+			cmd->type_in = tok->type;
+			cmd->is_here_doc = 1;
+		}
+		tok = tok->next;
+	}
+}
+
+void	ps_get_output(t_token *tok, t_cmd *cmd, size_t index)
+{
+	while (tok)
+	{
+		if (tok->type == S_OUTPUT && tok->cmd_index == index)
+		{
+			if (cmd->output)
+				free(cmd->output);
+			cmd->output = strdup(tok->word);
+			cmd->type_out = tok->type;
+			cmd->final_output = open_output(cmd);
+		}
+		else if (tok->type == D_OUTPUT && tok->cmd_index == index)
+		{
+			if (cmd->output)
+				free(cmd->output);
+			cmd->output = f_strdup(tok->word);
+			cmd->type_out = tok->type;
+			cmd->final_output = open_output(cmd);
+		}
+		tok = tok->next;
+	}
 }

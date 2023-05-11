@@ -6,7 +6,7 @@
 #    By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/10 14:22:19 by vburton          ###   ########.fr        #
+#    Updated: 2023/05/11 19:03:31 by vburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,9 +27,9 @@ SRCS		:=	builtins/blt_utils.c \
 				env/env_utils.c \
 				exec/ex_builtin.c \
 				exec/ex_execution.c \
+				exec/ex_redirects.c \
 				exec/free.c \
 				exec/ps_fill_all_cmd.c \
-				exec/ps_fill_arrays_cmd_struct.c \
 				exec/ps_fill_cmd_struct.c \
 				exec/ps_get_cmd_path.c \
 				exec/here_doc.c \
@@ -96,5 +96,23 @@ fclean: clean
 	make -C $(MLCDIR) fclean
 
 re: fclean all
+
+leaks:    all
+			echo "{" > valgrind_ignore_leaks.txt
+			echo "leak readline" >> valgrind_ignore_leaks.txt
+			echo "    Memcheck:Leak" >> valgrind_ignore_leaks.txt
+			echo "    ..." >> valgrind_ignore_leaks.txt
+			echo "    fun:readline" >> valgrind_ignore_leaks.txt
+			echo "}" >> valgrind_ignore_leaks.txt
+			echo "{" >> valgrind_ignore_leaks.txt
+			echo "    leak add_history" >> valgrind_ignore_leaks.txt
+			echo "    Memcheck:Leak" >> valgrind_ignore_leaks.txt
+			echo "    ..." >> valgrind_ignore_leaks.txt
+			echo "    fun:add_history" >> valgrind_ignore_leaks.txt
+			echo "}" >> valgrind_ignore_leaks.txt
+			valgrind --suppressions=valgrind_ignore_leaks.txt --leak-check=full \
+    				--show-leak-kinds=all --track-fds=yes \
+    				--show-mismatched-frees=yes --read-var-info=yes \
+    				--log-file=valgrind.txt ./${NAME}
 
 .PHONY:	all libft clean fclean re

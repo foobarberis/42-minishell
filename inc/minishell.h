@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:59:26 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/11 18:58:35 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,23 +116,6 @@ struct s_token
 	t_token *next;
 };
 
-struct s_input
-{
-	char	*input;
-	char	*limiter;
-	int		type;
-	int		is_here_doc;
-	char 	*string_here_doc;
-	int		fd_input;
-};
-
-struct s_output
-{
-	char *output;
-	int   type;
-	int   fd_output;
-};
-
 struct s_cmd
 {
 	int       fd[2];
@@ -141,11 +124,15 @@ struct s_cmd
 	char    **env;
 	char    **args;
 	char     *path_cmd;
-	int 	nb_input;
 	int       final_input;
 	int       final_output;
-	t_input  *struct_input;
-	t_output *struct_output;
+	char	*input;
+	char	*limiter;
+	int		type_in;
+	int		is_here_doc;
+	char 	*string_here_doc;
+	char *output;
+	int   type_out;
 };
 
 /*
@@ -224,18 +211,20 @@ int ps_get_path_cmd(char *cmd, char **envp, char **path_cmd);
 int ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
 
 /*** ex_here_doc ***/
-char *here_doc(char *limiter);
+void here_doc(char *limiter, char **string);
 
 /*** ps_fill_arrays_struct_cmd ***/
-int ps_fill_struct_input(t_token *tok, t_input *input, int nb_input, size_t index);
-int ps_fill_struct_output(t_token *tok, t_output *output, int nb_output, size_t index);
-int ps_fill_args_array(t_token *tok, char **cmd, int nb_args, size_t index);
+void ps_get_input(t_token *tok, t_cmd *cmd, size_t index);
+void ps_get_output(t_token *tok, t_cmd *cmd, size_t index);
+int ps_get_args_cmd(t_token *tok, char **cmd, int nb_args, size_t index);
+void ps_get_here_doc(t_token *tok, t_cmd *cm, size_t index);
 
 /*** ps_fill_cmd_struct ***/
-int ps_fill_cmd_struct(t_cmd *cmd, t_token *tok, size_t i);
+int	count_type(t_token *tok, int type1, int type2, size_t i);
 
 /*** pe_redirect ***/
-int ps_open_redirect(t_input *in, t_output *out, int *final_out, int *final_in);
+int	open_output(t_cmd *files);
+int	open_input(t_cmd *files);
 
 /*** ex_builtin ***/
 void ex_builtin(int builtin, char **arg);
@@ -243,10 +232,18 @@ void ex_builtin(int builtin, char **arg);
 /*** ex_execution ***/
 int ex_execution(t_cmd *cmd, size_t nb_cmd);
 
-/*** tility_fonctions ***/
+/*** ex_redirection ***/
+void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
+void	in_out_redirect(t_cmd *cmd, size_t i);
+void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
+void	out_redirect(t_cmd *cmd, size_t i);
+
+/*** utility_fonctions ***/
 char **ft_split(char const *s, char c);
 int    ft_strncmp(const char *s1, const char *s2, size_t n);
 void   ft_free_split(char **array);
+char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlen(const char *str);
 void   print_double_array(char **array, char *title);
 char  *get_next_line(int fd);
 
