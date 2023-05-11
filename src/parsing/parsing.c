@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/11 10:35:55 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /*
@@ -21,7 +33,7 @@
  *   permission etc.).
  */
 
-static int ps_token_list_parse(t_glb *glb)
+static int	ps_token_list_parse(t_glb *glb)
 {
 	ps_token_list_set_index_quote(glb->tok);
 	ps_token_list_set_index_word(glb->tok);
@@ -29,7 +41,7 @@ static int ps_token_list_parse(t_glb *glb)
 	ps_token_list_delete_quote(glb->tok);
 	ps_token_list_delete_space(glb->tok);
 	if (ps_token_list_has_syntax_error(glb->tok))
-	  	return (f_perror(ERR_SYNTAX), 1);
+		return (f_perror(ERR_SYNTAX), 1);
 	ps_token_list_update_index_word(glb->tok);
 	ps_token_list_delete_pipe(glb->tok);
 	ps_token_list_recreate_variables(glb);
@@ -43,7 +55,7 @@ static int ps_token_list_parse(t_glb *glb)
 	return (0);
 }
 
-int parsing(t_glb *glb)
+int	parsing(t_glb *glb)
 {
 	if (!glb || !glb->tok || !glb->env)
 		return (0);

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   index.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/11 10:30:51 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/11 10:31:52 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int ps_token_list_update_quote_state(char c, int state)
+static int	ps_token_list_update_quote_state(char c, int state)
 {
 	if (c == '\'' && state == SIMPLE)
 		state = NONE;
@@ -13,10 +25,10 @@ static int ps_token_list_update_quote_state(char c, int state)
 	return (state);
 }
 
-void ps_token_list_set_index_quote(t_token **tok)
+void	ps_token_list_set_index_quote(t_token **tok)
 {
-	t_token *curr;
-	int      state;
+	int		state;
+	t_token	*curr;
 
 	curr = *tok;
 	state = NONE;
@@ -37,10 +49,10 @@ void ps_token_list_set_index_quote(t_token **tok)
 	}
 }
 
-void ps_token_list_set_index_cmd(t_token **tok)
+void	ps_token_list_set_index_cmd(t_token **tok)
 {
-	size_t   cmd;
-	t_token *curr;
+	size_t	cmd;
+	t_token	*curr;
 
 	cmd = 0;
 	curr = *tok;
@@ -53,11 +65,11 @@ void ps_token_list_set_index_cmd(t_token **tok)
 	}
 }
 
-void ps_token_list_set_index_word(t_token **tok)
+void	ps_token_list_set_index_word(t_token **tok)
 {
-	bool     sep;
-	size_t   word;
-	t_token *curr;
+	bool	sep;
+	size_t	word;
+	t_token	*curr;
 
 	word = 0;
 	sep = false;
@@ -79,21 +91,22 @@ void ps_token_list_set_index_word(t_token **tok)
 	}
 }
 
-void ps_token_list_update_index_word(t_token **tok)
+void	ps_token_list_update_index_word(t_token **tok)
 {
-	size_t   i;
-	t_token *curr;
-	t_token *next;
+	size_t	i;
+	t_token	*curr;
+	t_token	*next;
 
 	if (!tok)
-		return;
+		return ;
 	i = 0;
 	curr = *tok;
 	while (curr)
 	{
 		next = curr->next;
 		curr->word_index += i;
-		if (next && curr->word[0] == '|' && (next->word[0] == '<' || next->word[0] == '>'))
+		if (next && curr->word[0] == '|'
+			&& (next->word[0] == '<' || next->word[0] == '>'))
 			i++;
 		curr = next;
 	}

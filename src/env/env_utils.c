@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/11 10:41:44 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/11 10:42:15 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-bool env_list_is_valid_id(char *s)
+bool	env_list_is_valid_id(char *s)
 {
 	if (!*s)
 		return (false);
@@ -15,10 +27,10 @@ bool env_list_is_valid_id(char *s)
 	return (true);
 }
 
-int env_split_key_value(char **arr, char *s)
+int	env_split_key_value(char **arr, char *s)
 {
-	char *p;
-	char *q;
+	char	*p;
+	char	*q;
 
 	p = f_strdup(s);
 	if (!p)
@@ -36,9 +48,9 @@ int env_split_key_value(char **arr, char *s)
 	return (0);
 }
 
-void env_list_print(t_env **env)
+void	env_list_print(t_env **env)
 {
-	t_env *curr;
+	t_env	*curr;
 
 	curr = *env;
 	while (curr)
@@ -49,10 +61,10 @@ void env_list_print(t_env **env)
 	}
 }
 
-void env_list_from_array(t_glb *glb, char **ep)
+void	env_list_from_array(t_glb *glb, char **ep)
 {
-	t_env *tmp;
-	char  *arr[2];
+	t_env	*tmp;
+	char	*arr[2];
 
 	while (*ep)
 	{
@@ -72,9 +84,9 @@ void env_list_from_array(t_glb *glb, char **ep)
 	}
 }
 
-t_env *env_list_key_search(t_env **env, char *key)
+t_env	*env_list_key_search(t_env **env, char *key)
 {
-	t_env *curr;
+	t_env	*curr;
 
 	curr = *env;
 	while (curr)

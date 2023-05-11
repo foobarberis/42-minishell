@@ -1,9 +1,6 @@
 # 42-minishell
 
-- TODO: Add security checks when malloc is involved in parsing and env.
-- TODO: Deal with all remaining FIXME
 - TODO: Run parsing related tests from minishell-test-cases.pdf
-- TODO: Fix Norme for all files in parsing and env.
 - TODO: Implement proper signal handling.
 
 Unlike Bash, `echo [$HOME]` should not expand since `[` is actually a

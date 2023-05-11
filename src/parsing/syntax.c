@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntax.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/11 10:44:55 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/11 10:44:56 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-bool ps_line_has_balanced_quotes(char *s)
+bool	ps_line_has_balanced_quotes(char *s)
 {
-	size_t nsimple;
-	size_t ndouble;
+	size_t	nsimple;
+	size_t	ndouble;
 
 	nsimple = 0;
 	ndouble = 0;
@@ -20,7 +32,7 @@ bool ps_line_has_balanced_quotes(char *s)
 	return (true);
 }
 
-static int check_further(int a, int b)
+static int	check_further(int a, int b)
 {
 	if ((a == '>' && b == '>') || (a == '<' && b == '<'))
 		return (1);
@@ -29,10 +41,10 @@ static int check_further(int a, int b)
 	return (0);
 }
 
-static int check_syntax(t_token **tok)
+static int	check_syntax(t_token **tok)
 {
-	t_token *next;
-	t_token *curr;
+	t_token	*next;
+	t_token	*curr;
 
 	curr = *tok;
 	while (curr)
@@ -56,7 +68,7 @@ static int check_syntax(t_token **tok)
 	return (0);
 }
 
-bool ps_token_list_has_syntax_error(t_token **tok)
+bool	ps_token_list_has_syntax_error(t_token **tok)
 {
 	if (!tok || !*tok)
 		return (false);

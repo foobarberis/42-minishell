@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/11 10:32:38 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/11 10:35:24 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static size_t f_ndigit(intmax_t n, int baselen)
+static size_t	f_ndigit(intmax_t n, int baselen)
 {
-	size_t l;
+	size_t	l;
 
 	l = 0;
 	if (n <= 0)
@@ -15,11 +27,11 @@ static size_t f_ndigit(intmax_t n, int baselen)
 	return (l);
 }
 
-char *f_itoa(intmax_t n)
+char	*f_itoa(intmax_t n)
 {
-	size_t    l;
-	uintmax_t nb;
-	char     *s;
+	char		*s;
+	size_t		l;
+	uintmax_t	nb;
 
 	l = f_ndigit(n, 10);
 	s = malloc(l + 1);
@@ -39,27 +51,15 @@ char *f_itoa(intmax_t n)
 	return (s);
 }
 
-int ismeta(int c)
+int	ismeta(int c)
 {
 	return (c == '<' || c == '>' || c == '|');
 }
 
-/**
- * @brief Check if the character is legal in the context of Linux filename.
- * A Linux file's name can contain any bytes which are not NUL (0x00) or '\'
- * (0x5C).
- * @param c The character to test.
- * @return
- */
-int islegal(int c)
+int	ps_token_list_from_array(t_token **tok, char *s)
 {
-	return (!ismeta(c) && isprint(c) && c != '"' && c != '\''); /* FIXME: Replace with f_isprint */
-}
-
-int ps_token_list_from_array(t_token **tok, char *s)
-{
-	char buf[2];
-	t_token *tmp;
+	char	buf[2];
+	t_token	*tmp;
 
 	buf[1] = '\0';
 	tmp = NULL;
@@ -74,22 +74,26 @@ int ps_token_list_from_array(t_token **tok, char *s)
 	return (0);
 }
 
-void ps_token_list_print(t_token **tok)
+/* FIXME: Remove */
+void	ps_token_list_print(t_token **tok)
 {
-	t_token *curr;
+	t_token	*curr;
 
 	curr = *tok;
-	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n", "type", "quote", "char *", "word", "cmd");
+	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n",
+		"type", "quote", "char *", "word", "cmd");
 	printf("-------------------------------------------------------------------"
-	       "--------\n");
+		"--------\n");
 	while (curr)
 	{
 		if (curr->word)
 		{
 			if (curr->word[0])
-				printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", curr->type, curr->quote, curr->word, curr->word_index, curr->cmd_index);
+				printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", curr->type,
+					curr->quote, curr->word, curr->word_index, curr->cmd_index);
 			else
-				printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", curr->type, curr->quote, "(empty)", curr->word_index, curr->cmd_index);
+				printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", curr->type,
+					curr->quote, "(empty)", curr->word_index, curr->cmd_index);
 		}
 		curr = curr->next;
 	}

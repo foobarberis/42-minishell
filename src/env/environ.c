@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   environ.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/11 10:42:19 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/11 10:43:34 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-size_t env_list_get_size(t_env **env)
+size_t	env_list_get_size(t_env **env)
 {
-	size_t i;
-	t_env *curr;
+	size_t	i;
+	t_env	*curr;
 
 	i = 0;
 	curr = *env;
@@ -15,10 +27,10 @@ size_t env_list_get_size(t_env **env)
 	return (i);
 }
 
-char *env_join_key_value(t_env *node)
+char	*env_join_key_value(t_env *node)
 {
-	char *p;
-	char *q;
+	char	*p;
+	char	*q;
 
 	p = f_strjoin(node->key, "=");
 	if (!p)
@@ -27,22 +39,11 @@ char *env_join_key_value(t_env *node)
 	return (free(p), q);
 }
 
-/* This function free's char **envp */
-void env_environ_free(char **envp)
+void	env_envp_update(t_glb *glb)
 {
-	size_t i;
-
-	i = 0;
-	while (envp[i])
-		free(envp[i++]);
-	free(envp);
-}
-
-void env_envp_update(t_glb *glb)
-{
-	char **new;
-	size_t i;
-	t_env *curr;
+	char	**new;
+	t_env	*curr;
+	size_t	i;
 
 	i = env_list_get_size(glb->env);
 	new = malloc((i + 1) * sizeof(char *));

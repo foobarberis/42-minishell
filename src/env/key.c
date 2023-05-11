@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   key.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/11 10:43:40 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/11 10:44:30 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int env_list_key_add__add(t_glb *glb, char *key, char *value)
+static int	env_list_key_add__add(t_glb *glb, char *key, char *value)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = env_list_node_create(key, value);
 	if (!tmp)
@@ -15,15 +27,15 @@ static int env_list_key_add__add(t_glb *glb, char *key, char *value)
 	return (0);
 }
 
-void  env_list_key_add(t_glb *glb, char *key)
+void	env_list_key_add(t_glb *glb, char *key)
 {
-	t_env *curr;
-	char  *tmp[2];
+	t_env	*curr;
+	char	*tmp[2];
 
 	tmp[0] = NULL;
 	tmp[1] = NULL;
 	if (env_split_key_value(tmp, key))
-		return;
+		return ;
 	curr = env_list_key_search(glb->env, tmp[0]);
 	if (curr)
 	{
@@ -37,9 +49,9 @@ void  env_list_key_add(t_glb *glb, char *key)
 	env_envp_update(glb);
 }
 
-void env_list_key_del(t_glb *glb, char *key)
+void	env_list_key_del(t_glb *glb, char *key)
 {
-	t_env *curr;
+	t_env	*curr;
 
 	curr = env_list_key_search(glb->env, key);
 	if (curr)
@@ -49,10 +61,13 @@ void env_list_key_del(t_glb *glb, char *key)
 	}
 }
 
-/* If the key is found, return the associated value. If not found, return the empty string. */
-char *env_getenv(t_env **env, const char *key)
+/*
+ * If the key is found, return the associated value. If not found, return
+ * the empty string.
+*/
+char	*env_getenv(t_env **env, const char *key)
 {
-	t_env *curr;
+	t_env	*curr;
 
 	curr = *env;
 	while (curr)

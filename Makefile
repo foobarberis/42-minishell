@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/11 10:13:36 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/11 10:38:22 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,10 +38,10 @@ SRCS		:=	builtins/blt_utils.c \
 				exec/ps_is_builtin.c \
 				exec/ps_redirects.c \
 				exec/utility_function.c \
+				misc/free.c \
 				misc/signal.c \
 				parsing/delete.c \
 				parsing/index.c \
-				parsing/memory.c \
 				parsing/parsing.c \
 				parsing/parsing_utils.c \
 				parsing/syntax.c \
@@ -64,7 +64,7 @@ MLCDIR		:=	mlc
 INCFLAGS	:= -I$(INCDIR) -I$(SYSINC) -I$(MLCDIR)/inc
 LIBFLAGS	:= -L$(MLCDIR) -lreadline -lft
 # CFLAGS	:=	-Wall -Wextra -Werror
-CFLAGS		:= -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion # -fsanitize=undefined,address
+CFLAGS		:= -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address
 LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 

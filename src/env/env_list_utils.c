@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_list_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/11 10:41:39 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/11 10:41:40 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-t_env *env_list_node_create(char *key, char *value)
+t_env	*env_list_node_create(char *key, char *value)
 {
-	t_env *new;
+	t_env	*new;
 
 	if (!key || !value)
 		return (NULL);
@@ -15,10 +27,10 @@ t_env *env_list_node_create(char *key, char *value)
 	return (new);
 }
 
-void env_list_node_destroy(t_env *node)
+void	env_list_node_destroy(t_env *node)
 {
 	if (!node)
-		return;
+		return ;
 	if (node->key)
 		free(node->key);
 	if (node->value)
@@ -26,9 +38,9 @@ void env_list_node_destroy(t_env *node)
 	free(node);
 }
 
-void env_list_node_add(t_env **env, t_env *node)
+void	env_list_node_add(t_env **env, t_env *node)
 {
-	t_env *last;
+	t_env	*last;
 
 	if (!*env)
 		*env = node;
@@ -40,10 +52,10 @@ void env_list_node_add(t_env **env, t_env *node)
 	}
 }
 
-void env_list_node_rm(t_env **env, t_env *node)
+void	env_list_node_rm(t_env **env, t_env *node)
 {
-	t_env *curr;
-	t_env *next;
+	t_env	*curr;
+	t_env	*next;
 
 	curr = *env;
 	while (curr)
@@ -60,24 +72,9 @@ void env_list_node_rm(t_env **env, t_env *node)
 	}
 }
 
-/* WARNING: The t_env **env must be free'd by the caller  */
-void env_list_free(t_env **env)
+t_env	*env_list_goto_last(t_env **env)
 {
-	t_env *curr;
-	t_env *next;
-
-	curr = *env;
-	while (curr)
-	{
-		next = curr->next;
-		env_list_node_destroy(curr);
-		curr = next;
-	}
-}
-
-t_env *env_list_goto_last(t_env **env)
-{
-	t_env *curr;
+	t_env	*curr;
 
 	curr = *env;
 	while (curr)
