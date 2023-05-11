@@ -1,27 +1,5 @@
 #include "../inc/minishell.h"
 
-static int exec(t_glb *glob)
-{
-	int       i;
-	t_cmd    *cmd;
-	t_token **final_tok_lst;
-
-	i = 0;
-	glob->multiple_cmd = find_nb_cmd(glob->tok[0]);
-	final_tok_lst = split_tok_into_cmd(glob->tok[0], glob->multiple_cmd);
-	cmd = malloc(sizeof(t_cmd) * glob->multiple_cmd);
-	ps_initialisation_cmds(cmd, glob, final_tok_lst);
-	ex_execution(&cmd[i], glob->multiple_cmd);
-	i = 0;
-	while (i < glob->multiple_cmd)
-	{
-		waitpid(cmd[i].pid, NULL, 0);
-		i++;
-	}
-	free_t_cmd(cmd, glob->multiple_cmd);
-	return (0);
-}
-
 static t_glb *msh_init(char **envp)
 {
 	t_glb *glb;
@@ -64,20 +42,20 @@ static void msh_exit(t_glb *glb)
 	rl_clear_history();
 }
 
-void panic(t_glb *glb, int code)
-{
-	msh_exit(glb);
-	if (code == CODE_MALLOC)
-		f_perror(ERR_MALLOC);
-	exit(code);
-}
-
 static void reset(t_glb *glb)
 {
 	ps_token_list_free(glb->tok);
 	glb->tok[0] = NULL;
 	free(glb->rl);
 	glb->rl = NULL;
+}
+
+void panic(t_glb *glb, int code)
+{
+	msh_exit(glb);
+	if (code == CODE_MALLOC)
+		f_perror(ERR_MALLOC);
+	exit(code);
 }
 
 int rval = 0; /* Global variable init */
