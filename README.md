@@ -15,3 +15,4 @@ Also, variable names must be of the form [a-zA-Z_]+[a-zA-Z0-9_]*, so
 `echo $USER\ -> matthieu\`.
 https://stackoverflow.com/questions/2821043/allowed-characters-in-linux-environment-variable-names
 
+ 

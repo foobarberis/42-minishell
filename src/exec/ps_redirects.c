@@ -1,80 +1,43 @@
 #include "minishell.h"
-#include "../inc/minishell.h"
 
 char	*f_strdup(const char *s1);
-int		open_input(t_input *files);
-int		open_output(t_output *files);
 
-int	ps_open_redirect(t_input *in, t_output *out, int *final_out, int *final_in)
+int	open_input(t_cmd *files)
 {
 	int	valid;
 
-	valid = open_input(in);
-	if (valid == ERROR_REDIRECT)
+	valid = -1;
+	if (files->type_in == S_INPUT)
+		valid = open(files->input, O_RDONLY);
+	else
+	{
+		here_doc(files->limiter, &files->string_here_doc);
+		files->is_here_doc = 1;
+		valid = 0;
+	}
+	if (valid < SUCCESS)
+	{
+		files->error_redirect = 1;
+		perror(files->input);
 		return (ERROR_REDIRECT);
-	*final_in = valid;
-	valid = open_output(out);
-	if (valid == ERROR_REDIRECT)
-		return (ERROR_REDIRECT);
-	*final_out = valid;
+	}
 	return (valid);
 }
 
-int	open_input(t_input *files)
+int	open_output(t_cmd *files)
 {
-	int	i;
-	int	count;
 	int	valid;
 
-	i = 0;
-	count = 0;
-	if (files)
-		count = files[i].fd_input;
 	valid = -1;
-	while (i < count)
+	if (files->type_out == S_OUTPUT)
+		valid = open(files->output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	else
+		valid = open(files->output, O_WRONLY | O_APPEND | O_CREAT, 0644);
+	if (valid < SUCCESS)
 	{
-		if (files[i].type == S_INPUT)
-			valid = open(files[i].input, O_RDONLY);
-		else
-			ps_here_doc(files->limiter);
-		if (valid < SUCCESS)
-		{
-			perror(files[i].input);
-			return (ERROR_REDIRECT);
-		}
-		if (i + 1 < count)
-			close(valid);
-		i++;
+		files->error_redirect = 1;
+		perror(files->output);
+		return (ERROR_REDIRECT);
 	}
-	if (valid == -1)
-		return (NO_REDIRECTION);
-	return (valid);
-}
-
-int	open_output(t_output *files)
-{
-	int	i;
-	int	count;
-	int	valid;
-
-	i = 0;
-	count = 0;
-	if (files)
-		count = files[i].fd_output;
-	valid = -1;
-	while (i < count)
-	{
-		if (files[i].type == S_OUTPUT)
-			valid = open(files[i].output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		else
-			valid = open(files[i].output, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		if (valid < SUCCESS)
-			return (perror(files[i].output), ERROR_REDIRECT);
-		if (i + 1 < count)
-			close(valid);
-		i++;
-	}
-	if (valid == -1)
-		return (NO_REDIRECTION);
 	return (valid);
 }

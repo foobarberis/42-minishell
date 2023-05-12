@@ -14,33 +14,17 @@ void	free_t_cmd(t_cmd *cmd, int nb_cmd)
 			free_double_array(cmd[i].args);
 		if (cmd[i].path_cmd)
 			free(cmd[i].path_cmd);
-		if (cmd[i].struct_input)
-			free_t_input(cmd[i].struct_input);
-		if (cmd[i].struct_output)
-			free_t_output(cmd[i].struct_output);
+		if (cmd[i].input)
+			free(cmd[i].input);
+		if (cmd[i].limiter)
+			free(cmd[i].limiter);
+		if (cmd[i].string_here_doc)
+			free(cmd[i].string_here_doc);
+		if (cmd[i].output)
+			free(cmd[i].output);
 		i++;
 	}
 	free(cmd);
-}
-
-void	free_t_input(t_input *input)
-{
-	if (!input)
-		return;
-	if (input->input)
-		free(input->input);
-	if (input->limiter)
-		free(input->limiter);
-	free(input);
-}
-
-void free_t_output(t_output *output)
-{
-	if (!output)
-		return;
-	if (output->output)
-		free(output->output);
-	free(output);
 }
 
 void free_double_array(char **args)

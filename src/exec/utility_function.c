@@ -145,115 +145,70 @@ void	ft_bzero(void *b, size_t n)
 	f_memset(b, 0, n);
 }
 
-char	*ft_next_keep(char *keep)
+void	*ft_calloc(size_t count, size_t size)
 {
-	size_t	i;
-	size_t	j;
-	char	*next;
+	void	*res;
 
-	i = 0;
-	j = 0;
-	if (!keep || keep[0] == '\0')
-		return (free(keep), keep = NULL, NULL);
-	while (keep[i] != '\n' && keep[i])
-		i++;
-	next = f_calloc((f_strlen(keep) - i + 1), 1);
-	if (!next)
-		return (free(keep), keep = NULL, NULL);
-	if (i != f_strlen(keep))
-		i++;
-	while (keep[i])
-		next[j++] = keep[i++];
-	return (free(keep), keep = NULL, next);
-}
-
-char	*ft_nl(char *keep)
-{
-	size_t	i;
-	char	*res;
-
-	i = 0;
-	if (!keep)
+	if (count > SIZE_MAX / size)
 		return (NULL);
-	while (keep[i] != '\n' && keep[i])
-		i++;
-	if (keep[i] == '\n')
-		i++;
-	res = f_calloc(i + 1, 1);
+	res = malloc(size * count);
 	if (!res)
 		return (NULL);
-	i = 0;
-	while (keep[i])
-	{
-		res[i] = keep[i];
-		if (keep[i] == '\n')
-			break ;
-		i++;
-	}
+	ft_bzero(res, size * count);
 	return (res);
 }
 
-char	*ft_add_str(char *keep, char *buffer, size_t r)
+size_t	ft_strlen(const char *str)
 {
 	size_t	i;
-	char	*tmp;
 
 	i = 0;
-	while (i < r)
+	while (str && str[i] != '\0')
 		i++;
-	buffer[i] = '\0';
-	tmp = f_strjoin(keep, buffer);
-	return (free(keep), keep = NULL, tmp);
+	return (i);
 }
 
-char	*seek(int fd, char *keep)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	r;
-	char	*buffer;
+	size_t	i;
+	size_t	j;
+	size_t	size_tot;
+	char	*res;
 
-	r = 1;
-	buffer = f_calloc(BUFFER_SIZE + 1, 1);
-	if (!buffer)
-		return (free(keep), keep = NULL, NULL);
-	while (r != 0)
-	{
-		r = read(fd, buffer, BUFFER_SIZE);
-		if ((int)r == -1)
-			break ;
-		keep = ft_add_str(keep, buffer, r);
-		if (!keep)
-			return (free(buffer), buffer = NULL, NULL);
-		if (f_strchr(keep, '\n'))
-			break ;
-	}
-	if (buffer != keep)
-		free(buffer);
-	if (r == 0 && keep[0] == '\0')
-		return (free(keep), keep = NULL, NULL);
-	return (keep);
+	i = -1;
+	j = 0;
+	if (!s1 && !s2)
+		return (NULL);
+	if (!s2)
+		return ((char *)s1);
+	if (!s1)
+		return ((char *)s2);
+	size_tot = ft_strlen((char *)s1) + ft_strlen((char *)s2);
+	if (size_tot >= SIZE_MAX)
+		return (NULL);
+	res = malloc(sizeof(char) * (size_tot + 1));
+	if (!res)
+		return (NULL);
+	while (s1[++i])
+		res[i] = s1[i];
+	while (s2[j])
+		res[i++] = s2[j++];
+	res[i] = '\0';
+	return (res);
 }
 
-char	*get_next_line(int fd)
+char	*ft_strchr(const char *s, int c)
 {
-	char		*next_line;
-	static char	*keep;
+	size_t	i;
 
-	if ((fd < 0 || read(fd, 0, 0) < 0) != 0)
+	i = 0;
+	while (s[i])
 	{
-		if (keep)
-			free(keep);
-		keep = NULL;
-		return (NULL);
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+		i++;
 	}
-	keep = seek(fd, keep);
-	if (!keep)
-		return (NULL);
-	next_line = ft_nl(keep);
-	keep = ft_next_keep(keep);
-	if (!next_line)
-	{
-		free(keep);
-		keep = NULL;
-	}
-	return (next_line);
+	if (c == 0)
+		return ((char *)&s[i]);
+	return (NULL);
 }

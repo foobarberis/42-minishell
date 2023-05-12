@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
+#    By: vburton <vburton@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/12 11:15:01 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/12 13:52:18 by vburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,12 +29,12 @@ SRCS		:=	builtins/blt_utils.c \
 				exec/ex_builtin.c \
 				exec/exec.c \
 				exec/ex_execution.c \
+				exec/ex_redirects.c \
 				exec/free.c \
 				exec/ps_fill_all_cmd.c \
-				exec/ps_fill_arrays_cmd_struct.c \
 				exec/ps_fill_cmd_struct.c \
 				exec/ps_get_cmd_path.c \
-				exec/ps_here_doc.c \
+				exec/here_doc.c \
 				exec/ps_is_builtin.c \
 				exec/ps_redirects.c \
 				exec/utility_function.c \
@@ -64,7 +64,7 @@ MLCDIR		:=	mlc
 INCFLAGS	:= -I$(INCDIR) -I$(SYSINC) -I$(MLCDIR)/inc
 LIBFLAGS	:= -L$(MLCDIR) -lreadline -lft
 # CFLAGS	:=	-Wall -Wextra -Werror
-CFLAGS		:= -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address
+CFLAGS		:= -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion #-fsanitize=undefined,address
 LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 
@@ -99,5 +99,23 @@ fclean: clean
 	make -C $(MLCDIR) fclean
 
 re: fclean all
+
+leaks:    all
+			echo "{" > valgrind_ignore_leaks.txt
+			echo "leak readline" >> valgrind_ignore_leaks.txt
+			echo "    Memcheck:Leak" >> valgrind_ignore_leaks.txt
+			echo "    ..." >> valgrind_ignore_leaks.txt
+			echo "    fun:readline" >> valgrind_ignore_leaks.txt
+			echo "}" >> valgrind_ignore_leaks.txt
+			echo "{" >> valgrind_ignore_leaks.txt
+			echo "    leak add_history" >> valgrind_ignore_leaks.txt
+			echo "    Memcheck:Leak" >> valgrind_ignore_leaks.txt
+			echo "    ..." >> valgrind_ignore_leaks.txt
+			echo "    fun:add_history" >> valgrind_ignore_leaks.txt
+			echo "}" >> valgrind_ignore_leaks.txt
+			valgrind --suppressions=valgrind_ignore_leaks.txt --leak-check=full \
+    				--show-leak-kinds=all --track-fds=yes \
+    				--show-mismatched-frees=yes --read-var-info=yes \
+    				--log-file=valgrind.txt ./${NAME}
 
 .PHONY:	all libft clean fclean re
