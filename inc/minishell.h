@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 13:37:10 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/12 10:46:40 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,6 @@ struct s_cmd
 /*
  * PROTOTYPES
  */
-
 void panic(t_glb *glb, int code);
 
 /* ENV */
@@ -178,6 +177,7 @@ void    env_environ_update(t_glb *glb);
 /* BUILTINS */
 int    blt_export(t_glb *glb, char **argv);
 int    blt_unset(t_glb *glb, char **argv);
+int    blt_env(t_glb *glb);
 int    blt_cd(int argc, char **argv, t_glb *glb);
 size_t blt_compute_argc(char **argv);
 

@@ -113,11 +113,14 @@ int main(int ac, char *av[], char *ep[])
 	char *argv3[5] = {"blt_unset", "TEST1", "TEST2", "TEST3", NULL};
 
 	glb = msh_init(ep);
+	blt_env(glb);
+	printf("AFTER EXPORT\n-----------\n");
 	blt_export(glb, argv1);
-	blt_export(glb, argv2);
-	printf("UNSET\n");
-	blt_unset(glb, argv3);
-	blt_export(glb, argv2);
+	blt_env(glb);
+	// blt_export(glb, argv2);
+	// printf("UNSET\n");
+	// blt_unset(glb, argv3);
+	 blt_export(glb, argv2);
 	msh_exit(glb);
 	return (EXIT_SUCCESS);
 }
