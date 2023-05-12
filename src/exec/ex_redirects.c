@@ -29,6 +29,7 @@ void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 	if (cmd[i].is_here_doc)
 	{
 		write(cmd[i].fd[1], cmd[i].string_here_doc, ft_strlen(cmd[i].string_here_doc));
+		close(cmd[i].fd[1]);
 		dup2(cmd[i].fd[0], STDIN_FILENO);
 	}
 	else

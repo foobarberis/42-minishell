@@ -9,6 +9,11 @@ int	ex_execution(t_cmd *cmd, size_t nb_cmd)
 	int	pid;
 
 	i = 0;
+//	if (nb_cmd == 1 && cmd->is_builtin)
+//	{
+//		ex_builtin(cmd->is_builtin, cmd->args);
+//		i++;
+//	}
 	while (i < nb_cmd)
 	{
 		pid = fork();
@@ -16,7 +21,10 @@ int	ex_execution(t_cmd *cmd, size_t nb_cmd)
 		if (pid == -1)
 			perror(" :fork failed\n");
 		if (pid == 0)
+		{
 			child_exec(cmd, i, nb_cmd);
+
+		}
 		parent_exec(cmd, i);
 		i++;
 	}

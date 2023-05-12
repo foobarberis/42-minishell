@@ -4,7 +4,7 @@ void	init_to_null_cmd_struct(t_cmd *cmd)
 {
 	pipe(cmd->fd);
 	cmd->pid = -1;
-	cmd->builtin = NONE;
+	cmd->is_builtin = NONE;
 	cmd->path_cmd = NULL;
 	cmd->args = NULL;
 	cmd->env = NULL;
@@ -42,7 +42,7 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 		init_to_null_cmd_struct(&cmd[i]);
 		cmd[i].env = glob->ep;
 		ps_fill_cmd_struct(&cmd[i], glob->tok[0], i);
-		cmd[i].builtin = ps_is_builtin(cmd[i].args[0]);
+		cmd[i].is_builtin = ps_is_builtin(cmd[i].args[0]);
 		i++;
 	}
 	return (0);
