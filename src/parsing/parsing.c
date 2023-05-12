@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/12 13:55:04 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/12 12:34:15 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	ps_token_list_parse(t_glb *glb)
 	ps_token_list_delete_bracket(glb->tok);
 	ps_token_list_group_words(glb);
 	glb->multiple_cmd = (int)(ps_token_list_goto_last(glb->tok)->cmd_index) + 1;
-	ps_token_list_print(glb->tok);
+	// ps_token_list_print(glb->tok);
 	return (0);
 }
 

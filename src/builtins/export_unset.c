@@ -65,6 +65,8 @@ int blt_export(t_glb *glb, char **argv)
 	size_t i;
 
 	i = 1;
+	if (!argv || !argv[1])
+		return (0);
 	if (!argv[1][0])
 		return (blt_export__print(glb), 0);
 	while (argv[i])
