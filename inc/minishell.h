@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/12 14:10:36 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/12 16:03:58 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_cmd    t_cmd;
 #define ERR_MALLOC "minishell: malloc() failed.\n"
 #define CODE_MALLOC 2
 #define SUCCESS 0
-#define ERROR -2
+#define ERROR -1
 #define ERROR_REDIRECT -3
 #define NO_REDIRECTION -4
 #define REDIRECTION 0
@@ -121,7 +121,7 @@ struct s_token
 
 struct s_cmd
 {
-	int 	error_redirect;
+	int 	is_valid;
 	int       fd[2];
 	int       pid;
 	int       is_builtin;
@@ -224,8 +224,8 @@ int ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
 void here_doc(char *limiter, char **string);
 
 /*** ps_fill_arrays_struct_cmd ***/
-void ps_get_input(t_token *tok, t_cmd *cmd, size_t index);
-void ps_get_output(t_token *tok, t_cmd *cmd, size_t index);
+int ps_get_input(t_token *tok, t_cmd *cmd, size_t index);
+int ps_get_output(t_token *tok, t_cmd *cmd, size_t index);
 int ps_get_args_cmd(t_token *tok, char **cmd, int nb_args, size_t index);
 void ps_get_here_doc(t_token *tok, t_cmd *cm, size_t index);
 

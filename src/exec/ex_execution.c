@@ -16,13 +16,13 @@ int	ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	}
 	while (i < nb_cmd)
 	{
-		while (cmd[i].error_redirect == 1)
+		while (i < nb_cmd && cmd[i].is_valid == ERROR)
 		{
-			dprintf(2,"je passe ici et lq\n");
+			parent_exec(cmd, i);
 			i++;
-			if (i == nb_cmd)
-				break ;
 		}
+		if (i == nb_cmd)
+			break ;
 		pid = fork();
 		cmd[i].pid = pid;
 		if (pid == -1)

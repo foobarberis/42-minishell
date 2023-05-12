@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+void	errors(char *cmd);
 char	*ft_grep_path(char **envp);
 char	*ft_compute_path(char **path, char *cmd);
 
@@ -23,8 +24,8 @@ int	ps_get_path_cmd(char *cmd, char **envp, char **path_cmd)
 	}
 	*path_cmd = ft_compute_path(split_path, cmd);
 	ft_free_split(split_path);
-	if (path_cmd == NULL)
-		printf(" : no such file or directory: %s\n", cmd);
+	if (*path_cmd == NULL)
+		return (errors(cmd), ERROR);
 	return (SUCCESS);
 }
 
@@ -64,4 +65,9 @@ char	*ft_compute_path(char **path, char *cmd)
 		i++;
 	}
 	return (NULL);
+}
+
+void	errors(char *cmd)
+{
+	printf("Minishell : command not found: %s\n", cmd);
 }
