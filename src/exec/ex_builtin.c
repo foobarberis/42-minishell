@@ -6,8 +6,8 @@ void	ex_builtin(t_glb *glb, int builtin, char **arg)
 		blt_echo(arg);
 	// else if (builtin == CD)
 	// 	blt_cd(arg);
-	// else if (builtin == PWD)
-	// 	blt_pwd();
+	else if (builtin == PWD)
+	 	blt_pwd();
 	else if (builtin == EXPORT)
 		blt_export(glb, arg);
 	else if (builtin == UNSET)
