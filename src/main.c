@@ -91,7 +91,7 @@ int main(int ac, char *av[], char *ep[])
 			continue;
 		}
 		exec(glb);
-		reset(glb, buf);
+		reset(glb);
 	}
 	msh_exit(glb);
 	return (EXIT_SUCCESS);

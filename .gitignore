@@ -10,3 +10,4 @@
 !*.xlsx
 !Makefile
 !.gitignore
+.idea

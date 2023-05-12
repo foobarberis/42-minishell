@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/12 13:52:57 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/12 14:10:36 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,8 @@ int   parsing(t_glb *glb);
 void sigint_handler(int sig);
 
 /* EXEC */
+int exec(t_glb *glob);
+
 /*** pe_is_builtin ***/
 int ps_is_builtin(char *cmd);
 
@@ -235,10 +237,10 @@ int	open_output(t_cmd *files);
 int	open_input(t_cmd *files);
 
 /*** ex_builtin ***/
-void ex_builtin(int builtin, char **arg);
+void ex_builtin(t_glb *glb, int builtin, char **arg);
 
 /*** ex_execution ***/
-int ex_execution(t_cmd *cmd, size_t nb_cmd);
+int ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd);
 
 /*** ex_redirection ***/
 void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);

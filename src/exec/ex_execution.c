@@ -1,19 +1,19 @@
 #include "../inc/minishell.h"
 
-void	child_exec(t_cmd *cmd, size_t i, size_t nb_cmd);
+void	child_exec(t_glb *glb,t_cmd *cmd, size_t i, size_t nb_cmd);
 void	parent_exec(t_cmd *cmd, size_t i);
 
-int	ex_execution(t_cmd *cmd, size_t nb_cmd)
+int	ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 {
 	size_t	i;
 	int	pid;
 
 	i = 0;
-//	if (nb_cmd == 1 && cmd[i]->is_builtin)
-//	{
-//		ex_builtin(cmd[i]->is_builtin, cmd[i]->args);
-//		i++;
-//	}
+	if (nb_cmd == 1 && cmd[i].is_builtin)
+	{
+		ex_builtin(glb, cmd[i].is_builtin, cmd[i].args);
+		i++;
+	}
 	while (i < nb_cmd)
 	{
 		while (cmd[i].error_redirect == 1)
@@ -28,7 +28,7 @@ int	ex_execution(t_cmd *cmd, size_t nb_cmd)
 		if (pid == -1)
 			perror(" :fork failed\n");
 		if (pid == 0)
-			child_exec(cmd, i, nb_cmd);
+			child_exec(glb, cmd, i, nb_cmd);
 		parent_exec(cmd, i);
 		i++;
 	}
@@ -56,7 +56,7 @@ void	parent_exec(t_cmd *cmd, size_t i)
 		close(cmd[i - 1].fd[0]);
 }
 
-void	child_exec(t_cmd *cmd, size_t i, size_t nb_cmd)
+void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 {
 	if (cmd[i].final_input < REDIRECTION && cmd[i].final_output < REDIRECTION)
 		nothing_to_redirect(cmd, i, nb_cmd);
@@ -71,9 +71,9 @@ void	child_exec(t_cmd *cmd, size_t i, size_t nb_cmd)
 		close(cmd[i - 1].fd[0]);
 	close(cmd[i].fd[0]);
 	close (cmd[i].fd[1]);
-//	if (cmd[i].is_builtin)
-//		ex_builtin(cmd[i].is_builtin, cmd[i].args);
-//	else
+	if (cmd[i].is_builtin)
+		ex_builtin(glb, cmd[i].is_builtin, cmd[i].args);
+	else
 		execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env);
 	exit(1);
 }
