@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:41:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 12:25:30 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/12 10:07:28 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ t_env	*env_list_node_create(char *key, char *value)
 {
 	t_env	*new;
 
-	if (!key || !value)
+	// printf("key = %s, value = %s\n", key, value);
+	if (!key)
 		return (NULL);
 	new = malloc(sizeof(t_env));
 	if (!new)
@@ -33,8 +34,6 @@ void	env_list_node_destroy(t_env *node)
 		return ;
 	if (node->key)
 		free(node->key);
-	if (node->value)
-		free(node->value);
 	free(node);
 }
 

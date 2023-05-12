@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:42:19 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:43:34 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/12 10:41:04 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,37 +29,45 @@ size_t	env_list_get_size(t_env **env)
 
 char	*env_join_key_value(t_env *node)
 {
-	char	*p;
-	char	*q;
+	char	*tmp;
+	char	*new;
 
-	p = f_strjoin(node->key, "=");
-	if (!p)
+	new = f_strjoin(node->key, "=");
+	if (!new)
 		return (NULL);
-	q = f_strjoin(p, node->value);
-	return (free(p), q);
+	if (node->value)
+		return (tmp = f_strjoin(new, node->value), free(new), tmp);
+	return (new);
 }
 
-void	env_envp_update(t_glb *glb)
+static char	**env_environ_list_to_array(t_env **env)
 {
+	size_t	i;
 	char	**new;
 	t_env	*curr;
-	size_t	i;
 
-	i = env_list_get_size(glb->env);
-	new = malloc((i + 1) * sizeof(char *));
+	i = env_list_get_size(env);
+	new = malloc(sizeof(char *) * (i + 1));
 	if (!new)
-		panic(glb, CODE_MALLOC);
+		return (NULL);
 	new[i] = NULL;
 	i = 0;
-	curr = glb->env[0];
+	curr = *env;
 	while (curr)
 	{
 		new[i] = env_join_key_value(curr);
 		if (!new[i++])
-			return (env_environ_free(new), panic(glb, CODE_MALLOC));
+			return (env_environ_free(new), NULL);
 		curr = curr->next;
 	}
+	return (new);
+}
+
+void	env_environ_update(t_glb *glb)
+{
 	if (glb->environ)
 		env_environ_free(glb->environ);
-	glb->environ = new;
+	glb->environ = env_environ_list_to_array(glb->env);
+	if (!glb->environ)
+		panic(glb, CODE_MALLOC);
 }

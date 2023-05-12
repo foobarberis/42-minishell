@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/10 13:32:35 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/11 13:37:10 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void   env_list_key_add(t_glb *glb, char *key);
 void   env_list_key_del(t_glb *glb, char *key);
 char  *env_join_key_value(t_env *node);
 void   env_environ_free(char **envp);
-void    env_envp_update(t_glb *glb);
+void    env_environ_update(t_glb *glb);
 
 /* BUILTINS */
 int    blt_export(t_glb *glb, char **argv);

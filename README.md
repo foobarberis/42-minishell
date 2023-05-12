@@ -1,6 +1,7 @@
 # 42-minishell
 
 - TODO: Run parsing related tests from minishell-test-cases.pdf
+- TODO: Add "real" error messages for parsing errors.
 - TODO: Implement proper signal handling.
 
 Unlike Bash, `echo [$HOME]` should not expand since `[` is actually a

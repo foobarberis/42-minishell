@@ -16,7 +16,7 @@ static t_glb *msh_init(char **envp)
 	glb->environ = NULL;
 	glb->rl = NULL;
 	env_list_from_array(glb, envp);
-	env_envp_update(glb);
+	env_environ_update(glb);
 	return (glb);
 }
 
@@ -37,7 +37,7 @@ static void msh_exit(t_glb *glb)
 		free(glb->tok);
 	}
 	if (glb->environ)
-		env_environ_free(glb->environ);
+ 		env_environ_free(glb->environ);
 	free(glb);
 	rl_clear_history();
 }
@@ -50,8 +50,15 @@ static void reset(t_glb *glb)
 	glb->rl = NULL;
 }
 
+#include <execinfo.h>
 void panic(t_glb *glb, int code)
 {
+	void  *callstack[128];
+	int    i, frames = backtrace(callstack, 128);
+	char **strs = backtrace_symbols(callstack, frames);
+	for (i = 0; i < frames; ++i)
+		printf("%s\n", strs[i]);
+	free(strs);
 	msh_exit(glb);
 	if (code == CODE_MALLOC)
 		f_perror(ERR_MALLOC);
@@ -101,12 +108,12 @@ int main(int ac, char *av[], char *ep[])
 	(void) ac;
 	(void) av;
 	t_glb *glb;
-	char *argv1[5] = {"blt_export", "0TEST1=hello", "TEST2=world", "TEST3=!", NULL};
+	char *argv1[5] = {"blt_export", "TEST1", "TEST2=world", "TEST3=!", NULL};
 	char *argv2[3] = {"blt_export", "", NULL};
 	char *argv3[5] = {"blt_unset", "TEST1", "TEST2", "TEST3", NULL};
 
 	glb = msh_init(ep);
-	// blt_export(glb, argv1);
+	blt_export(glb, argv1);
 	blt_export(glb, argv2);
 	printf("UNSET\n");
 	blt_unset(glb, argv3);

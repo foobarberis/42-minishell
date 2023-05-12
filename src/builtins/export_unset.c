@@ -50,7 +50,10 @@ static void blt_export__print(t_glb *glb)
 	arr = blt_export__copy_sort(glb);
 	while (arr[i])
 	{
-		printf("declare -x %s=\"%s\"\n", arr[i]->key, arr[i]->value);
+		if (arr[i]->value)
+			printf("declare -x %s=\"%s\"\n", arr[i]->key, arr[i]->value);
+		else
+			printf("declare -x %s\n", arr[i]->key);
 		i++;
 	}
 	free(arr);

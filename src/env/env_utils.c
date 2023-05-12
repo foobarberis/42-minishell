@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:41:44 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:42:15 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/12 10:10:13 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	env_list_is_valid_id(char *s)
 	return (true);
 }
 
-int	env_split_key_value(char **arr, char *s)
+/* int	env_split_key_value(char **arr, char *s)
 {
 	char	*p;
 	char	*q;
@@ -36,15 +36,28 @@ int	env_split_key_value(char **arr, char *s)
 	if (!p)
 		return (1);
 	q = f_strchr(p, '=');
-	if (q)
-		*q++ = 0;
 	arr[0] = f_strdup(p);
 	if (!arr[0])
 		return (free(p), 1);
+	if (!q)
+		return (arr[1] = NULL, free(p), 0);
 	arr[1] = f_strdup(q);
 	if (!arr[1])
 		return (free(arr[0]), free(p), 1);
 	free(p);
+	return (0);
+} */
+
+int	env_split_key_value(char **arr, char *s)
+{
+	arr[0] = f_strdup(s);
+	if (!arr[0])
+		return (1);
+	arr[1] = f_strchr(arr[0], '=');
+	if (arr[1])
+		*(arr[1])++ = 0;
+	// printf("arr[0] :: %s\n", arr[0]);
+	// printf("arr[1] :: %s\n", arr[1]);
 	return (0);
 }
 
@@ -68,15 +81,12 @@ void	env_list_from_array(t_glb *glb, char **ep)
 
 	while (*ep)
 	{
-		arr[0] = NULL;
-		arr[1] = NULL;
 		if (env_split_key_value(arr, *ep))
 			panic(glb, CODE_MALLOC);
 		tmp = env_list_node_create(arr[0], arr[1]);
 		if (!tmp)
 		{
 			free(arr[0]);
-			free(arr[1]);
 			panic(glb, CODE_MALLOC);
 		}
 		env_list_node_add(glb->env, tmp);

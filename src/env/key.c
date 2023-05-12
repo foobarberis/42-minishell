@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:43:40 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:44:30 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/12 10:34:01 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,12 @@ void	env_list_key_add(t_glb *glb, char *key)
 	curr = env_list_key_search(glb->env, tmp[0]);
 	if (curr)
 	{
-		if (curr->value)
-			free(curr->value);
 		curr->value = tmp[1];
 		free(tmp[0]);
 	}
 	else
 		env_list_key_add__add(glb, tmp[0], tmp[1]);
-	env_envp_update(glb);
+	env_environ_update(glb);
 }
 
 void	env_list_key_del(t_glb *glb, char *key)
@@ -57,13 +55,13 @@ void	env_list_key_del(t_glb *glb, char *key)
 	if (curr)
 	{
 		env_list_node_rm(glb->env, curr);
-		env_envp_update(glb);
+		env_environ_update(glb);
 	}
 }
 
 /*
  * If the key is found, return the associated value. If not found, return
- * the empty string.
+ * the empty string. WARNING: This functions uses strdup, the caller must free.
 */
 char	*env_getenv(t_env **env, const char *key)
 {

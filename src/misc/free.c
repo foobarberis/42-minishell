@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:37:44 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:43:15 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/12 10:35:13 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ void	env_list_free(t_env **env)
 	}
 }
 
-/* This function free's envp. */
-void	env_environ_free(char **envp)
+/* This function free's environ. */
+void	env_environ_free(char **environ)
 {
 	size_t	i;
 
 	i = 0;
-	while (envp[i])
-		free(envp[i++]);
-	free(envp);
+	while (environ[i])
+		free(environ[i++]);
+	free(environ);
 }
