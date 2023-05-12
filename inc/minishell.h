@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/12 12:46:19 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/12 13:06:41 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ int    blt_unset(t_glb *glb, char **argv);
 int    blt_env(t_glb *glb);
 int    blt_echo(char **argv);
 int    blt_pwd(void);
+int blt_exit(char **argv);
 int    blt_cd(int argc, char **argv, t_glb *glb);
 size_t blt_compute_argc(char **argv);
 

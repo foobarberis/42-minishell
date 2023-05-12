@@ -14,6 +14,6 @@ void	ex_builtin(t_glb *glb, int builtin, char **arg)
 		blt_unset(glb, arg);
 	else if (builtin == ENV)
 		blt_env(glb);
-	// else if (builtin == EXIT)
-	// 	blt_exit();
+	else if (builtin == EXIT)
+	 	blt_exit(arg);
 }
