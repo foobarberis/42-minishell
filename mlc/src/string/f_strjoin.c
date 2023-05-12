@@ -25,8 +25,12 @@ char	*f_strjoin(char const *s1, char const *s2)
 	size_t	l2;
 	char	*p;
 
-	if (!s1 || !s2)
+	if (!s1 && !s2)
 		return (NULL);
+	if (!s1)
+		return ((char *)s2);
+	if (!s2)
+		return ((char *)s1);
 	l1 = f_strlen(s1);
 	l2 = f_strlen(s2);
 	p = malloc(l1 + l2 + 1);

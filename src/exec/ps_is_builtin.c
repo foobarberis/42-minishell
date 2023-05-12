@@ -1,5 +1,4 @@
 #include "../inc/minishell.h"
-#include "../inc/minishell.h"
 
 int	ps_is_builtin(char *cmd)
 {

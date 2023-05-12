@@ -60,6 +60,7 @@ void panic(t_glb *glb, int code)
 }
 
 int rval = 0; /* Global variable init */
+
 int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
@@ -89,7 +90,7 @@ int main(int ac, char *av[], char *ep[])
 			reset(glb);
 			continue;
 		}
-		// exec(glb);
+		exec(glb);
 		reset(glb);
 	}
 	msh_exit(glb);

@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /* https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html#index-exit */
-https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html
+// https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html
 int blt_exit(char **argv)
 {
 	if (!argv)
