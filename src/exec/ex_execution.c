@@ -9,22 +9,26 @@ int	ex_execution(t_cmd *cmd, size_t nb_cmd)
 	int	pid;
 
 	i = 0;
-//	if (nb_cmd == 1 && cmd->is_builtin)
+//	if (nb_cmd == 1 && cmd[i]->is_builtin)
 //	{
-//		ex_builtin(cmd->is_builtin, cmd->args);
+//		ex_builtin(cmd[i]->is_builtin, cmd[i]->args);
 //		i++;
 //	}
 	while (i < nb_cmd)
 	{
+		while (cmd[i].error_redirect == 1)
+		{
+			dprintf(2,"je passe ici et lq\n");
+			i++;
+			if (i == nb_cmd)
+				break ;
+		}
 		pid = fork();
 		cmd[i].pid = pid;
 		if (pid == -1)
 			perror(" :fork failed\n");
 		if (pid == 0)
-		{
 			child_exec(cmd, i, nb_cmd);
-
-		}
 		parent_exec(cmd, i);
 		i++;
 	}
@@ -67,6 +71,9 @@ void	child_exec(t_cmd *cmd, size_t i, size_t nb_cmd)
 		close(cmd[i - 1].fd[0]);
 	close(cmd[i].fd[0]);
 	close (cmd[i].fd[1]);
-	execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env);
+//	if (cmd[i].is_builtin)
+//		ex_builtin(cmd[i].is_builtin, cmd[i].args);
+//	else
+		execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env);
 	exit(1);
 }

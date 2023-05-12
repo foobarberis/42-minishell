@@ -3,6 +3,7 @@
 void	init_to_null_cmd_struct(t_cmd *cmd)
 {
 	pipe(cmd->fd);
+	cmd->error_redirect = 0;
 	cmd->pid = -1;
 	cmd->is_builtin = NONE;
 	cmd->path_cmd = NULL;

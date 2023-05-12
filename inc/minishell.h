@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/12 09:30:49 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/12 11:21:21 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ struct s_token
 
 struct s_cmd
 {
+	int 	error_redirect;
 	int       fd[2];
 	int       pid;
 	int       is_builtin;

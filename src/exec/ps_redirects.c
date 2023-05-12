@@ -17,11 +17,10 @@ int	open_input(t_cmd *files)
 	}
 	if (valid < SUCCESS)
 	{
+		files->error_redirect = 1;
 		perror(files->input);
 		return (ERROR_REDIRECT);
 	}
-	if (valid == -1)
-		return (NO_REDIRECTION);
 	return (valid);
 }
 
@@ -35,8 +34,10 @@ int	open_output(t_cmd *files)
 	else
 		valid = open(files->output, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (valid < SUCCESS)
-		return (perror(files->output), ERROR_REDIRECT);
-	if (valid == -1)
-		return (NO_REDIRECTION);
+	{
+		files->error_redirect = 1;
+		perror(files->output);
+		return (ERROR_REDIRECT);
+	}
 	return (valid);
 }

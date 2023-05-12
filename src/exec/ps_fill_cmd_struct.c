@@ -65,6 +65,8 @@ void	ps_get_input(t_token *tok, t_cmd *cmd, size_t index)
 			cmd->limiter = NULL;
 			cmd->is_here_doc = 0;
 			cmd->final_input = open_input(cmd);
+			if (cmd->final_input == ERROR_REDIRECT)
+				break ;
 		}
 		else if (tok->type == D_INPUT && tok->cmd_index == index)
 		{
@@ -97,6 +99,8 @@ void	ps_get_output(t_token *tok, t_cmd *cmd, size_t index)
 			cmd->output = f_strdup(tok->word);
 			cmd->type_out = tok->type;
 			cmd->final_output = open_output(cmd);
+			if (cmd->final_output == ERROR_REDIRECT)
+				break ;
 		}
 		tok = tok->next;
 	}
