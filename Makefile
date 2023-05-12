@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/12 10:25:05 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/12 11:15:01 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ MLCDIR		:=	mlc
 INCFLAGS	:= -I$(INCDIR) -I$(SYSINC) -I$(MLCDIR)/inc
 LIBFLAGS	:= -L$(MLCDIR) -lreadline -lft
 # CFLAGS	:=	-Wall -Wextra -Werror
-CFLAGS		:= -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion # -fsanitize=undefined,address
+CFLAGS		:= -g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address
 LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 

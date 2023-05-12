@@ -53,12 +53,6 @@ static void reset(t_glb *glb)
 #include <execinfo.h>
 void panic(t_glb *glb, int code)
 {
-	void  *callstack[128];
-	int    i, frames = backtrace(callstack, 128);
-	char **strs = backtrace_symbols(callstack, frames);
-	for (i = 0; i < frames; ++i)
-		printf("%s\n", strs[i]);
-	free(strs);
 	msh_exit(glb);
 	if (code == CODE_MALLOC)
 		f_perror(ERR_MALLOC);
@@ -111,16 +105,18 @@ int main(int ac, char *av[], char *ep[])
 	char *argv1[5] = {"blt_export", "TEST1", "TEST2=world", "TEST3=!", NULL};
 	char *argv2[3] = {"blt_export", "", NULL};
 	char *argv3[5] = {"blt_unset", "TEST1", "TEST2", "TEST3", NULL};
+	char *argv4[5] = {"blt_unset", "-n", "hello", "world!", NULL};
 
 	glb = msh_init(ep);
-	blt_env(glb);
-	printf("AFTER EXPORT\n-----------\n");
-	blt_export(glb, argv1);
-	blt_env(glb);
+	// blt_env(glb);
+	// printf("AFTER EXPORT\n-----------\n");
+	// blt_export(glb, argv1);
+	// blt_env(glb);
 	// blt_export(glb, argv2);
 	// printf("UNSET\n");
 	// blt_unset(glb, argv3);
-	 blt_export(glb, argv2);
+	// blt_export(glb, argv2);
+	blt_echo(av);
 	msh_exit(glb);
 	return (EXIT_SUCCESS);
 }

@@ -2,7 +2,17 @@
 
 static bool contains_valid_option(char *s)
 {
-	return (true);
+	if (f_strlen(s) < 2)
+		return (false);
+	if ((*s == '-') && (*(s + 1) == 'n'))
+	{
+		s++;
+		while (*s && *s == 'n')
+			s++;
+	}
+	if (!*s)
+		return (true);
+	return (false);
 }
 
 /* https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html#index-echo */
@@ -11,7 +21,32 @@ static bool contains_valid_option(char *s)
 int blt_echo(char **argv)
 {
 	size_t i;
-	bool newline;
+	bool   newline;
+
+	if (!argv || !argv[1])
+		return (0);
+	i = 1;
+	newline = true;
+	while (contains_valid_option(argv[i]))
+	{
+		newline = false;
+		i++;
+	}
+	while (argv[i])
+	{
+		printf("%s", argv[i++]);
+		if (argv[i])
+			printf(" ");
+	}
+	if (newline)
+		printf("\n");
+	return (0);
+}
+
+/* int blt_echo(int argc, char **argv)
+{
+	size_t i;
+	bool   newline;
 
 	if (!argv)
 		return (0);
@@ -19,10 +54,15 @@ int blt_echo(char **argv)
 	newline = contains_valid_option(argv[1]);
 	if (newline)
 		i++;
-	while (argv[i])
-		if (!contains_valid_option(argv[i]))
-			f_printf("%s", argv[i++]);
+	while (argc > 0)
+	{
+		printf("%s", argv[0]);
+		argc--;
+		argv++;
+		if (argc > 0)
+			putchar(' ');
+	}
 	if (newline)
 		f_printf("\n");
 	return (0);
-}
+} */

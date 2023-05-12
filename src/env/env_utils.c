@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:41:44 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/12 10:10:13 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/12 11:22:01 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ int	env_split_key_value(char **arr, char *s)
 	arr[1] = f_strchr(arr[0], '=');
 	if (arr[1])
 		*(arr[1])++ = 0;
-	// printf("arr[0] :: %s\n", arr[0]);
-	// printf("arr[1] :: %s\n", arr[1]);
 	return (0);
 }
 
