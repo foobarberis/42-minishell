@@ -60,7 +60,7 @@ void panic(t_glb *glb, int code)
 }
 
 int rval = 0; /* Global variable init */
-/* int main(int ac, char *av[], char *ep[])
+int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
 	(void) av;
@@ -92,31 +92,6 @@ int rval = 0; /* Global variable init */
 		// exec(glb);
 		reset(glb);
 	}
-	msh_exit(glb);
-	return (EXIT_SUCCESS);
-} */
-
-/* TEST */
-int main(int ac, char *av[], char *ep[])
-{
-	(void) ac;
-	(void) av;
-	t_glb *glb;
-	char *argv1[5] = {"blt_export", "TEST1", "TEST2=world", "TEST3=!", NULL};
-	char *argv2[3] = {"blt_export", "", NULL};
-	char *argv3[5] = {"blt_unset", "TEST1", "TEST2", "TEST3", NULL};
-	char *argv4[5] = {"blt_unset", "-n", "hello", "world!", NULL};
-
-	glb = msh_init(ep);
-	// blt_env(glb);
-	// printf("AFTER EXPORT\n-----------\n");
-	// blt_export(glb, argv1);
-	// blt_env(glb);
-	// blt_export(glb, argv2);
-	// printf("UNSET\n");
-	// blt_unset(glb, argv3);
-	// blt_export(glb, argv2);
-	blt_echo(av);
 	msh_exit(glb);
 	return (EXIT_SUCCESS);
 }
