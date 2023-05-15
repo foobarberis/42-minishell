@@ -9,6 +9,7 @@ int	ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	size_t	i;
 
 	i = 0;
+	dprintf(2, "is builtin = %d\n", cmd[i].is_builtin);
 	if (nb_cmd == 1 && cmd[i].is_builtin)
 	{
 		ex_builtin(glb, cmd[i].is_builtin, cmd[i].args);
@@ -16,10 +17,18 @@ int	ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	}
 	while (i < nb_cmd)
 	{
+		while (i < nb_cmd && cmd[i].is_valid > 0)
+		{
+			rval = cmd[i].is_valid;
+			parent_exec(cmd, i);
+			i++;
+		}
+		if (i == nb_cmd)
+			break;
 		i = ex_no_builtin(glb, cmd, i, nb_cmd);
 		i++;
 	}
-	if (cmd[i - 1].fd[0])
+	if (i > 0 && cmd[i - 1].fd[0])
 		close(cmd[i - 1].fd[0]);
 	return (SUCCESS);
 }
@@ -28,13 +37,7 @@ size_t	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 {
 	int	pid;
 
-	while (i < nb_cmd && cmd[i].is_valid == ERROR)
-	{
-		parent_exec(cmd, i);
-		i++;
-	}
-	if (i == nb_cmd)
-		return (i);
+	rval = 0;
 	pid = fork();
 	cmd[i].pid = pid;
 	if (pid == -1)
