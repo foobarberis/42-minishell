@@ -140,24 +140,6 @@ void	ft_free_split(char **array)
 	}
 }
 
-void	ft_bzero(void *b, size_t n)
-{
-	f_memset(b, 0, n);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*res;
-
-	if (count > SIZE_MAX / size)
-		return (NULL);
-	res = malloc(size * count);
-	if (!res)
-		return (NULL);
-	ft_bzero(res, size * count);
-	return (res);
-}
-
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
@@ -180,10 +162,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 && !s2)
 		return (NULL);
 	if (!s2)
-		return ((char *)s1);
+		return ((char *) s1);
 	if (!s1)
-		return ((char *)s2);
-	size_tot = ft_strlen((char *)s1) + ft_strlen((char *)s2);
+		return ((char *) s2);
+	size_tot = ft_strlen((char *) s1) + ft_strlen((char *) s2);
 	if (size_tot >= SIZE_MAX)
 		return (NULL);
 	res = malloc(sizeof(char) * (size_tot + 1));
@@ -195,20 +177,4 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		res[i++] = s2[j++];
 	res[i] = '\0';
 	return (res);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == (char)c)
-			return ((char *)&s[i]);
-		i++;
-	}
-	if (c == 0)
-		return ((char *)&s[i]);
-	return (NULL);
 }
