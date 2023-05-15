@@ -2,6 +2,7 @@
 
 int	exec(t_glb *glob)
 {
+	int status;
 	size_t	i;
 	t_cmd	*cmd;
 
@@ -13,7 +14,9 @@ int	exec(t_glb *glob)
 	i = 0;
 	while (i < glob->multiple_cmd)
 	{
-		waitpid(cmd[i].pid, NULL, 0);
+		waitpid(cmd[i].pid, &status, 0);
+		if (WIFEXITED(status))
+			g_rval = WEXITSTATUS(status);
 		i++;
 	}
 	free_t_cmd(cmd, (int)glob->multiple_cmd);

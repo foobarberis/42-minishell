@@ -9,7 +9,6 @@ int	ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	size_t	i;
 
 	i = 0;
-	dprintf(2, "is builtin = %d\n", cmd[i].is_builtin);
 	if (nb_cmd == 1 && cmd[i].is_builtin)
 	{
 		ex_builtin(glb, cmd[i].is_builtin, cmd[i].args);
@@ -17,14 +16,14 @@ int	ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	}
 	while (i < nb_cmd)
 	{
-		while (i < nb_cmd && cmd[i].is_valid > 0)
-		{
-			g_rval = cmd[i].is_valid;
-			parent_exec(cmd, i);
-			i++;
-		}
-		if (i == nb_cmd)
-			break;
+//		while (i < nb_cmd && cmd[i].is_valid > 0)
+//		{
+//			g_rval = cmd[i].is_valid;
+//			parent_exec(cmd, i);
+//			i++;
+//		}
+//		if (i == nb_cmd)
+//			break;
 		i = ex_no_builtin(glb, cmd, i, nb_cmd);
 		i++;
 	}
@@ -51,6 +50,7 @@ void	parent_exec(t_cmd *cmd, size_t i)
 {
 	if (cmd[i].final_input >= REDIRECTION && cmd[i].final_output > REDIRECTION)
 	{
+
 		if (cmd[i].is_here_doc == 0)
 			close (cmd[i].final_input);
 		close(cmd[i].final_output);
@@ -66,9 +66,11 @@ void	parent_exec(t_cmd *cmd, size_t i)
 	if (i > 0)
 		close(cmd[i - 1].fd[0]);
 }
-
+#include <errno.h>
 void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 {
+	if (cmd[i].is_valid)
+		exit(cmd[i].is_valid);
 	if (cmd[i].final_input < REDIRECTION && cmd[i].final_output < REDIRECTION)
 		nothing_to_redirect(cmd, i, nb_cmd);
 	else if (cmd[i].final_input >= REDIRECTION && \
