@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   f_putnbr_base.c                                    :+:      :+:    :+:   */
+/*   f_putnbr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 16:35:37 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/01 10:32:12 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/13 15:11:26 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @param base The base to convert to.
  * @return The number of characters printed.
  */
-int	f_putnbr_base(uint64_t n, char *base)
+ssize_t	f_uputnbr(int fd, unsigned int n, char *base)
 {
 	int		i;
 	size_t	l;
@@ -28,14 +28,21 @@ int	f_putnbr_base(uint64_t n, char *base)
 	i = 0;
 	r = 0;
 	l = f_strlen(base);
-	if (!n)
-		return ((int)write(STDOUT_FILENO, &base[0], 1));
-	while (n)
+	while (1)
 	{
 		num[i++] = base[n % l];
 		n /= l;
+		if (!n)
+			break ;
 	}
 	while (--i >= 0)
-		r += write(STDOUT_FILENO, &num[i], 1);
-	return ((int)r);
+		r += write(fd, &num[i], 1);
+	return (r);
+}
+
+ssize_t	f_sputnbr(int fd, int n, char *base)
+{
+	if (n < 0)
+		return (write(fd, "-", 1) + f_uputnbr(fd, f_abs(n), base));
+	return (f_uputnbr(fd, n, base));
 }

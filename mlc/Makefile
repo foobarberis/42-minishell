@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/16 17:06:24 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/01 11:00:05 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/13 16:57:51 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,10 @@ SRCS		:=	ctype/f_isalnum.c \
 				ctype/f_isupper.c \
 				misc/f_abs.c \
 				misc/f_file_to_array.c \
-				stdio/f_perror.c \
+				stdio/f_dprintf.c \
 				stdio/f_printf.c \
-				stdio/f_putnbr_base.c \
+				stdio/printf_utils.c \
+				stdio/f_putnbr.c \
 				stdlib/f_atof.c \
 				stdlib/f_atoi.c \
 				stdlib/f_calloc.c \
@@ -49,7 +50,6 @@ CC			:=	cc
 RM			:=	rm
 
 CFLAGS		:=	-Wall -Wextra -Werror -O3
-DFLAGS		:=	-g3 -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address
 LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 
