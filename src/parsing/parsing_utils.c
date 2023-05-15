@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:32:38 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:35:24 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/15 12:30:20 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ps_token_list_from_array(t_token **tok, char *s)
 		buf[0] = *s++;
 		tmp = ps_token_list_node_create(buf);
 		if (!tmp)
-			return (f_perror(ERR_MALLOC), 1);
+			return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 		ps_token_list_node_add(tok, tmp);
 	}
 	return (0);

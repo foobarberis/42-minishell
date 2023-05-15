@@ -1,7 +1,5 @@
 # 42-minishell
 
-- TODO: Write error messages on STDERR
-- TODO: Update mlc
 - TODO: Run parsing related tests from minishell-test-cases.pdf
 - TODO: Add "real" error messages for parsing errors.
 - TODO: Implement proper signal handling.

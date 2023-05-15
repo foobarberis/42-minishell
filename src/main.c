@@ -54,7 +54,7 @@ void panic(t_glb *glb, int code)
 {
 	msh_exit(glb);
 	if (code == CODE_MALLOC)
-		f_perror(ERR_MALLOC);
+		f_dprintf(STDERR_FILENO, ERR_MALLOC);
 	exit(code);
 }
 
@@ -77,7 +77,7 @@ int main(int ac, char *av[], char *ep[])
 			continue;
 		if (!ps_line_has_balanced_quotes(glb->rl) || glb->rl[0] == '|')
 		{
-			f_perror(ERR_SYNTAX);
+			f_dprintf(STDERR_FILENO, ERR_SYNTAX);
 			continue;
 		}
 		add_history(glb->rl);

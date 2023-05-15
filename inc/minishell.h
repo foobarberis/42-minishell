@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/15 12:25:25 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/15 12:31:16 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ int    blt_unset(t_glb *glb, char **argv);
 int    blt_env(t_glb *glb);
 int    blt_echo(char **argv);
 int    blt_pwd(void);
-void   blt_exit(t_glb *glb, int argc, char **argv);
+int    blt_exit(t_glb *glb, int argc, char **argv);
 int    blt_cd(int argc, char **argv, t_glb *glb);
 size_t blt_compute_argc(char **argv);
 
@@ -184,7 +184,6 @@ void     ps_token_list_free(t_token **tok);
 t_token *ps_token_list_goto_last(t_token **tok);
 
 int   ismeta(int c);
-int   islegal(int c);
 char *f_itoa(intmax_t n);
 bool  ps_line_has_balanced_quotes(char *s);
 int   ps_token_list_from_array(t_token **tok, char *s);
