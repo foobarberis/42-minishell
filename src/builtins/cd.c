@@ -6,12 +6,12 @@ int blt_cd(int argc, char **argv, t_glb *glb)
 	char *path;
 
 	if (argc > 2)
-		return (f_printf("minishell: cd: too many arguments\n"));
+		return (f_dprintf(STDERR_FILENO, "minishell: cd: too many arguments\n"));
 	if (!argv[1])
 	{
 		path = env_getenv(glb->env, "HOME");
 		if (!path || !*path)
-			return (f_printf("minishell: cd: HOME not set\n"));
+			return (f_dprintf(STDERR_FILENO, "minishell: cd: HOME not set\n"));
 		else
 			chdir(path);
 	}

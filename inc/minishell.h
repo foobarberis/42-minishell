@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/12 16:04:51 by vburton          ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/05/15 12:44:18 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
@@ -20,7 +21,7 @@
 #include <signal.h>            /* signal, sigaction etc. */
 #include <stdbool.h>           /* bool */
 #include <stddef.h>            /* size_t, int64_t etc. */
-#include <stdio.h>             /* DEBUG */
+#include <stdio.h>             /* printf */
 #include <stdlib.h>            /* malloc, free */
 #include <string.h>            /* DEBUG */
 #include <sys/stat.h>          /* ?? */
@@ -107,7 +108,7 @@ struct s_glb
 	t_env   **env;
 	t_token **tok;
 	char     *rl;
-	size_t  multiple_cmd;
+	size_t    multiple_cmd;
 };
 
 struct s_token
@@ -164,13 +165,15 @@ void   env_list_key_add(t_glb *glb, char *key);
 void   env_list_key_del(t_glb *glb, char *key);
 char  *env_join_key_value(t_env *node);
 void   env_environ_free(char **envp);
-void    env_environ_update(t_glb *glb);
+void   env_environ_update(t_glb *glb);
 
 /* BUILTINS */
 int    blt_export(t_glb *glb, char **argv);
 int    blt_unset(t_glb *glb, char **argv);
 int    blt_env(t_glb *glb);
 int    blt_echo(char **argv);
+int    blt_pwd(void);
+int    blt_exit(t_glb *glb, int argc, char **argv);
 int    blt_cd(int argc, char **argv, t_glb *glb);
 size_t blt_compute_argc(char **argv);
 
@@ -182,10 +185,7 @@ void     ps_token_list_node_rm(t_token **tok, t_token *node);
 void     ps_token_list_free(t_token **tok);
 t_token *ps_token_list_goto_last(t_token **tok);
 
-int ps_token_list_check_for_null(t_token **tok);
-
 int   ismeta(int c);
-int   islegal(int c);
 char *f_itoa(intmax_t n);
 bool  ps_line_has_balanced_quotes(char *s);
 int   ps_token_list_from_array(t_token **tok, char *s);
@@ -231,11 +231,11 @@ int ps_get_args_cmd(t_token *tok, char **cmd, int nb_args, size_t index);
 void ps_get_here_doc(t_token *tok, t_cmd *cm, size_t index);
 
 /*** ps_fill_cmd_struct ***/
-int	count_type(t_token *tok, int type1, int type2, size_t i);
+int count_type(t_token *tok, int type1, int type2, size_t i);
 
 /*** pe_redirect ***/
-int	open_output(t_cmd *files);
-int	open_input(t_cmd *files);
+int open_output(t_cmd *files);
+int open_input(t_cmd *files);
 
 /*** ex_builtin ***/
 void ex_builtin(t_glb *glb, int builtin, char **arg);
@@ -244,17 +244,17 @@ void ex_builtin(t_glb *glb, int builtin, char **arg);
 int ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd);
 
 /*** ex_redirection ***/
-void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
-void	in_out_redirect(t_cmd *cmd, size_t i);
-void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
-void	out_redirect(t_cmd *cmd, size_t i);
+void nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
+void in_out_redirect(t_cmd *cmd, size_t i);
+void in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
+void out_redirect(t_cmd *cmd, size_t i);
 
 /*** utility_fonctions ***/
 char **ft_split(char const *s, char c);
 int    ft_strncmp(const char *s1, const char *s2, size_t n);
 void   ft_free_split(char **array);
-char	*ft_strjoin(char const *s1, char const *s2);
-size_t	ft_strlen(const char *str);
+char  *ft_strjoin(char const *s1, char const *s2);
+size_t ft_strlen(const char *str);
 void   print_double_array(char **array, char *title);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 

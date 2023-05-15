@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 16:59:04 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/06 08:12:09 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/13 16:57:04 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdint.h>
+# include <stdarg.h>
 
 /* STRING */
 /* standard */
@@ -48,9 +49,13 @@ double		f_atof(const char *s);
 /* STDIO */
 /* standard */
 int			f_printf(const char *s, ...);
-ssize_t		f_perror(const char *s);
+int			f_dprintf(int fd, const char *s, ...);
 /* non-standard */
-int			f_putnbr_base(uint64_t n, char *base);
+ssize_t		f_uputnbr(int fd, unsigned int n, char *base);
+ssize_t		f_sputnbr(int fd, int n, char *base);
+ssize_t		printf__putchar(int fd, char c);
+ssize_t		printf__putstr(int fd, char *s);
+ssize_t		printf__arg(int fd, char c, va_list *ap);
 
 /* CTYPE */
 /* standard */

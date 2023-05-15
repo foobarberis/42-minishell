@@ -72,7 +72,7 @@ int blt_export(t_glb *glb, char **argv)
 	while (argv[i])
 	{
 		if (!env_list_is_valid_id(argv[i]))
-			return (f_perror(ERR_ID), 1);
+			return (f_dprintf(STDERR_FILENO, ERR_ID), 1);
 		else
 			env_list_key_add(glb, argv[i]);
 		i++;
