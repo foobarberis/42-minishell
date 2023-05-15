@@ -35,7 +35,8 @@ int	ps_get_args_cmd(t_token *tok, char **cmd, int nb_args, size_t index)
 		return (ERROR);
 	return (SUCCESS);
 }
-void ps_get_here_doc(t_token *tok, t_cmd *cmd, size_t index)
+
+void	ps_get_here_doc(t_token *tok, t_cmd *cmd, size_t index)
 {
 	while (tok)
 	{
@@ -68,7 +69,7 @@ int	ps_get_input(t_token *tok, t_cmd *cmd, size_t index)
 			cmd->is_here_doc = 0;
 			cmd->final_input = open_input(cmd);
 			if (cmd->final_input == ERROR_REDIRECT)
-				return (ERROR) ;
+				return (ERROR);
 		}
 		else if (tok->type == D_INPUT && tok->cmd_index == index)
 		{
@@ -104,7 +105,7 @@ int	ps_get_output(t_token *tok, t_cmd *cmd, size_t index)
 			cmd->final_output = open_output(cmd);
 		}
 		if (cmd->final_output == ERROR_REDIRECT)
-			return (ERROR) ;
+			return (ERROR);
 		tok = tok->next;
 	}
 	return (SUCCESS);

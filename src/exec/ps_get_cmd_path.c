@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-void	errors(char *cmd);
+int		check_slash(char *cmd);
+int		check_cmd(char *cmd);
 char	*ft_grep_path(char **envp);
 char	*ft_compute_path(char **path, char *cmd);
 
@@ -12,9 +13,11 @@ int	ps_get_path_cmd(char *cmd, char **envp, char **path_cmd)
 
 	if (cmd == NULL)
 	{
-		printf(": command not found:\n");
+		printf(": command not foundtest:\n");
 		return (ERROR);
 	}
+	if (check_cmd(cmd) == ERROR)
+		return (ERROR);
 	path = ft_grep_path(envp);
 	split_path = ft_split(path, ':');
 	if (split_path == NULL || path == NULL)
@@ -25,7 +28,7 @@ int	ps_get_path_cmd(char *cmd, char **envp, char **path_cmd)
 	*path_cmd = ft_compute_path(split_path, cmd);
 	ft_free_split(split_path);
 	if (*path_cmd == NULL)
-		return (errors(cmd), ERROR);
+		return (printf("Minishell : %s: command not found\n", cmd), ERROR);
 	return (SUCCESS);
 }
 
@@ -67,7 +70,43 @@ char	*ft_compute_path(char **path, char *cmd)
 	return (NULL);
 }
 
-void	errors(char *cmd)
+int	check_slash(char *cmd)
 {
-	printf("Minishell : command not found: %s\n", cmd);
+	int	i;
+	int	slash;
+
+	i = 0;
+	slash = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '/')
+			slash++;
+		i++;
+	}
+	return (slash);
+}
+
+int	check_cmd(char *cmd)
+{
+	int	directory;
+	int	error;
+
+	directory = check_slash(cmd);
+	error = 0;
+	if (!f_strcmp(cmd, "."))
+	{
+		dprintf(2, "Minishell: .: filename argument required\n");
+		error = ERROR;
+	}
+	else if (access(cmd, X_OK) && directory > 0)
+	{
+		perror(cmd);
+		error = ERROR;
+	}
+	else if (opendir(cmd))
+	{
+		dprintf(2, "Minishell: %s: Is a directory\n", cmd);
+		error = ERROR;
+	}
+	return (error);
 }

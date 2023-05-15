@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:44:30 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/12 16:03:58 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/12 16:04:51 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #include <sys/types.h>         /* ?? */
 #include <sys/wait.h>          /* ?? */
 #include <unistd.h>            /* write, sleep, usleep */
+#include <dirent.h>            /* opendir */
 
 extern int rval; /* return value of the last command or pipeline */
 
@@ -255,7 +256,7 @@ void   ft_free_split(char **array);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *str);
 void   print_double_array(char **array, char *title);
-char  *get_next_line(int fd);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
 /*** free ***/
 void free_t_cmd(t_cmd *cmd, int nb_cmd);

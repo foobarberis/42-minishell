@@ -32,7 +32,7 @@ int	ps_fill_cmd_struct(t_cmd *cmd, t_token *tok, size_t index_cmd)
 		error = -1;
 	if (ps_get_output(tok, cmd, index_cmd) == ERROR)
 		error = -1;
-	if (error == -1 || ps_get_path_cmd(cmd->args[0], cmd->env, &cmd->path_cmd) == ERROR)
+	if (ps_get_path_cmd(cmd->args[0], cmd->env, &cmd->path_cmd) == ERROR)
 		error = -1;
 	if (error == 0)
 		return (SUCCESS);
