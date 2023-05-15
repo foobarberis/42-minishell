@@ -8,6 +8,6 @@ int blt_exit(char **argv)
 		return (0);
 	if (blt_compute_argc(argv) != 2)
 		return (f_perror("minishell: exit: too many arguments.\n"), 1);
-	rval = f_atoi(argv[1]);
+	g_rval = f_atoi(argv[1]);
 	return (0);
 }

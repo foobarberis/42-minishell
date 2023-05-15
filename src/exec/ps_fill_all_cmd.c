@@ -50,8 +50,6 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 		init_to_null_cmd_struct(&cmd[i]);
 		cmd[i].env = glob->environ;
 		cmd[i].is_valid = ps_fill_cmd_struct(&cmd[i], glob->tok[0], i);
-//		if (cmd[i].is_valid == SUCCESS)
-//			cmd[i].is_builtin = ps_is_builtin(cmd[i].args[0]);
 		i++;
 	}
 	return (0);

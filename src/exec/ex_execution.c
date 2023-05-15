@@ -19,7 +19,7 @@ int	ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	{
 		while (i < nb_cmd && cmd[i].is_valid > 0)
 		{
-			rval = cmd[i].is_valid;
+			g_rval = cmd[i].is_valid;
 			parent_exec(cmd, i);
 			i++;
 		}
@@ -37,7 +37,6 @@ size_t	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 {
 	int	pid;
 
-	rval = 0;
 	pid = fork();
 	cmd[i].pid = pid;
 	if (pid == -1)

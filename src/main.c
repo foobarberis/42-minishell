@@ -59,7 +59,7 @@ void panic(t_glb *glb, int code)
 	exit(code);
 }
 
-int rval = 0; /* Global variable init */
+int g_rval = 0; /* Global variable init */
 
 int main(int ac, char *av[], char *ep[])
 {

@@ -29,7 +29,7 @@
 #include <unistd.h>            /* write, sleep, usleep */
 #include <dirent.h>            /* opendir */
 
-extern int rval; /* return value of the last command or pipeline */
+extern int g_rval; /* return value of the last command or pipeline */
 
 typedef struct s_token  t_token;
 typedef struct s_env    t_env;
