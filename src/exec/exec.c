@@ -13,7 +13,7 @@ int exec(t_glb *glob)
 	i = 0;
 	while (i < glob->multiple_cmd)
 	{
-		dprintf(2,"je passe ici et lA\n");
+		// dprintf(2,"je passe ici et lA\n");
 		waitpid(cmd[i].pid, NULL, 0);
 		i++;
 	}

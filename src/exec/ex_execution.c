@@ -18,7 +18,7 @@ int	ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	{
 		while (cmd[i].error_redirect == 1)
 		{
-			dprintf(2,"je passe ici et lq\n");
+			// dprintf(2,"je passe ici et lq\n");
 			i++;
 			if (i == nb_cmd)
 				break ;

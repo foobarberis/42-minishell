@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:38:50 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:39:35 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/15 11:35:21 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ps_token_list_expand_variables(t_glb *glb)
 		if (curr->word[0] == '$' && curr->word[1] && curr->quote != SIMPLE)
 		{
 			if (curr->word[1] == '?')
-				value = f_itoa(rval);
+				value = f_itoa(g_rval);
 			else
 				value = env_getenv(glb->env, &curr->word[1]);
 			if (!value)

@@ -50,7 +50,6 @@ static void reset(t_glb *glb)
 	glb->rl = NULL;
 }
 
-#include <execinfo.h>
 void panic(t_glb *glb, int code)
 {
 	msh_exit(glb);
