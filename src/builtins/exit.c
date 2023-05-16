@@ -50,7 +50,7 @@ int blt_exit(t_glb *glb, int argc, char **argv)
 
 	n = 0;
 	if (argc > 2)
-		return (g_rval = 1, f_dprintf(STDERR_FILENO, "minishell: exit: too many arguments.\n"), 1);
+		return (g_rval = 1, f_dprintf(STDERR_FILENO, "exit\nminishell: exit: too many arguments.\n"), 1);
 	else if (!argv[1])
 		g_rval = 0;
 	else
@@ -58,9 +58,10 @@ int blt_exit(t_glb *glb, int argc, char **argv)
 		n = f_exit_atoi(argv[1]);
 		tmp = f_itoa(n);
 		if (!isnum(argv[1]) || (f_strcmp(argv[1], tmp) != 0))
-			return (free(tmp), g_rval = 2, f_dprintf(STDERR_FILENO, "minishell: exit: numeric argument required.\n"), 1);
+			return (free(tmp), g_rval = 2, f_dprintf(STDERR_FILENO, "exit\nminishell: exit: numeric argument required.\n"), 1);
 		g_rval = (int)f_abs(n % 255);
 		free(tmp);
 	}
+	printf("exit\n");
 	return (0);
 }

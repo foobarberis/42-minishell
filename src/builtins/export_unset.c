@@ -72,12 +72,11 @@ int blt_export(t_glb *glb, char **argv)
 	while (argv[i])
 	{
 		if (!env_list_is_valid_id(argv[i]))
-			return (f_dprintf(STDERR_FILENO, ERR_ID), 1);
-		else
-			env_list_key_add(glb, argv[i]);
+			return (f_dprintf(STDERR_FILENO, "minishell: export: `%s': not a valid identifier"), g_rval = 1, 1);
+		env_list_key_add(glb, argv[i]);
 		i++;
 	}
-	return (0);
+	return (g_rval = 0, 0);
 }
 
 /* https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html#index-unset */
@@ -88,5 +87,5 @@ int blt_unset(t_glb *glb, char **argv)
 	i = 1;
 	while (argv[i])
 		env_list_key_del(glb, argv[i++]);
-	return (0);
+	return (g_rval = 0, 0);
 }
