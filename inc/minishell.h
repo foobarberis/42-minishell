@@ -82,17 +82,9 @@ enum e_redirect
 /*
  * STRUCT
  */
-struct s_env
-{
-	char  *key;
-	char  *value;
-	t_env *next;
-};
-
 struct s_glb
 {
-	char    **environ;
-	t_env   **env;
+	char    **env;
 	t_token **tok;
 	char     *rl;
 	size_t    multiple_cmd;
@@ -134,25 +126,15 @@ struct s_cmd
 void panic(t_glb *glb, int code);
 
 /* ENV */
-t_env *env_list_node_create(char *key, char *value);
-void   env_list_node_destroy(t_env *node);
-void   env_list_node_add(t_env **env, t_env *node);
-void   env_list_node_rm(t_env **env, t_env *node);
-void   env_list_free(t_env **env);
-t_env *env_list_goto_last(t_env **env);
-size_t env_list_get_size(t_env **env);
-
-bool   env_list_is_valid_id(char *s);
-int    env_split_key_value(char **arr, char *s);
-char  *env_getenv(t_env **env, const char *key);
-void   env_list_print(t_env **env);
-void   env_list_from_array(t_glb *glb, char **ep);
-t_env *env_list_key_search(t_env **env, char *key);
-void   env_list_key_add(t_glb *glb, char *key);
-void   env_list_key_del(t_glb *glb, char *key);
-char  *env_join_key_value(t_env *node);
-void   env_environ_free(char **envp);
-void   env_environ_update(t_glb *glb);
+int	env_strcmp(const char *s1, const char *s2);
+size_t env_array_get_size(char **env);
+void env_array_destroy(char **env, size_t size);
+char **env_array_realloc(char **env, size_t size);
+char *env_getenv(char **env, char *s);
+int env_key_search(char **env, char *key);
+int env_key_add(t_glb *glb, char *key);
+void env_key_del(t_glb *glb, char *key);
+void env_array_print(char **env);
 
 /* BUILTINS */
 int blt_export(t_glb *glb, char **argv);
