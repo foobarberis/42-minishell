@@ -1,20 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/05/15 12:44:18 by mbarberi         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
 #include "mlc.h"
+#include <dirent.h>            /* opendir */
 #include <fcntl.h>             /* ?? */
 #include <readline/history.h>  /* history readline */
 #include <readline/readline.h> /* readline */
@@ -28,7 +16,6 @@
 #include <sys/types.h>         /* ?? */
 #include <sys/wait.h>          /* ?? */
 #include <unistd.h>            /* write, sleep, usleep */
-#include <dirent.h>            /* opendir */
 
 extern int g_rval; /* return value of the last command or pipeline */
 
@@ -123,22 +110,22 @@ struct s_token
 
 struct s_cmd
 {
-	int 	is_valid;
-	int       fd[2];
-	int       pid;
-	int       is_builtin;
-	char    **env;
-	char    **args;
-	char     *path_cmd;
-	int       final_input;
-	int       final_output;
-	char	*input;
-	char	*limiter;
-	int		type_in;
-	int		is_here_doc;
-	char 	*string_here_doc;
-	char *output;
-	int   type_out;
+	int    is_valid;
+	int    fd[2];
+	int    pid;
+	int    is_builtin;
+	char **env;
+	char **args;
+	char  *path_cmd;
+	int    final_input;
+	int    final_output;
+	char  *input;
+	char  *limiter;
+	int    type_in;
+	int    is_here_doc;
+	char  *string_here_doc;
+	char  *output;
+	int    type_out;
 };
 
 /*
@@ -168,14 +155,14 @@ void   env_environ_free(char **envp);
 void   env_environ_update(t_glb *glb);
 
 /* BUILTINS */
-int    blt_export(t_glb *glb, char **argv);
-int    blt_unset(t_glb *glb, char **argv);
-int    blt_env(t_glb *glb);
-int    blt_echo(char **argv);
-int    blt_pwd(void);
-int    blt_exit(t_glb *glb, int argc, char **argv);
-int    blt_cd(int argc, char **argv, t_glb *glb);
-size_t blt_compute_argc(char **argv);
+int blt_export(t_glb *glb, char **argv);
+int blt_unset(t_glb *glb, char **argv);
+int blt_env(t_glb *glb);
+int blt_echo(char **argv);
+int blt_pwd(void);
+int blt_exit(t_glb *glb, int argc, char **argv);
+int blt_cd(t_glb *glb, int argc, char **argv);
+int blt_compute_argc(char **argv);
 
 /* PARSING */
 t_token *ps_token_list_node_create(char *s);
@@ -225,9 +212,9 @@ int ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
 void here_doc(char *limiter, char **string);
 
 /*** ps_fill_arrays_struct_cmd ***/
-int ps_get_input(t_token *tok, t_cmd *cmd, size_t index);
-int ps_get_output(t_token *tok, t_cmd *cmd, size_t index);
-int ps_get_args_cmd(t_token *tok, char **cmd, int nb_args, size_t index);
+int  ps_get_input(t_token *tok, t_cmd *cmd, size_t index);
+int  ps_get_output(t_token *tok, t_cmd *cmd, size_t index);
+int  ps_get_args_cmd(t_token *tok, char **cmd, int nb_args, size_t index);
 void ps_get_here_doc(t_token *tok, t_cmd *cm, size_t index);
 
 /*** ps_fill_cmd_struct ***/
@@ -256,7 +243,7 @@ void   ft_free_split(char **array);
 char  *ft_strjoin(char const *s1, char const *s2);
 size_t ft_strlen(const char *str);
 void   print_double_array(char **array, char *title);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int    ft_strncmp(const char *s1, const char *s2, size_t n);
 
 /*** free ***/
 void free_t_cmd(t_cmd *cmd, int nb_cmd);

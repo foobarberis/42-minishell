@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-size_t blt_compute_argc(char **argv)
+int blt_compute_argc(char **argv)
 {
-	size_t i;
+	int i;
 
 	i = 0;
 	if (!argv)

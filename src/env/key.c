@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:43:40 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/12 10:34:01 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/16 12:54:42 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	env_list_key_add(t_glb *glb, char *key)
 	if (curr)
 	{
 		curr->value = tmp[1];
+		printf("got here\n");
 		free(tmp[0]);
 	}
 	else
