@@ -1,14 +1,29 @@
 #include "minishell.h"
 
-static void blt_export__sort(t_env **arr)
+bool	env_is_valid_id(char *s)
 {
-	size_t i;
-	t_env *tmp;
+	if (!*s)
+		return (false);
+	if (f_isdigit(s[0]))
+		return (false);
+	while (*s && *s != '=')
+	{
+		if (!(f_isalnum(*s) || *s == '_'))
+			return (false);
+		s++;
+	}
+	return (true);
+}
+
+static void blt_export__sort(char **arr)
+{
+	int i;
+	char *tmp;
 
 	i = 0;
 	while (arr[i] && arr[i + 1])
 	{
-		if (arr[i + 1] && (f_strcmp(arr[i]->key, arr[i + 1]->key) > 0))
+		if (arr[i + 1] && (env_strcmp(arr[i], arr[i + 1]) > 0))
 		{
 			tmp = arr[i];
 			arr[i] = arr[i + 1];
@@ -19,44 +34,46 @@ static void blt_export__sort(t_env **arr)
 	}
 }
 
-static t_env **blt_export__copy_sort(t_glb *glb)
+static char **blt_export__copy_sort(t_glb *glb)
 {
-	size_t i;
-	t_env **arr;
-	t_env *curr;
+	int i;
+	char **new;
 
-	curr = *(glb->env);
-	i = env_list_get_size(glb->env);
-	arr = malloc((i + 1) * sizeof(t_env *));
-	if (!arr)
-		panic(glb, CODE_MALLOC);
-	arr[i] = NULL;
 	i = 0;
-	while (curr)
+	new = f_calloc(env_array_get_size(glb->env) + 1, sizeof(char *));
+	if (!new)
+		panic(glb, CODE_MALLOC);
+	while (glb->env[i])
 	{
-		arr[i++] = curr;
-		curr = curr->next;
+		new[i] = glb->env[i];
+		i++;
 	}
-	blt_export__sort(arr);
-	return (arr);
+	blt_export__sort(new);
+	return (new);
 }
 
 static void blt_export__print(t_glb *glb)
 {
-	size_t i;
-	t_env **arr;
+	int i;
+	char *p;
+	char **new;
 
 	i = 0;
-	arr = blt_export__copy_sort(glb);
-	while (arr[i])
+	new = blt_export__copy_sort(glb);
+	while (new[i])
 	{
-		if (arr[i]->value)
-			printf("declare -x %s=\"%s\"\n", arr[i]->key, arr[i]->value);
+		p = f_strchr(new[i], '=');
+		if (p)
+		{
+			*p = 0;
+			printf("declare -x %s=\"%s\"\n", new[i], p + 1);
+			*p = '=';
+		}
 		else
-			printf("declare -x %s\n", arr[i]->key);
+			printf("declare -x %s\n", new[i]);
 		i++;
 	}
-	free(arr);
+	free(new);
 }
 
 /* https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html#index-export */
@@ -71,9 +88,9 @@ int blt_export(t_glb *glb, char **argv)
 		return (blt_export__print(glb), 0);
 	while (argv[i])
 	{
-		if (!env_list_is_valid_id(argv[i]))
+		if (!env_is_valid_id(argv[i]))
 			return (f_dprintf(STDERR_FILENO, "minishell: export: `%s': not a valid identifier"), g_rval = 1, 1);
-		env_list_key_add(glb, argv[i]);
+		env_key_add(glb, argv[i]);
 		i++;
 	}
 	return (g_rval = 0, 0);
@@ -86,6 +103,6 @@ int blt_unset(t_glb *glb, char **argv)
 
 	i = 1;
 	while (argv[i])
-		env_list_key_del(glb, argv[i++]);
+		env_key_del(glb, argv[i++]); /* WARNING: Must match the key and only the key, i.e unset("SHELL") is ok but unset("SHELL=/bin/bash") should do nothing */
 	return (g_rval = 0, 0);
 }

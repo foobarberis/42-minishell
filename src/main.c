@@ -8,15 +8,11 @@ static t_glb *msh_init(char **envp)
 	if (!glb)
 		panic(glb, CODE_MALLOC);
 	glb->tok = malloc(sizeof(t_token *));
-	glb->env = malloc(sizeof(t_env *));
+	glb->env = env_array_realloc(envp, env_array_get_size(envp));
 	if (!glb->tok || !glb->env)
 		panic(glb, CODE_MALLOC);
 	glb->tok[0] = NULL;
-	glb->env[0] = NULL;
-	glb->environ = NULL;
 	glb->rl = NULL;
-	env_list_from_array(glb, envp);
-	env_environ_update(glb);
 	return (glb);
 }
 
@@ -26,18 +22,13 @@ static void msh_exit(t_glb *glb)
 		return;
 	if (glb->rl)
 		free(glb->rl);
-	if (glb->env)
-	{
-		env_list_free(glb->env);
-		free(glb->env);
-	}
 	if (glb->tok)
 	{
 		ps_token_list_free(glb->tok);
 		free(glb->tok);
 	}
-	if (glb->environ)
- 		env_environ_free(glb->environ);
+	if (glb->env)
+ 		env_array_destroy(glb->env, env_array_get_size(glb->env));
 	free(glb);
 	rl_clear_history();
 }

@@ -2,14 +2,14 @@
 
 int blt_env(t_glb *glb)
 {
-	t_env *curr;
+	int i;
 
-	curr = *(glb->env);
-	while (curr)
+	i = 0;
+	while (glb->env[i])
 	{
-		if (curr->value)
-			printf("%s=%s\n", curr->key, curr->value);
-		curr = curr->next;
+		if (f_strchr(glb->env[i], '='))
+			printf("%s\n", glb->env[i]);
+		i++;
 	}
 	return (0);
 }

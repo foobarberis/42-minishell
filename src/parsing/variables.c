@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:38:50 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/15 13:48:50 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/16 16:48:47 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	ps_token_list_recreate_variables(t_glb *glb)
 	}
 }
 
+/* FIXME: Secure this */
 void	ps_token_list_expand_variables(t_glb *glb)
 {
 	char	*value;
@@ -67,14 +68,14 @@ void	ps_token_list_expand_variables(t_glb *glb)
 			if (curr->word[1] == '?')
 			{
 				value = f_itoa(g_rval);
-				g_rval = 0;
+				g_rval = 0; // FIXME: Maybe move this some place else
 			}
 			else
 				value = env_getenv(glb->env, &curr->word[1]);
 			if (!value)
 				panic(glb, CODE_MALLOC);
-			free(curr->word);
-			curr->word = value;
+
+			curr->word = f_strdup(value);
 		}
 		curr = curr->next;
 	}

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+         #
+#    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/15 14:46:33 by vburton          ###   ########.fr        #
+#    Updated: 2023/05/16 15:50:55 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,7 @@ SRCS		:=	builtins/blt_utils.c \
 				builtins/export_unset.c \
 				builtins/pwd.c \
 				env/environ.c \
-				env/env_list_utils.c \
-				env/env_utils.c \
-				env/key.c \
+				env/environ_utils.c \
 				exec/ex_builtin.c \
 				exec/exec.c \
 				exec/ex_execution.c \

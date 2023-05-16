@@ -29,6 +29,7 @@ typedef struct s_cmd    t_cmd;
 /*
  * DEFINE
  */
+#define KEY_NOT_FOUND -1
 #define ERR_SYNTAX "minishell: syntax error.\n"
 #define ERR_PARSING "minishell: parsing error.\n"
 #define ERR_ID "minishell: export: not a valid identifier.\n"
@@ -128,13 +129,14 @@ void panic(t_glb *glb, int code);
 /* ENV */
 int	env_strcmp(const char *s1, const char *s2);
 size_t env_array_get_size(char **env);
-void env_array_destroy(char **env, size_t size);
+void   env_array_destroy(char **env, size_t size);
 char **env_array_realloc(char **env, size_t size);
-char *env_getenv(char **env, char *s);
-int env_key_search(char **env, char *key);
-int env_key_add(t_glb *glb, char *key);
-void env_key_del(t_glb *glb, char *key);
-void env_array_print(char **env);
+int    env_key_get_pos(char **env, char *key);
+
+char  *env_getenv(char **env, char *s);
+int    env_key_add(t_glb *glb, char *key);
+void   env_key_del(t_glb *glb, char *key);
+void   env_array_print(char **env);
 
 /* BUILTINS */
 int blt_export(t_glb *glb, char **argv);

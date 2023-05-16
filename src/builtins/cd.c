@@ -3,7 +3,7 @@
 
 static int update_pwd(t_glb *glb)
 {
-	char *tmp;
+/* 	char *tmp;
 	char *pwd;
 	char buf[PATH_MAX];
 
@@ -17,7 +17,7 @@ static int update_pwd(t_glb *glb)
 	pwd = f_strjoin("PWD=", getcwd(buf, PATH_MAX));
 	printf("DEBUG :: %s\n", pwd);
 	env_list_key_add(glb, pwd);
-	free(pwd);
+	free(pwd); */
 	return (0);
 }
 
