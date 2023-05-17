@@ -11,7 +11,7 @@ static int update_pwd(t_glb *glb)
 	pwd = f_strjoin("OLDPWD=", tmp);
 	env_key_add(glb, pwd);
 	free(pwd);
-	pwd = f_strjoin("PWD=", getcwd(buf, PATH_MAX));
+	pwd = f_strjoin("PWD=", getcwd(buf, PATH_MAX)); /* FIXME: Secure this since getcwd can return NULL */
 	env_key_add(glb, pwd);
 	free(pwd);
 	return (0);

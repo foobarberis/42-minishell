@@ -15,7 +15,6 @@ static bool contains_valid_option(char *s)
 	return (false);
 }
 
-/* https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html#index-echo */
 int blt_echo(char **argv)
 {
 	size_t i;

@@ -8,11 +8,11 @@ static t_glb *msh_init(char **envp)
 	if (!glb)
 		panic(glb, CODE_MALLOC);
 	glb->tok = malloc(sizeof(t_token *));
-	glb->env = env_array_realloc(envp, env_array_get_size(envp));
-	if (!glb->tok || !glb->env)
-		panic(glb, CODE_MALLOC);
 	glb->tok[0] = NULL;
 	glb->rl = NULL;
+	glb->env = env_init(envp);
+	if (!glb->tok || !glb->env)
+		panic(glb, CODE_MALLOC);
 	return (glb);
 }
 

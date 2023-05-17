@@ -16,6 +16,7 @@
 #include <sys/types.h>         /* ?? */
 #include <sys/wait.h>          /* ?? */
 #include <unistd.h>            /* write, sleep, usleep */
+#include <linux/limits.h> /* PATH_MAX */
 
 extern int g_rval; /* return value of the last command or pipeline */
 
@@ -127,26 +128,28 @@ struct s_cmd
 void panic(t_glb *glb, int code);
 
 /* ENV */
-int	env_strcmp(const char *s1, const char *s2);
+int    env_strcmp(const char *s1, const char *s2);
 size_t env_array_get_size(char **env);
 void   env_array_destroy(char **env, size_t size);
 char **env_array_realloc(char **env, size_t size);
 int    env_key_get_pos(char **env, char *key);
 
-char  *env_getenv(char **env, char *s);
-int    env_key_add(t_glb *glb, char *key);
-void   env_key_del(t_glb *glb, char *key);
-void   env_array_print(char **env);
+char *env_getenv(char **env, char *s);
+int   env_key_add(t_glb *glb, char *key);
+void  env_key_del(t_glb *glb, char *key);
+char **env_init(char **envp);
 
 /* BUILTINS */
-int blt_export(t_glb *glb, char **argv);
-int blt_unset(t_glb *glb, char **argv);
-int blt_env(t_glb *glb);
-int blt_echo(char **argv);
-int blt_pwd(void);
-int blt_exit(t_glb *glb, int argc, char **argv);
-int blt_cd(t_glb *glb, int argc, char **argv);
-int blt_compute_argc(char **argv);
+bool	env_is_valid_id(char *s);
+int  blt_export(t_glb *glb, int argc, char **argv);
+void blt_export__print(t_glb *glb);
+int  blt_unset(t_glb *glb, int argc, char **argv);
+int  blt_env(t_glb *glb);
+int  blt_echo(char **argv);
+int  blt_pwd(void);
+int  blt_exit(t_glb *glb, int argc, char **argv);
+int  blt_cd(t_glb *glb, int argc, char **argv);
+int  blt_compute_argc(char **argv);
 
 /* PARSING */
 t_token *ps_token_list_node_create(char *s);
