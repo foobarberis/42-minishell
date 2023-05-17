@@ -6,11 +6,11 @@ static t_glb *msh_init(char **envp)
 
 	glb = malloc(sizeof(t_glb));
 	if (!glb)
-		panic(glb, CODE_MALLOC);
+		panic(glb, CODE_MALLOC, NULL);
 	glb->tok = malloc(sizeof(t_token *));
 	glb->env = malloc(sizeof(t_env *));
 	if (!glb->tok || !glb->env)
-		panic(glb, CODE_MALLOC);
+		panic(glb, CODE_MALLOC, NULL);
 	glb->tok[0] = NULL;
 	glb->env[0] = NULL;
 	glb->environ = NULL;
@@ -50,8 +50,10 @@ static void reset(t_glb *glb)
 	glb->rl = NULL;
 }
 
-void panic(t_glb *glb, int code)
+void panic(t_glb *glb, int code, t_cmd *cmd)
 {
+	close_fd(cmd, glb->multiple_cmd);
+	free_t_cmd(cmd, cmd->glb->multiple_cmd);
 	msh_exit(glb);
 	if (code == CODE_MALLOC)
 		f_dprintf(STDERR_FILENO, ERR_MALLOC);
@@ -82,7 +84,7 @@ int main(int ac, char *av[], char *ep[])
 		}
 		add_history(glb->rl);
 		if (ps_token_list_from_array(glb->tok, glb->rl))
-			panic(glb, EXIT_FAILURE);
+			panic(glb, EXIT_FAILURE, NULL);
 		if (parsing(glb))
 		{
 			reset(glb);

@@ -2,6 +2,8 @@
 
 int	ps_is_builtin(char *cmd)
 {
+	if (!cmd)
+		return (NONE);
 	if (f_strcmp(cmd, "echo") == 0)
 		return (ECHO);
 	else if (f_strcmp(cmd, "cd") == 0)

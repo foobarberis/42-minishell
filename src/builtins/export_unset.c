@@ -29,7 +29,7 @@ static t_env **blt_export__copy_sort(t_glb *glb)
 	i = env_list_get_size(glb->env);
 	arr = malloc((i + 1) * sizeof(t_env *));
 	if (!arr)
-		panic(glb, CODE_MALLOC);
+		panic(glb, CODE_MALLOC, NULL);
 	arr[i] = NULL;
 	i = 0;
 	while (curr)

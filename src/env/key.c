@@ -21,7 +21,7 @@ static int	env_list_key_add__add(t_glb *glb, char *key, char *value)
 	{
 		free(key);
 		free(value);
-		panic(glb, CODE_MALLOC);
+		panic(glb, CODE_MALLOC, NULL);
 	}
 	env_list_node_add(glb->env, tmp);
 	return (0);

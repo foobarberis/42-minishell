@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/05/15 12:44:18 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/17 14:19:09 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ struct s_glb
 	t_env   **env;
 	t_token **tok;
 	char     *rl;
-	size_t    multiple_cmd;
+	int    multiple_cmd;
 };
 
 struct s_token
@@ -128,23 +128,24 @@ struct s_cmd
 	int       pid;
 	int       is_builtin;
 	char    **env;
-	char    **args;
-	char     *path_cmd;
+	char    **args;					//0
+	char     *path_cmd;				//1
 	int       final_input;
 	int       final_output;
-	char	*input;
-	char	*limiter;
+	char	*input;					//2
+	char	*limiter;				//3
 	int		type_in;
 	int		is_here_doc;
-	char 	*string_here_doc;
-	char *output;
+	char 	*string_here_doc;		//4
+	char *output;					//5
 	int   type_out;
+	t_glb *glb;
 };
 
 /*
  * PROTOTYPES
  */
-void panic(t_glb *glb, int code);
+void panic(t_glb *glb, int code, t_cmd *cmd);
 
 /* ENV */
 t_env *env_list_node_create(char *key, char *value);
@@ -216,19 +217,20 @@ int exec(t_glb *glob);
 int ps_is_builtin(char *cmd);
 
 /*** pe_get_cmd_path ***/
-int ps_get_path_cmd(char *cmd, char **envp, char **path_cmd);
+char *ps_get_path_cmd(char *cmd, char **envp, char *path_cmd);
 
 /*** pe_fill_all_cmd ***/
 int ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
+void	init_to_null_cmd_struct(t_cmd *cmd);
 
 /*** ex_here_doc ***/
-void here_doc(char *limiter, char **string);
+int here_doc(char *limiter, char **string);
 
 /*** ps_fill_arrays_struct_cmd ***/
 int ps_get_input(t_token *tok, t_cmd *cmd, size_t index);
 int ps_get_output(t_token *tok, t_cmd *cmd, size_t index);
-int ps_get_args_cmd(t_token *tok, char **cmd, int nb_args, size_t index);
-void ps_get_here_doc(t_token *tok, t_cmd *cm, size_t index);
+int ps_get_args_cmd(t_token *tok, t_cmd *cmd, int nb_args, size_t index);
+int ps_get_here_doc(t_token *tok, t_cmd *cm, size_t index);
 
 /*** ps_fill_cmd_struct ***/
 int count_type(t_token *tok, int type1, int type2, size_t i);
@@ -259,6 +261,7 @@ void   print_double_array(char **array, char *title);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
 /*** free ***/
-void free_t_cmd(t_cmd *cmd, int nb_cmd);
+int free_t_cmd(t_cmd *cmd, int nb_cmd);
+void close_fd(t_cmd *cmd, int nb_cmd);
 
 #endif

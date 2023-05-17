@@ -19,6 +19,7 @@ int	exec(t_glb *glob)
 			g_rval = WEXITSTATUS(status);
 		i++;
 	}
-	free_t_cmd(cmd, (int)glob->multiple_cmd);
+	close_fd(cmd, glob->multiple_cmd);
+	free_t_cmd(cmd, glob->multiple_cmd);
 	return (0);
 }

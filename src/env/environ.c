@@ -69,5 +69,5 @@ void	env_environ_update(t_glb *glb)
 		env_environ_free(glb->environ);
 	glb->environ = env_environ_list_to_array(glb->env);
 	if (!glb->environ)
-		panic(glb, CODE_MALLOC);
+		panic(glb, CODE_MALLOC,NULL);
 }
