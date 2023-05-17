@@ -27,7 +27,7 @@ void	ps_token_list_group_words(t_glb *glb)
 		{
 			tmp = f_strjoin(curr->word, next->word);
 			if (!tmp)
-				panic(glb, CODE_MALLOC);
+				panic(glb, CODE_MALLOC, NULL);
 			free(curr->word);
 			curr->word = tmp;
 			ps_token_list_node_rm(glb->tok, next);
@@ -52,7 +52,7 @@ void	ps_token_list_recreate_words(t_glb *glb)
 		{
 			tmp = f_strjoin(curr->word, next->word);
 			if (!tmp)
-				panic(glb, CODE_MALLOC);
+				panic(glb, CODE_MALLOC, NULL);
 			free(curr->word);
 			curr->word = tmp;
 			ps_token_list_node_rm(glb->tok, next);

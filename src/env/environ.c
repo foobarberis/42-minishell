@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:41:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/17 13:11:08 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/17 13:28:33 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ int env_key_add(t_glb *glb, char *key)
 
 	s = f_strdup(key);
 	if (!s)
-		return (panic(glb, CODE_MALLOC), 1);
+		return (panic(glb, CODE_MALLOC, NULL), 1);
 	pos = env_key_get_pos(glb->env, key);
 	if (pos != KEY_NOT_FOUND)
 		return (free(glb->env[pos]), glb->env[pos] = s, 1);
 	size = env_array_get_size(glb->env) + 1;
 	new = env_array_realloc(glb->env, size);
 	if (!new)
-		return (free(s), panic(glb, CODE_MALLOC), 1);
+		return (free(s), panic(glb, CODE_MALLOC, NULL), 1);
 	env_array_destroy(glb->env, env_array_get_size(glb->env));
 	new[size - 1] = s;
 	glb->env = new;

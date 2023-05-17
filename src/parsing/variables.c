@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:38:50 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/16 17:10:17 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/17 13:27:14 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ps_token_list_recreate_variables(t_glb *glb)
 		{
 			tmp = f_strjoin(curr->word, next->word);
 			if (!tmp)
-				panic(glb, CODE_MALLOC);
+				panic(glb, CODE_MALLOC, NULL);
 			free(curr->word);
 			curr->word = tmp;
 			ps_token_list_node_rm(glb->tok, next);
@@ -80,7 +80,7 @@ void	ps_token_list_expand_variables(t_glb *glb)
 					value = f_strdup(getenv);
 			}
 			if (!value)
-				panic(glb, CODE_MALLOC);
+				panic(glb, CODE_MALLOC, NULL);
 			free(curr->word);
 			curr->word = value;
 		}

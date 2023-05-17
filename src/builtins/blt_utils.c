@@ -54,7 +54,7 @@ static char **blt_export__copy_sort(t_glb *glb)
 	i = 0;
 	new = f_calloc(env_array_get_size(glb->env) + 1, sizeof(char *));
 	if (!new)
-		panic(glb, CODE_MALLOC);
+		panic(glb, CODE_MALLOC, NULL);
 	while (glb->env[i])
 	{
 		new[i] = glb->env[i];

@@ -48,8 +48,10 @@ size_t	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 
 void	parent_exec(t_cmd *cmd, size_t i)
 {
+	dprintf(2, "final output = %d\n", cmd[i].final_output);
 	if (cmd[i].final_input >= REDIRECTION && cmd[i].final_output > REDIRECTION)
 	{
+
 		if (cmd[i].is_here_doc == 0)
 			close (cmd[i].final_input);
 		close(cmd[i].final_output);
@@ -68,6 +70,8 @@ void	parent_exec(t_cmd *cmd, size_t i)
 
 void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 {
+	if (cmd[i].is_valid)
+		exit(cmd[i].is_valid);
 	if (cmd[i].final_input < REDIRECTION && cmd[i].final_output < REDIRECTION)
 		nothing_to_redirect(cmd, i, nb_cmd);
 	else if (cmd[i].final_input >= REDIRECTION && \

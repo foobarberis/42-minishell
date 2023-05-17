@@ -14,7 +14,7 @@ int	count_type(t_token *tok, int type1, int type2, size_t i)
 	return (nb_redirect);
 }
 
-int	ps_get_args_cmd(t_token *tok, char **cmd, int nb_args, size_t index)
+int	ps_get_args_cmd(t_token *tok, t_cmd *cmd, int nb_args, size_t index)
 {
 	int	i;
 
@@ -23,20 +23,20 @@ int	ps_get_args_cmd(t_token *tok, char **cmd, int nb_args, size_t index)
 	{
 		if (tok->type == BASIC && tok->cmd_index == index)
 		{
-			cmd[i] = f_strdup(tok->word);
-			if (!cmd[i] && tok->type == BASIC)
-				return (ERROR);
+			cmd->args[i] = f_strdup(tok->word);
+			if (!cmd->args[i] && tok->type == BASIC)
+				return (CODE_MALLOC);
 			i++;
 		}
 		tok = tok->next;
 	}
-	cmd[i] = NULL;
+	cmd->args[i] = NULL;
 	if (i == 0)
 		return (ERROR);
 	return (SUCCESS);
 }
 
-void	ps_get_here_doc(t_token *tok, t_cmd *cmd, size_t index)
+int	ps_get_here_doc(t_token *tok, t_cmd *cmd, size_t index)
 {
 	while (tok)
 	{
@@ -47,12 +47,17 @@ void	ps_get_here_doc(t_token *tok, t_cmd *cmd, size_t index)
 			cmd->is_here_doc = 1;
 			cmd->final_input = 3;
 			cmd->limiter = f_strdup(tok->word);
+			if (!cmd->limiter)
+				return (CODE_MALLOC);
 			if (cmd->string_here_doc)
 				free(cmd->string_here_doc);
-			here_doc(cmd->limiter, &cmd->string_here_doc);
+			cmd->string_here_doc = NULL;
+			if (here_doc(cmd->limiter, &cmd->string_here_doc) == CODE_MALLOC)
+				return (CODE_MALLOC);
 		}
 		tok = tok->next;
 	}
+	return (SUCCESS);
 }
 
 int	ps_get_input(t_token *tok, t_cmd *cmd, size_t index)
@@ -64,6 +69,8 @@ int	ps_get_input(t_token *tok, t_cmd *cmd, size_t index)
 			if (cmd->input)
 				free(cmd->input);
 			cmd->input = f_strdup(tok->word);
+			if (!cmd->input)
+				return (CODE_MALLOC);
 			cmd->type_in = tok->type;
 			cmd->limiter = NULL;
 			cmd->is_here_doc = 0;
@@ -93,6 +100,8 @@ int	ps_get_output(t_token *tok, t_cmd *cmd, size_t index)
 			if (cmd->output)
 				free(cmd->output);
 			cmd->output = strdup(tok->word);
+			if (!cmd->output)
+				return (CODE_MALLOC);
 			cmd->type_out = tok->type;
 			cmd->final_output = open_output(cmd);
 		}
@@ -101,6 +110,8 @@ int	ps_get_output(t_token *tok, t_cmd *cmd, size_t index)
 			if (cmd->output)
 				free(cmd->output);
 			cmd->output = f_strdup(tok->word);
+			if (!cmd->output)
+				return (CODE_MALLOC);
 			cmd->type_out = tok->type;
 			cmd->final_output = open_output(cmd);
 		}

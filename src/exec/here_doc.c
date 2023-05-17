@@ -27,30 +27,39 @@ char	*ft_strdup(const char *s1)
 
 /* Voir pour changer definitivement les fonctions f_strlen, f_strdup et f_strjoin*/
 
-void	here_doc(char *limiter, char **string)
+int	here_doc(char *limiter, char **string)
 {
 	char	*line;
 	char	*buff;
 
 	*string = readline(">");
 	if (f_strcmp(*string, limiter) == 0)
-		return (free(*string));
+		return (free(*string), SUCCESS);
 	while (1)
 	{
 		line = readline(">");
 		if (line == NULL)
-			return ;
+			return (SUCCESS);
 		buff = ft_strdup(*string);
+		if (!buff)
+			return (CODE_MALLOC);
 		free(*string);
 		*string = ft_strjoin(buff, "\n");
+		if (!*string)
+			return (CODE_MALLOC);
 		free(buff);
 		if (f_strcmp(line, limiter) == 0)
 			break ;
 		buff = ft_strdup(*string);
+		if (!buff)
+			return (CODE_MALLOC);
 		free(*string);
 		*string = ft_strjoin(buff, line);
+		if (!*string)
+			return (CODE_MALLOC);
 		free(line);
 		free(buff);
 	}
 	free(line);
+	return (SUCCESS);
 }
