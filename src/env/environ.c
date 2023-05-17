@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:41:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/17 13:07:46 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/17 13:11:08 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char **env_init_base(char *path)
 	new = f_calloc(4, sizeof(char *));
 	if (!new)
 		return (NULL);
-	new[0] = NULL; // f_strjoin("PWD=", path);
+	new[0] = f_strjoin("PWD=", path);
 	if (!new[0])
 		return (free(new), NULL);
 	new[1] = f_strdup("SHLVL=1");
