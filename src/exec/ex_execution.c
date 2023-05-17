@@ -48,7 +48,6 @@ size_t	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 
 void	parent_exec(t_cmd *cmd, size_t i)
 {
-	dprintf(2, "final output = %d\n", cmd[i].final_output);
 	if (cmd[i].final_input >= REDIRECTION && cmd[i].final_output > REDIRECTION)
 	{
 

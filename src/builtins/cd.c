@@ -1,6 +1,6 @@
 #include "minishell.h"
-#include <linux/limits.h>
 
+/* FIXME: Secure this */
 static int update_pwd(t_glb *glb)
 {
 	char *tmp;
@@ -9,11 +9,16 @@ static int update_pwd(t_glb *glb)
 
 	tmp = env_getenv(glb->env, "PWD");
 	pwd = f_strjoin("OLDPWD=", tmp);
-	env_key_add(glb, pwd);
+	glb->env = env_key_add(glb->env, pwd);
 	free(pwd);
-	pwd = f_strjoin("PWD=", getcwd(buf, PATH_MAX)); /* FIXME: Secure this since getcwd can return NULL */
-	env_key_add(glb, pwd);
-	free(pwd);
+	if (!glb->env)
+		panic(glb, CODE_MALLOC, NULL);
+	pwd = f_strjoin("PWD=", getcwd(buf, PATH_MAX));
+	glb->env = env_key_add(glb->env, pwd);
+		free(pwd);
+	if (!glb->env)
+			panic(glb, CODE_MALLOC, NULL);
+
 	return (0);
 }
 
