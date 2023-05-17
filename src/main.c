@@ -52,7 +52,7 @@ void panic(t_glb *glb, int code, t_cmd *cmd)
 }
 
 int g_rval = 0; /* Global variable init */
-int main(int ac, char *av[], char *ep[])
+/* int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
 	(void) av;
@@ -82,6 +82,27 @@ int main(int ac, char *av[], char *ep[])
 			continue;
 		}
 		exec(glb);
+		reset(glb);
+	}
+	msh_exit(glb);
+	return (EXIT_SUCCESS);
+} */
+
+int main(int ac, char *av[], char *ep[])
+{
+	(void) ac;
+	(void) av;
+	t_glb *glb;
+
+	glb = msh_init(ep);
+	while (1)
+	{
+		glb->rl = readline("MSH $ ");
+		if (!glb->rl)
+			break;
+		if (!glb->rl[0])
+			continue;
+		here_doc_expand_variables(glb->env, glb->rl);
 		reset(glb);
 	}
 	msh_exit(glb);

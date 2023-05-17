@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/05/17 16:40:25 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:39:20 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ struct s_cmd
 /*
  * PROTOTYPES
  */
+char *here_doc_expand_variables(char **env, char *buf);
 void panic(t_glb *glb, int code, t_cmd *cmd);
 
 /* ENV */
