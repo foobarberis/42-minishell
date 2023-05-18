@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-char	*f_strdup(const char *s1);
-
 int	open_input(t_cmd *files)
 {
 	int	valid;

@@ -1,10 +1,36 @@
 #include "../inc/minishell.h"
 
+int		ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd);
 void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd);
 void	parent_exec(t_cmd *cmd, size_t i);
-size_t	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd);
+void	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd);
 
-int	ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
+int	exec(t_glb *glob)
+{
+	int		status;
+	int		i;
+	t_cmd	*cmd;
+
+	i = 0;
+	status = 0;
+	glob->multiple_cmd = (int)ps_token_list_goto_last(glob->tok)->cmd_index + 1;
+	cmd = malloc(sizeof(t_cmd) * glob->multiple_cmd);
+	ps_initialisation_cmds(cmd, glob);
+	ex_launch(glob, &cmd[i], glob->multiple_cmd);
+	i = 0;
+	while (i < glob->multiple_cmd)
+	{
+		waitpid(cmd[i].pid, &status, 0);
+		if (WIFEXITED(status))
+			g_rval = WEXITSTATUS(status);
+		i++;
+	}
+	close_fd(cmd, glob->multiple_cmd);
+	free_t_cmd(cmd, glob->multiple_cmd);
+	return (0);
+}
+
+int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 {
 	size_t	i;
 
@@ -23,8 +49,8 @@ int	ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 			i++;
 		}
 		if (i == nb_cmd)
-			break;
-		i = ex_no_builtin(glb, cmd, i, nb_cmd);
+			break ;
+		ex_no_builtin(glb, cmd, i, nb_cmd);
 		i++;
 	}
 	if (i > 0 && cmd[i - 1].fd[0])
@@ -32,7 +58,7 @@ int	ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	return (SUCCESS);
 }
 
-size_t	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
+void	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 {
 	int	pid;
 
@@ -41,16 +67,19 @@ size_t	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 	if (pid == -1)
 		perror(" :fork failed\n");
 	if (pid == 0)
+	{
 		child_exec(glb, cmd, i, nb_cmd);
+		close (cmd[i - 1].fd[0]);
+		panic(glb, 0, cmd);
+		exit(1);
+	}
 	parent_exec(cmd, i);
-	return (i);
 }
 
 void	parent_exec(t_cmd *cmd, size_t i)
 {
 	if (cmd[i].final_input >= REDIRECTION && cmd[i].final_output > REDIRECTION)
 	{
-
 		if (cmd[i].is_here_doc == 0)
 			close (cmd[i].final_input);
 		close(cmd[i].final_output);
@@ -88,5 +117,4 @@ void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 		ex_builtin(glb, cmd[i].is_builtin, cmd[i].args);
 	else
 		execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env);
-	exit(1);
 }

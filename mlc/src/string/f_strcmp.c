@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   f_strcmp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 10:55:53 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/01 10:59:28 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/18 14:02:03 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
  */
 int	f_strcmp(const char *s1, const char *s2)
 {
+	if (!s1 || !s2)
+		return (-1);
 	while (*s1 == *s2 && *s1)
 	{
 		s1++;

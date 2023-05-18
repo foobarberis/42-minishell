@@ -23,6 +23,8 @@ size_t	f_strlen(const char *s)
 	const char	*p;
 
 	p = s;
+	if (!s)
+		return (0);
 	while (*p)
 		p++;
 	return (p - s);

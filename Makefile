@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/17 17:22:29 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/18 13:40:38 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +25,15 @@ SRCS		:=	builtins/blt_utils.c \
 				env/environ.c \
 				env/environ_utils.c \
 				exec/ex_builtin.c \
-				exec/exec.c \
 				exec/ex_execution.c \
 				exec/ex_redirects.c \
-				exec/free.c \
+				exec/ex_free.c \
+				exec/ex_close.c \
 				exec/ps_fill_all_cmd.c \
-				exec/ps_fill_cmd_struct.c \
-				exec/ps_get_cmd_path.c \
-				exec/here_doc.c \
+				exec/ps_get_args_n_here_doc.c \
+				exec/ps_get_redirect.c \
+				exec/ps_get_path_cmd.c \
+				exec/ps_here_doc.c \
 				exec/here_doc_utils.c \
 				exec/ps_is_builtin.c \
 				exec/ps_redirects.c \
