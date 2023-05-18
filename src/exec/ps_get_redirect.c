@@ -36,7 +36,7 @@ void	ps_input_is_here_doc(const t_token *tok, t_cmd *cmd)
 	cmd->input = NULL;
 	cmd->type_in = tok->type;
 	cmd->is_here_doc = 1;
-	if (tok->quote > 0)
+	if (tok->quote == 0)
 		cmd->expand_here_doc = 1;
 }
 

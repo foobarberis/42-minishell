@@ -52,7 +52,7 @@ int	here_doc(char *limiter, char **string)
 
 int	loop(char *limiter, char ***string, char **line, char **buff)
 {
-	*line = readline(">");
+	*line = readline("> ");
 	if (*line == NULL)
 		return (SUCCESS);
 	*buff = ft_strdup(**string);

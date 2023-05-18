@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:41:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/17 16:36:39 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:01:03 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 /* https://unix.stackexchange.com/questions/292991/usage-of-as-an-environment-variable-passed-to-a-command */
 /* FIXME: Secure this */
+/* FIXME: Fix leaks */
 static char **env_init_base(char **env, char *path)
 {
 	int shlvl;
@@ -99,34 +100,3 @@ void env_key_del(char **env, char *key)
 		pos++;
 	}
 }
-
-
-/* static char **env_init_base(char *path)
-{
-	char **new;
-
-	new = f_calloc(4, sizeof(char *));
-	if (!new)
-		return (NULL);
-	new[0] = f_strjoin("PWD=", path);
-	if (!new[0])
-		return (free(new), NULL);
-	new[1] = f_strdup("SHLVL=1");
-	if (!new[1])
-		return (free(new[0]), free(new), NULL);
-	new[2] = f_strdup("_=/usr/bin/env");
-	if (!new[2])
-		return (free(new[0]), free(new[1]), free(new), NULL);
-	return (new);
-}
-
-char **env_init(char **envp)
-{
-	char path[PATH_MAX];
-
-	if (!getcwd(path, PATH_MAX))
-		return (perror("minishell: getcwd: "), NULL);
-	if (!envp[0])
-		return (env_init_base(path));
-	return (env_array_realloc(envp, env_array_get_size(envp)));
-} */

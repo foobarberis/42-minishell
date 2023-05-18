@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:16:05 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/18 12:16:06 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/18 14:42:33 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,18 @@ static char	*here_doc_unsplit(char **arr)
 
 char	*here_doc_expand_variables(char **env, char *buf)
 {
+	char	*s;
 	char	**new;
 
 	new = f_calloc(here_doc_count_words(buf) + 1, sizeof(char *));
 	if (!new)
-		return (NULL);
+		return (free(buf), NULL);
 	if (here_doc_split(new, buf))
-		return (NULL);
+		return (free(buf), NULL);
 	if (here_doc_substitute_values(env, new))
-		return (NULL);
-	return (here_doc_unsplit(new));
+		return (free(buf), NULL);
+	free(buf);
+	s = here_doc_unsplit(new);
+	env_array_destroy(new, env_array_get_size(env));
+	return (s);
 }
