@@ -39,7 +39,7 @@ static bool isnum(char *s)
 	return (true);
 }
 
-int blt_exit(t_glb *glb, int argc, char **argv)
+int blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
 {
 	char *tmp;
 	intmax_t n;
@@ -59,5 +59,5 @@ int blt_exit(t_glb *glb, int argc, char **argv)
 		g_rval = (int)f_abs(n % 256);
 		free(tmp);
 	}
-	return (0);
+	exit(SIGINT);
 }

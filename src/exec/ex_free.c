@@ -36,8 +36,10 @@ char	**ft_free_double_array(char **ptr)
 	while (ptr[i])
 	{
 		free(ptr[i]);
+		ptr[i] = NULL;
 		i++;
 	}
 	free(ptr);
+	ptr = NULL;
 	return (NULL);
 }

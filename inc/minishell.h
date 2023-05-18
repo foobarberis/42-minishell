@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/05/18 13:41:09 by mbarberi         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
@@ -162,7 +150,7 @@ int  blt_unset(t_glb *glb, int argc, char **argv);
 int  blt_env(t_glb *glb);
 int  blt_echo(char **argv);
 int  blt_pwd(void);
-int  blt_exit(t_glb *glb, int argc, char **argv);
+int  blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv);
 int  blt_cd(t_glb *glb, int argc, char **argv);
 int  blt_compute_argc(char **argv);
 
@@ -230,7 +218,7 @@ int open_output(t_cmd *files);
 int open_input(t_cmd *files);
 
 /*** ex_builtin ***/
-void ex_builtin(t_glb *glb, int builtin, char **arg);
+void ex_builtin(t_glb *glb, t_cmd * cmd, int builtin, char **arg);
 
 /*** ex_redirection ***/
 void nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
