@@ -13,7 +13,11 @@ int blt_export(t_glb *glb, int argc, char **argv)
 		if (!env_is_valid_id(argv[i]))
 			f_dprintf(STDERR_FILENO, "minishell: export: `%s': not a valid identifier\n", argv[i++]);
 		else
-			env_key_add(glb, argv[i++]);
+		{
+			glb->env = env_key_add(glb->env, argv[i++]);
+			if (!glb->env)
+				panic(glb, CODE_MALLOC, NULL);
+		}
 	}
 	return (0);
 }
@@ -29,7 +33,7 @@ int blt_unset(t_glb *glb, int argc, char **argv)
 		if (f_strchr(argv[i], '='))
 			i++;
 		else
-			env_key_del(glb, argv[i++]);
+			env_key_del(glb->env, argv[i++]);
 	}
 	return (0);
 }

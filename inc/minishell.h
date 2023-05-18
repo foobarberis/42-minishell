@@ -1,22 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/05/18 16:19:39 by vburton          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
 #include "mlc.h"
 #include <dirent.h>            /* opendir */
 #include <fcntl.h>             /* ?? */
+#include <linux/limits.h>      /* PATH_MAX */
 #include <readline/history.h>  /* history readline */
 #include <readline/readline.h> /* readline */
 #include <signal.h>            /* signal, sigaction etc. */
@@ -29,7 +17,6 @@
 #include <sys/types.h>         /* ?? */
 #include <sys/wait.h>          /* ?? */
 #include <unistd.h>            /* write, sleep, usleep */
-#include <linux/limits.h> /* PATH_MAX */
 
 extern int g_rval; /* return value of the last command or pipeline */
 
@@ -102,7 +89,7 @@ struct s_glb
 	char    **env;
 	t_token **tok;
 	char     *rl;
-	int    multiple_cmd;
+	int       multiple_cmd;
 };
 
 struct s_token
@@ -140,6 +127,7 @@ struct s_cmd
 /*
  * PROTOTYPES
  */
+char *here_doc_expand_variables(char **env, char *buf);
 void panic(t_glb *glb, int code, t_cmd *cmd);
 
 /* ENV */
@@ -149,13 +137,13 @@ void   env_array_destroy(char **env, size_t size);
 char **env_array_realloc(char **env, size_t size);
 int    env_key_get_pos(char **env, char *key);
 
-char *env_getenv(char **env, char *s);
-int   env_key_add(t_glb *glb, char *key);
-void  env_key_del(t_glb *glb, char *key);
+char  *env_getenv(char **env, char *s);
+char **env_key_add(char **env, char *key);
+void   env_key_del(char **env, char *key);
 char **env_init(char **envp);
 
 /* BUILTINS */
-bool	env_is_valid_id(char *s);
+bool env_is_valid_id(char *s);
 int  blt_export(t_glb *glb, int argc, char **argv);
 void blt_export__print(t_glb *glb);
 int  blt_unset(t_glb *glb, int argc, char **argv);
@@ -208,8 +196,8 @@ int ps_is_builtin(char *cmd);
 char *ps_get_path_cmd(char *cmd, char **envp, char *path_cmd);
 
 /*** pe_fill_all_cmd ***/
-int ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
-void	init_to_null_cmd_struct(t_cmd *cmd);
+int  ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
+void init_to_null_cmd_struct(t_cmd *cmd);
 
 /*** ex_here_doc ***/
 int here_doc(char *limiter, char **string);
@@ -244,7 +232,7 @@ int    ft_strncmp(const char *s1, const char *s2, size_t n);
 char  *ft_strjoin(char const *s1, char const *s2);
 
 /*** free ***/
-int free_t_cmd(t_cmd *cmd, int nb_cmd);
+int  free_t_cmd(t_cmd *cmd, int nb_cmd);
 void close_fd(t_cmd *cmd, int nb_cmd);
 char	**ft_free_double_array(char **ptr);
 
