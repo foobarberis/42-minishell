@@ -1,30 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/18 12:16:05 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/18 12:16:06 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int here_doc_count_words(char *buf)
+static int	here_doc_count_words(char *buf)
 {
-	int  word;
+	int	word;
 
 	word = 1;
 	while (*buf)
 	{
-		if ((f_isspace(*buf) && !f_isspace(*(buf + 1)) && *(buf + 1)) || (!f_isspace(*buf) && f_isspace(*(buf + 1))))
+		if ((!f_isspace(*buf) && *(buf + 1) == '$')
+			|| (f_isspace(*buf) && !f_isspace(*(buf + 1)) && *(buf + 1))
+			|| (!f_isspace(*buf) && f_isspace(*(buf + 1))))
 			word++;
 		buf++;
 	}
 	return (word);
 }
 
-static char **here_doc_split(char *buf, int words)
+static int	here_doc_split(char **arr, char *buf)
 {
-	int   i;
-	char  c;
-	char *p;
-	char **new;
+	int		i;
+	char	c;
+	char	*p;
 
 	i = 0;
-	new = f_calloc(words + 1, sizeof(char *));
-	if (!new)
-		return (NULL);
 	p = buf;
 	while (*p && *buf)
 	{
@@ -32,41 +42,51 @@ static char **here_doc_split(char *buf, int words)
 			while (*p && f_isspace(*p))
 				p++;
 		else
-			while (*p && !f_isspace(*p))
-				p++;
+			while (*p && (!f_isspace(*p++)))
+				if (*p == '$')
+					break ;
 		c = *p;
 		*p = 0;
-		new[i++] = f_strdup(buf);
+		arr[i] = f_strdup(buf);
+		if (!arr[i++])
+			return (env_array_destroy(arr, i), 1);
 		*p = c;
 		buf = p;
 	}
-	return (new);
+	return (0);
 }
 
-static void here_doc_substitute_values(char **env, char **arr)
+static int	here_doc_substitute_values(char **env, char **arr)
 {
-	char *value;
+	char	*tmp;
+	char	*value;
 
 	while (*arr)
 	{
 		if (**arr == '$')
 		{
 			value = env_getenv(env, *arr + 1);
-			free(*arr);
-			if (value)
-				*arr = f_strdup(value);
+			if (*(*arr + 1) == '?')
+				tmp = f_itoa(g_rval);
+			else if (value)
+				tmp = f_strdup(value);
 			else
-				*arr = f_strdup("");
+				tmp = f_strdup("");
+			if (!tmp)
+				return (env_array_destroy(arr, env_array_get_size(arr)), 1);
+			free(*arr);
+			*arr = tmp;
 		}
 		arr++;
 	}
+	return (0);
 }
 
-static char *here_doc_unsplit(char **arr)
+static char	*here_doc_unsplit(char **arr)
 {
-	int i;
-	char *tmp;
-	char *new;
+	int		i;
+	char	*tmp;
+	char	*new;
 
 	i = 1;
 	new = f_strdup(arr[0]);
@@ -76,18 +96,23 @@ static char *here_doc_unsplit(char **arr)
 	{
 		tmp = f_strjoin(new, arr[i++]);
 		free(new);
+		if (!tmp)
+			return (NULL);
 		new = tmp;
 	}
 	return (new);
 }
 
-/* FIXME: Handle strings of the form $HOME$USER */
-char *here_doc_expand_variables(char **env, char *buf)
+char	*here_doc_expand_variables(char **env, char *buf)
 {
-	char **new;
-	new = here_doc_split(buf, here_doc_count_words(buf));
-	here_doc_substitute_values(env, new);
-	for (int i = 0; new[i]; i++)
-		printf("%s\n", new[i]);
-	printf("unsplit: %s\n", here_doc_unsplit(new));
+	char	**new;
+
+	new = f_calloc(here_doc_count_words(buf) + 1, sizeof(char *));
+	if (!new)
+		return (NULL);
+	if (here_doc_split(new, buf))
+		return (NULL);
+	if (here_doc_substitute_values(env, new))
+		return (NULL);
+	return (here_doc_unsplit(new));
 }
