@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:16:05 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/18 14:42:33 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:21:06 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ static int	here_doc_split(char **arr, char *buf)
 			while (*p && f_isspace(*p))
 				p++;
 		else
-			while (*p && (!f_isspace(*p++)))
-				if (*p == '$')
+			while (*p && (!f_isspace(*p)))
+				if (*++p == '$')
 					break ;
 		c = *p;
 		*p = 0;
