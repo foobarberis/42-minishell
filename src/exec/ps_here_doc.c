@@ -9,7 +9,7 @@ char	*ft_strdup(const char *s1)
 	char	*dup;
 
 	i = 0;
-	len_s1 = f_strlen((char *)s1);
+	len_s1 = f_strlen(s1);
 	dup = malloc(sizeof(char) * len_s1 + 1);
 	if (!dup)
 		return (NULL);
@@ -53,7 +53,6 @@ int	here_doc(char *limiter, char **string)
 int	loop(char *limiter, char ***string, char **line, char **buff)
 {
 	*line = readline(">");
-	dprintf(2, "limiter = %s et line = %s\n", limiter, *line);
 	if (*line == NULL)
 		return (SUCCESS);
 	*buff = ft_strdup(**string);

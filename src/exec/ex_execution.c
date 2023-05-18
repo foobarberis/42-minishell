@@ -25,7 +25,7 @@ int	exec(t_glb *glob)
 			g_rval = WEXITSTATUS(status);
 		i++;
 	}
-//	close_fd(cmd, glob->multiple_cmd);
+	close_fd(cmd, glob->multiple_cmd);
 	free_t_cmd(cmd, glob->multiple_cmd);
 	return (0);
 }
@@ -91,7 +91,7 @@ void	parent_exec(t_cmd *cmd, size_t i)
 	}
 	else if (cmd[i].final_output > REDIRECTION)
 		close(cmd[i].final_output);
-//	close(cmd[i].fd[1]);
+	close(cmd[i].fd[1]);
 	if (i > 0)
 		close(cmd[i - 1].fd[0]);
 }
@@ -111,10 +111,8 @@ void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 		out_redirect(cmd, i);
 	if (i > 0)
 		close(cmd[i - 1].fd[0]);
-	if (cmd[i].fd[0])
-		close(cmd[i].fd[0]);
-	if (cmd[i].fd[1])
-		close (cmd[i].fd[1]);
+	close(cmd[i].fd[0]);
+	close (cmd[i].fd[1]);
 	if (cmd[i].is_builtin)
 		ex_builtin(glb, cmd[i].is_builtin, cmd[i].args);
 	else

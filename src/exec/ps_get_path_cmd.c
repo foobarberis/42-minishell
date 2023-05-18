@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../inc/minishell.h"
 
 int		check_slash(char *cmd);
 int		check_cmd(char *cmd);

@@ -77,7 +77,7 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 	i = 0;
 	while (i < glob->multiple_cmd)
 	{
-		pipe(cmd->fd);
+		pipe(cmd[i].fd);
 		init_to_null_cmd_struct(&cmd[i]);
 		i++;
 	}
