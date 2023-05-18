@@ -52,7 +52,7 @@ void panic(t_glb *glb, int code, t_cmd *cmd)
 }
 
 int g_rval = 0; /* Global variable init */
-int main(int ac, char *av[], char *ep[])
+/* int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
 	(void) av;
@@ -86,7 +86,7 @@ int main(int ac, char *av[], char *ep[])
 	}
 	msh_exit(glb);
 	return (EXIT_SUCCESS);
-}
+} */
 
 static char *here_doc_loop(char *here_doc, char *rl, char *tmp, char *lim)
 {
@@ -115,15 +115,14 @@ static char *here_doc_loop(char *here_doc, char *rl, char *tmp, char *lim)
 
 static char *my_here_doc(char *lim)
 {
-	char *s;
-	char **buf;
+	char *buf[3];
 
-	buf = f_calloc(3, sizeof(char *));
-	if (!buf)
+	buf[0] = f_strdup("");
+	if (!buf[0])
 		return (NULL);
-	s = here_doc_loop(buf[0], buf[1], buf[2], lim);
-	free(buf);
-	return (s);
+	buf[1] = NULL;
+	buf[2] = NULL;
+	return (here_doc_loop(buf[0], buf[1], buf[2], lim));
 }
 
 int main(void)
@@ -131,38 +130,7 @@ int main(void)
 	char *here_doc;
 
 	here_doc = my_here_doc("EOF");
-	printf("%s\n", here_doc);
+	if (here_doc)
+		printf("%s\n", here_doc);
 	free(here_doc);
 }
-
-/* static char *here_doc_loop(char *here_doc, char *rl, char *tmp, char *lim)
-{
-	if (!here_doc || !rl || !tmp)
-	while (1)
-	{
-		free(rl);
-		rl = readline("> ");
-		if (!rl)
-		{
-			f_dprintf(STDERR_FILENO, "minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", lim);
-			break;
-		}
-		if (!f_strcmp(rl, lim))
-		{
-			free(rl);
-			break;
-		}
-		tmp = f_strjoin(here_doc, rl);
-		if (!tmp)
-			return (free(here_doc), free(rl), NULL);
-		free(here_doc);
-		here_doc = tmp;
-	}
-	return (here_doc);
-}
-
-static char *my_here_doc(char *lim)
-{
-	char *buf[3]
-	return (here_doc_loop(f_calloc(1, sizeof(char *)), f_calloc(1, sizeof(char *)), f_calloc(1, sizeof(char *)), lim));
-} */
