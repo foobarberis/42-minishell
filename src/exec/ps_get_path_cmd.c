@@ -51,7 +51,7 @@ char	*ft_compute_path(char **path, char *cmd)
 
 	i = 0;
 	if (access(cmd, X_OK) == 0)
-		return (f_strdup(cmd), cmd);
+		return (f_strdup(cmd));
 	while (path[i])
 	{
 		buff = f_strjoin(path[i], "/");

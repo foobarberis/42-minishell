@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ex_builtin(t_glb *glb, int builtin, char **arg)
+void	ex_builtin(t_glb *glb, t_cmd *cmd, int builtin, char **arg)
 {
 	if (builtin == ECHO)
 		blt_echo(arg);
@@ -15,5 +15,5 @@ void	ex_builtin(t_glb *glb, int builtin, char **arg)
 	else if (builtin == ENV)
 		blt_env(glb);
 	else if (builtin == EXIT)
-		blt_exit(glb, (int)blt_compute_argc(arg), arg);
+		blt_exit(glb, cmd, (int)blt_compute_argc(arg), arg);
 }
