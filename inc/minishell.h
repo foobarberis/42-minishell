@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/05/17 13:23:20 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/18 11:42:06 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,16 +122,17 @@ struct s_cmd
 	int       pid;
 	int       is_builtin;
 	char    **env;
-	char    **args;					//0
-	char     *path_cmd;				//1
+	char    **args;
+	char     *path_cmd;
 	int       final_input;
 	int       final_output;
-	char	*input;					//2
-	char	*limiter;				//3
+	char	*input;
+	char	*limiter;
+	int 	expand_here_doc;
 	int		type_in;
 	int		is_here_doc;
-	char 	*string_here_doc;		//4
-	char *output;					//5
+	char 	*string_here_doc;
+	char *output;
 	int   type_out;
 	t_glb *glb;
 };
@@ -214,10 +215,12 @@ void	init_to_null_cmd_struct(t_cmd *cmd);
 int here_doc(char *limiter, char **string);
 
 /*** ps_fill_arrays_struct_cmd ***/
-int ps_get_input(t_token *tok, t_cmd *cmd, size_t index);
-int ps_get_output(t_token *tok, t_cmd *cmd, size_t index);
 int ps_get_args_cmd(t_token *tok, t_cmd *cmd, int nb_args, size_t index);
 int ps_get_here_doc(t_token *tok, t_cmd *cm, size_t index);
+
+/*** ps_get_redirect ***/
+int ps_get_input(t_token *tok, t_cmd *cmd, size_t index);
+int ps_get_output(t_token *tok, t_cmd *cmd, size_t index);
 
 /*** ps_fill_cmd_struct ***/
 int count_type(t_token *tok, int type1, int type2, size_t i);
@@ -229,9 +232,6 @@ int open_input(t_cmd *files);
 /*** ex_builtin ***/
 void ex_builtin(t_glb *glb, int builtin, char **arg);
 
-/*** ex_execution ***/
-int ex_execution(t_glb *glb, t_cmd *cmd, size_t nb_cmd);
-
 /*** ex_redirection ***/
 void nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
 void in_out_redirect(t_cmd *cmd, size_t i);
@@ -241,14 +241,11 @@ void out_redirect(t_cmd *cmd, size_t i);
 /*** utility_fonctions ***/
 char **ft_split(char const *s, char c);
 int    ft_strncmp(const char *s1, const char *s2, size_t n);
-void   ft_free_split(char **array);
 char  *ft_strjoin(char const *s1, char const *s2);
-size_t ft_strlen(const char *str);
-void   print_double_array(char **array, char *title);
-int    ft_strncmp(const char *s1, const char *s2, size_t n);
 
 /*** free ***/
 int free_t_cmd(t_cmd *cmd, int nb_cmd);
 void close_fd(t_cmd *cmd, int nb_cmd);
+char	**ft_free_double_array(char **ptr);
 
 #endif

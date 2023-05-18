@@ -26,7 +26,7 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 		return (NULL);
 	}
 	path_cmd = ft_compute_path(split_path, cmd);
-	ft_free_split(split_path);
+	ft_free_double_array(split_path);
 	if (path_cmd && f_strcmp(path_cmd, ERR_MALLOC) == 0)
 		return (ERR_MALLOC);
 	if (path_cmd == NULL)
@@ -51,10 +51,7 @@ char	*ft_compute_path(char **path, char *cmd)
 
 	i = 0;
 	if (access(cmd, X_OK) == 0)
-	{
-		f_strdup(cmd);
-		return (cmd);
-	}
+		return (f_strdup(cmd), cmd);
 	while (path[i])
 	{
 		buff = f_strjoin(path[i], "/");
