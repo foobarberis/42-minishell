@@ -37,7 +37,7 @@ int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	i = 0;
 	if (nb_cmd == 1 && cmd[i].is_builtin)
 	{
-		ex_builtin(glb, cmd[i].is_builtin, cmd[i].args);
+		ex_builtin(glb, cmd, cmd[i].is_builtin, cmd[i].args);
 		i++;
 	}
 	while (i < nb_cmd)
@@ -114,7 +114,7 @@ void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 	close(cmd[i].fd[0]);
 	close (cmd[i].fd[1]);
 	if (cmd[i].is_builtin)
-		ex_builtin(glb, cmd[i].is_builtin, cmd[i].args);
+		ex_builtin(glb, cmd, cmd[i].is_builtin, cmd[i].args);
 	else
 		execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env);
 }
