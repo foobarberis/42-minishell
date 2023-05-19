@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:39:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:40:02 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:29:44 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ void	ps_token_list_recreate_words(t_glb *glb)
 	while (curr)
 	{
 		next = curr->next;
-		while (next && (curr->word_index == next->word_index)
-			&& (curr->quote == next->quote))
+		while (next && (curr->word_index == next->word_index))
 		{
 			tmp = f_strjoin(curr->word, next->word);
 			if (!tmp)

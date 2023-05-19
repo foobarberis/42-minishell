@@ -14,7 +14,7 @@ int blt_compute_argc(char **argv)
 
 bool	env_is_valid_id(char *s)
 {
-	if (!*s)
+	if (!*s || *s == '=')
 		return (false);
 	if (f_isdigit(s[0]))
 		return (false);

@@ -34,7 +34,7 @@
  *   permission etc.).
  */
 
-static int	ps_token_list_parse(t_glb *glb)
+int	parsing(t_glb *glb)
 {
 	ps_token_list_set_index_quote(glb->tok);
 	ps_token_list_set_index_word(glb->tok);
@@ -54,11 +54,4 @@ static int	ps_token_list_parse(t_glb *glb)
 	glb->multiple_cmd = (int)(ps_token_list_goto_last(glb->tok)->cmd_index) + 1;
 	// ps_token_list_print(glb->tok); /* FIXME: Remove before review */
 	return (0);
-}
-
-int	parsing(t_glb *glb)
-{
-	if (!glb || !glb->tok || !glb->env)
-		return (0);
-	return (ps_token_list_parse(glb));
 }

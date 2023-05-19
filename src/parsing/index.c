@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:30:51 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:31:52 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:46:10 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	ps_token_list_set_index_cmd(t_token **tok)
 	}
 }
 
+/* FIXME: Is there a less cumbersome way to write this */
 void	ps_token_list_set_index_word(t_token **tok)
 {
 	bool	sep;
@@ -76,12 +77,12 @@ void	ps_token_list_set_index_word(t_token **tok)
 	curr = *tok;
 	while (curr)
 	{
-		if ((ismeta(curr->word[0]) || f_isspace(curr->word[0])) && !sep)
+		if (!curr->quote && ((ismeta(curr->word[0]) || f_isspace(curr->word[0])) && !sep))
 		{
 			sep = true;
 			word++;
 		}
-		else if (!(ismeta(curr->word[0]) || f_isspace(curr->word[0])) && sep)
+		else if (!curr->quote && (!(ismeta(curr->word[0]) || f_isspace(curr->word[0])) && sep))
 		{
 			sep = false;
 			word++;
