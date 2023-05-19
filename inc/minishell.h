@@ -165,7 +165,7 @@ t_token *ps_token_list_goto_last(t_token **tok);
 
 int   ismeta(int c);
 char *f_itoa(intmax_t n);
-bool  ps_line_has_balanced_quotes(char *s);
+bool  ps_line_has_balanced_quotes(t_token **tok);
 int   ps_token_list_from_array(t_token **tok, char *s);
 void  ps_token_list_print(t_token **tok);
 void  ps_token_list_set_index_quote(t_token **tok);

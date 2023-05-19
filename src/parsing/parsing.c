@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -38,10 +39,10 @@ static int	ps_token_list_parse(t_glb *glb)
 	ps_token_list_set_index_quote(glb->tok);
 	ps_token_list_set_index_word(glb->tok);
 	ps_token_list_set_index_cmd(glb->tok);
-	ps_token_list_delete_quote(glb->tok);
 	ps_token_list_delete_space(glb->tok);
 	if (ps_token_list_has_syntax_error(glb->tok))
-		return (f_dprintf(STDERR_FILENO, ERR_SYNTAX), 1);
+		return (1);
+	ps_token_list_delete_quote(glb->tok);
 	ps_token_list_update_index_word(glb->tok);
 	ps_token_list_delete_pipe(glb->tok);
 	ps_token_list_recreate_variables(glb);
@@ -51,7 +52,7 @@ static int	ps_token_list_parse(t_glb *glb)
 	ps_token_list_delete_bracket(glb->tok);
 	ps_token_list_group_words(glb);
 	glb->multiple_cmd = (int)(ps_token_list_goto_last(glb->tok)->cmd_index) + 1;
-	// ps_token_list_print(glb->tok);
+	// ps_token_list_print(glb->tok); /* FIXME: Remove before review */
 	return (0);
 }
 

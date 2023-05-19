@@ -68,11 +68,6 @@ int main(int ac, char *av[], char *ep[])
 			break;
 		if (!glb->rl[0])
 			continue;
-		if (!ps_line_has_balanced_quotes(glb->rl) || glb->rl[0] == '|')
-		{
-			f_dprintf(STDERR_FILENO, ERR_SYNTAX);
-			continue;
-		}
 		add_history(glb->rl);
 		if (ps_token_list_from_array(glb->tok, glb->rl))
 			panic(glb, EXIT_FAILURE, NULL);
