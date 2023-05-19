@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-/* https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html#index-export */
 int blt_export(t_glb *glb, int argc, char **argv)
 {
 	size_t i;
@@ -14,7 +13,7 @@ int blt_export(t_glb *glb, int argc, char **argv)
 			f_dprintf(STDERR_FILENO, "minishell: export: `%s': not a valid identifier\n", argv[i++]);
 		else
 		{
-			glb->env = env_key_add(glb->env, argv[i++]);
+			glb->env = env_key_add(glb->env, f_strdup(argv[i++]));
 			if (!glb->env)
 				panic(glb, CODE_MALLOC, NULL);
 		}
@@ -22,7 +21,6 @@ int blt_export(t_glb *glb, int argc, char **argv)
 	return (0);
 }
 
-/* https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html#index-unset */
 int blt_unset(t_glb *glb, int argc, char **argv)
 {
 	size_t i;

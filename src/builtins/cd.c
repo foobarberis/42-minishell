@@ -15,7 +15,6 @@ static int update_pwd(t_glb *glb)
 	return (0);
 }
 
-/* https://man7.org/linux/man-pages/man1/cd.1p.html */
 int blt_cd(t_glb *glb, int argc, char **argv)
 {
 	char *path;

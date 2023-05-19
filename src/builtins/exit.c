@@ -1,14 +1,5 @@
 #include "minishell.h"
 
-/* https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html#index-exit */
-/* https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html */
-
-// Exit the shell, returning a status of n to the shell’s parent. If n is
-// omitted, the exit status is that of the last command executed. Any trap
-// on EXIT is executed before the shell terminates.
-
-// 9223372036854775807
-// -9223372036854775809
 static intmax_t	f_exit_atoi(const char *s)
 {
 	intmax_t	x;
