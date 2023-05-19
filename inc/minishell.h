@@ -35,6 +35,7 @@ typedef struct s_cmd    t_cmd;
 #define ERR_PARSING "minishell: parsing error.\n"
 #define ERR_ID "minishell: export: not a valid identifier.\n"
 #define ERR_MALLOC "minishell: malloc() failed.\n"
+#define ERR_HERE_DOC "minishell: warning: here-document delimited by end-of-file (wanted `%s')\n"
 #define CODE_MALLOC 2
 #define SUCCESS 0
 #define ERROR -1
@@ -200,7 +201,7 @@ int  ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
 void init_to_null_cmd_struct(t_cmd *cmd);
 
 /*** ex_here_doc ***/
-int here_doc(char *limiter, char **string);
+char *here_doc(char *lim);
 
 /*** ps_fill_arrays_struct_cmd ***/
 int ps_get_args_cmd(t_token *tok, t_cmd *cmd, int nb_args, size_t index);

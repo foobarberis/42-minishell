@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/18 13:40:38 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/19 12:03:10 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,8 +33,8 @@ SRCS		:=	builtins/blt_utils.c \
 				exec/ps_get_args_n_here_doc.c \
 				exec/ps_get_redirect.c \
 				exec/ps_get_path_cmd.c \
-				exec/ps_here_doc.c \
-				exec/here_doc_utils.c \
+				exec/here_doc.c \
+				exec/here_doc_expand.c \
 				exec/ps_is_builtin.c \
 				exec/ps_redirects.c \
 				exec/utility_function.c \

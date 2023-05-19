@@ -53,8 +53,8 @@ int	ps_get_here_doc(t_token *tok, t_cmd *cmd, size_t index)
 				return (CODE_MALLOC);
 			if (cmd->string_here_doc)
 				free(cmd->string_here_doc);
-			cmd->string_here_doc = NULL;
-			if (here_doc(cmd->limiter, &cmd->string_here_doc) == CODE_MALLOC)
+			cmd->string_here_doc = here_doc(cmd->limiter);
+			if (!cmd->string_here_doc)
 				return (CODE_MALLOC);
 		}
 		tok = tok->next;

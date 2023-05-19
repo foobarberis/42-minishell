@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:16:05 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/18 16:21:06 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/19 12:01:32 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ char	*here_doc_expand_variables(char **env, char *buf)
 	char	*s;
 	char	**new;
 
+	if (!*buf)
+		return (buf);
 	new = f_calloc(here_doc_count_words(buf) + 1, sizeof(char *));
 	if (!new)
 		return (free(buf), NULL);
