@@ -61,7 +61,7 @@ int main(int ac, char *av[], char *ep[])
 	glb = msh_init(ep);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sigint_handler);
-	while (1)
+	while (glb)
 	{
 		glb->rl = readline("MSH $ ");
 		if (!glb->rl)

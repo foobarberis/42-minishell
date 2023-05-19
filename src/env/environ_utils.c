@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:37 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/16 16:34:50 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:24:53 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void env_array_destroy(char **env, size_t size)
 	size_t i;
 
 	i = 0;
+	if (!env)
+		return;
 	while (env[i] && i < size)
 		free(env[i++]);
 	free(env);

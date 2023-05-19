@@ -6,30 +6,31 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:41:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/18 16:01:03 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:29:38 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* https://unix.stackexchange.com/questions/292991/usage-of-as-an-environment-variable-passed-to-a-command */
-/* FIXME: Secure this */
-/* FIXME: Fix leaks */
 static char **env_init_base(char **env, char *path)
 {
-	int shlvl;
+	int		shlvl;
+	char	*tmp;
 
-	if (!env_getenv(env, "PWD"))
+	if (env && !env_getenv(env, "PWD"))
 		env = env_key_add(env, f_strjoin("PWD=", path));
-	if (!env_getenv(env, "SHLVL"))
+	if (env && !env_getenv(env, "SHLVL"))
 		env = env_key_add(env, f_strdup("SHLVL=1"));
-	else
+	else if (env)
 	{
 		shlvl = f_atoi(env_getenv(env, "SHLVL"));
 		shlvl++;
-		env_key_add(env, f_strjoin("SHLVL=", f_itoa(shlvl)));
+		tmp = f_itoa(shlvl);
+		if (tmp)
+			env = env_key_add(env, f_strjoin("SHLVL=", tmp));
+		free(tmp);
 	}
-	if (!env_getenv(env, "_"))
+	if (env && !env_getenv(env, "_"))
 		env = env_key_add(env, f_strdup("_=/usr/bin/env"));
 	return (env);
 }
@@ -65,21 +66,19 @@ char **env_key_add(char **env, char *key)
 {
 	int pos;
 	char **new;
-	char *s;
 	size_t size;
 
-	s = f_strdup(key);
-	if (!s)
-		return (NULL);
+	if (env && !key)
+		return (env_array_destroy(env, env_array_get_size(env)), NULL);
 	pos = env_key_get_pos(env, key);
 	if (pos != KEY_NOT_FOUND)
-		return (free(env[pos]), env[pos] = s, env);
+		return (free(env[pos]), env[pos] = key, env);
 	size = env_array_get_size(env) + 1;
 	new = env_array_realloc(env, size);
 	if (!new)
-		return (free(s), NULL);
+		return (env_array_destroy(env, env_array_get_size(env)), free(key), NULL);
 	env_array_destroy(env, env_array_get_size(env));
-	new[size - 1] = s;
+	new[size - 1] = key;
 	return (new);
 }
 
