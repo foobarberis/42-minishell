@@ -168,16 +168,16 @@ char *f_itoa(intmax_t n);
 
 void parsing_set_index_quote(t_token **tok);
 void parsing_set_index_word(t_token **tok);
-void parsing_update_index_word(t_token **tok);
 void parsing_set_index_cmd(t_token **tok);
+void parsing_update_index_word(t_token **tok);
 void parsing_delete_space(t_token **tok);
 void parsing_delete_quote(t_token **tok);
 void parsing_delete_pipe(t_token **tok);
 void parsing_delete_bracket(t_token **tok);
-int  parsing_recreate_words(t_token **tok);
-void parsing_fill_type(t_token **tok);
 int  parsing_expand_variables(t_token **tok, char **env);
+int  parsing_recreate_words(t_token **tok);
 int  parsing_group_words(t_token **tok);
+void parsing_fill_type(t_token **tok);
 int  parsing_check_syntax(t_token **tok);
 int  parsing(t_glb *glb);
 

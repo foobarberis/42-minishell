@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:32:38 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/20 12:54:53 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/20 16:13:14 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,27 +55,3 @@ int	ismeta(int c)
 {
 	return (c == '<' || c == '>' || c == '|');
 }
-
-/* void	token_array_print(t_token *tok)
-{
-	size_t i;
-	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n",
-		"type", "quote", "char *", "word", "cmd");
-	printf("-------------------------------------------------------------------"
-		"--------\n");
-	i = 0;
-	while (tok[i])
-	{
-		if (curr->word)
-		{
-			if (curr->word[0])
-				printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", curr->type,
-					curr->quote, curr->word, curr->word_index, curr->cmd_index);
-			else
-				printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", curr->type,
-					curr->quote, "(empty)", curr->word_index, curr->cmd_index);
-		}
-		curr = curr->next;
-	}
-	f_printf("\n");
-} */

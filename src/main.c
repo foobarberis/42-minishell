@@ -4,6 +4,8 @@ static t_glb *msh_init(char **envp)
 {
 	t_glb *glb;
 
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sigint_handler);
 	glb = malloc(sizeof(t_glb));
 	if (!glb)
 		panic(glb, CODE_MALLOC, NULL);
@@ -48,37 +50,6 @@ void panic(t_glb *glb, int code, t_cmd *cmd)
 }
 
 int g_rval = 0; /* Global variable init */
-/* int main(int ac, char *av[], char *ep[])
-{
-	(void) ac;
-	(void) av;
-	t_glb *glb;
-
-	glb = msh_init(ep);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, sigint_handler);
-	while (glb)
-	{
-		glb->rl = readline("MSH $ ");
-		if (!glb->rl)
-			break;
-		if (!glb->rl[0])
-			continue;
-		add_history(glb->rl);
-		if (parsing_from_array(glb->tok, glb->rl))
-			panic(glb, EXIT_FAILURE, NULL);
-		if (parsing(glb))
-		{
-			reset(glb);
-			continue;
-		}
-		exec(glb);
-		reset(glb);
-	}
-	msh_exit(glb);
-	return (EXIT_SUCCESS);
-} */
-
 int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
@@ -91,17 +62,18 @@ int main(int ac, char *av[], char *ep[])
 		glb->rl = readline("MSH $ ");
 		if (!glb->rl)
 			break;
-		if (!glb->rl[0])
+		if (!*glb->rl)
 			continue;
 		add_history(glb->rl);
 		glb->tok = token_array_create(glb->rl);
 		if (!glb->tok)
-			panic(glb, EXIT_FAILURE, NULL);
+			break;
 		if (parsing(glb))
 		{
 			reset(glb);
 			continue;
 		}
+		// exec(glb);
 		reset(glb);
 	}
 	msh_exit(glb);

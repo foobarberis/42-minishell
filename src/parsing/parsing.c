@@ -58,17 +58,14 @@ int	parsing(t_glb *glb)
 	parsing_delete_quote(glb->tok);
 	if (parsing_check_syntax(glb->tok))
 		return (1);
-	// parsing_update_index_word(glb->tok);
-	// parsing_delete_pipe(glb->tok);
-	// if (parsing_expand_variables(glb->tok, glb->env))
-	// 	return (CODE_MALLOC);
-	// if (parsing_recreate_words(glb->tok))
-	// 	return (CODE_MALLOC);
-	// parsing_fill_type(glb->tok);
-	// parsing_delete_bracket(glb->tok);
-	// if (parsing_group_words(glb->tok))
-	// 	return (CODE_MALLOC);
-	// glb->multiple_cmd = (int)(((t_token *)(&glb->tok + 1))[-1].cmd_index + 1);
-	token_array_print(glb->tok); /* FIXME: Remove before review */
+	parsing_update_index_word(glb->tok);
+	parsing_delete_pipe(glb->tok);
+	if (parsing_expand_variables(glb->tok, glb->env))
+		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
+	if (parsing_recreate_words(glb->tok))
+		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
+	parsing_fill_type(glb->tok);
+	parsing_delete_bracket(glb->tok);
+	token_array_print(glb->tok);
 	return (0);
 }

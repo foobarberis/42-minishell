@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:30:51 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/20 12:52:18 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/20 16:10:40 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,48 +64,50 @@ void	parsing_set_index_cmd(t_token **tok)
 	}
 }
 
-/* FIXME: Is there a less cumbersome way to write this */
 void parsing_set_index_word(t_token **tok)
 {
-	bool   sep;
+	int    word;
 	size_t i;
-	size_t word;
+	size_t word_index;
 
 	i = 0;
 	word = 0;
-	sep = false;
+	word_index = 0;
 	while (tok[i])
 	{
 		if (!tok[i]->quote)
 		{
-			if (!sep && (ismeta(*tok[i]->word) || f_isspace(*tok[i]->word)))
+			if (f_isspace(*tok[i]->word))
+				word = 0;
+			else if (!word)
 			{
-				sep = true;
-				word++;
-			}
-			else if (sep && !(ismeta(*tok[i]->word) || f_isspace(*tok[i]->word)))
-			{
-				sep = false;
-				word++;
+				word = 1;
+				word_index++;
 			}
 		}
-		tok[i]->word_index = word;
+		tok[i]->word_index = word_index;
 		i++;
 	}
 }
 
-void	parsing_update_index_word(t_token **tok)
+void parsing_update_index_word(t_token **tok)
 {
-	size_t	i;
-	size_t	j;
+	size_t i;
+	size_t j;
 
 	i = 0;
 	j = 0;
 	while (tok[i])
 	{
 		tok[i]->word_index += j;
-		if (tok[i + 1] && *tok[i]->word == '|' && (*tok[i + 1]->word == '<' || *tok[i + 1]->word == '>'))
-			j++;
+		if (tok[i + 1])
+		{
+			if (ismeta(*tok[i]->word) && !ismeta(*tok[i + 1]->word))
+				j++;
+			else if (*tok[i]->word == '|'
+					&& (*tok[i + 1]->word == '<' || *tok[i + 1]->word == '>'))
+				j++;
+		}
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/20 12:40:57 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/20 15:12:04 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,6 +61,7 @@ SRCS		:=	parsing/delete.c \
 				env/environ_utils.c \
 				main.c \
 				parsing/variables.c \
+				misc/signal.c \
 				parsing/word.c
 
 CC			:=	cc
@@ -76,7 +77,7 @@ MLCDIR		:=	mlc
 INCFLAGS	:= -I$(INCDIR) -I$(SYSINC) -I$(MLCDIR)/inc
 LIBFLAGS	:= -L$(MLCDIR) -lreadline -lft
 # CFLAGS	:=	-Wall -Wextra -Werror
-CFLAGS		:= -g3 -fPIE -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address
+CFLAGS		:= -g3 -fPIE -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion #-fsanitize=undefined,address
 LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 
