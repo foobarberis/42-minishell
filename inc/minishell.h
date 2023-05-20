@@ -31,14 +31,14 @@ typedef struct s_cmd    t_cmd;
  * DEFINE
  */
 #define KEY_NOT_FOUND -1
-#define ERR_SYNTAX "minishell: syntax error.\n"
-#define ERR_PARSING "minishell: parsing error.\n"
-#define ERR_ID "minishell: export: not a valid identifier.\n"
-#define ERR_MALLOC "minishell: malloc() failed.\n"
+#define ERR_ID "minishell: export: `%s': not a valid identifier\n"
+#define ERR_MALLOC "minishell: malloc() failed\n"
 #define ERR_HERE_DOC                                                      \
 	"minishell: warning: here-document delimited by end-of-file (wanted " \
 	"`%s')\n"
+#define ERR_SYNTAX "minishell: syntax error near unexpected token `%s'\n"
 #define CODE_MALLOC 42
+
 #define SUCCESS 0
 #define ERROR -1
 #define ERROR_REDIRECT -3
@@ -178,7 +178,7 @@ int  parsing_recreate_words(t_token **tok);
 void parsing_fill_type(t_token **tok);
 int  parsing_expand_variables(t_token **tok, char **env);
 int  parsing_group_words(t_token **tok);
-bool parsing_has_syntax_error(t_token **tok);
+int  parsing_check_syntax(t_token **tok);
 int  parsing(t_glb *glb);
 
 /* MISC */

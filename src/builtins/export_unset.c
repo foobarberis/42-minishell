@@ -10,7 +10,7 @@ int blt_export(t_glb *glb, int argc, char **argv)
 	while (argv[i])
 	{
 		if (!env_is_valid_id(argv[i]))
-			f_dprintf(STDERR_FILENO, "minishell: export: `%s': not a valid identifier\n", argv[i++]);
+			f_dprintf(STDERR_FILENO, ERR_ID, argv[i++]);
 		else
 		{
 			glb->env = env_key_add(glb->env, f_strdup(argv[i++]));
