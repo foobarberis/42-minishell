@@ -13,7 +13,7 @@ int	exec(t_glb *glob)
 
 	i = 0;
 	status = 0;
-	glob->multiple_cmd = (int)ps_token_list_goto_last(glob->tok)->cmd_index + 1;
+	glob->multiple_cmd = (int)(((t_token *)(&glob->tok + 1))[-1].cmd_index + 1);
 	cmd = malloc(sizeof(t_cmd) * glob->multiple_cmd);
 	ps_initialisation_cmds(cmd, glob);
 	ex_launch(glob, &cmd[i], glob->multiple_cmd);

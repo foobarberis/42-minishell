@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:38:50 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/17 13:27:14 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/20 12:54:53 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,73 +17,63 @@ static int	is_legal(int c)
 	return (f_isalnum(c) || c == '_' || c == '?' || c == 0);
 }
 
-static int	recreate_variables_cond(t_token *curr, t_token *next)
+static int parsing_recreate_variables(t_token **tok)
 {
-	if (!curr || !next)
-		return (0);
-	return (curr->word && curr->word[0] == '$'
-		&& is_legal(next->word[0])
-		&& (curr->word_index == next->word_index)
-		&& (curr->quote == next->quote));
-}
+	size_t i;
+	char  *tmp;
 
-void	ps_token_list_recreate_variables(t_glb *glb)
-{
-	char	*tmp;
-	t_token	*curr;
-	t_token	*next;
-
-	curr = glb->tok[0];
-	while (curr)
+	i = 0;
+	while (tok[i])
 	{
-		next = curr->next;
-		while (recreate_variables_cond(curr, next))
+		while (tok[i + 1] && *tok[i]->word == '$' && is_legal(*tok[i + 1]->word) && (tok[i]->word_index == tok[i + 1]->word_index) && (tok[i]->quote == tok[i + 1]->quote))
 		{
-			tmp = f_strjoin(curr->word, next->word);
+			tmp = f_strjoin(tok[i]->word, tok[i + 1]->word);
 			if (!tmp)
-				panic(glb, CODE_MALLOC, NULL);
-			free(curr->word);
-			curr->word = tmp;
-			ps_token_list_node_rm(glb->tok, next);
-			next = curr->next;
-			if (curr->word && curr->word[0] == '$'
-				&& (curr->word[1] == '?' || curr->word[1] == 0))
-				break ;
+				return (1);
+			free(tok[i]->word);
+			tok[i]->word = tmp;
+			token_array_rm(tok, i + 1);
+			if (tok[i]->word && *tok[i]->word == '$' && (tok[i]->word[1] == '?' || tok[i]->word[1] == 0))
+				break;
 		}
-		curr = next;
+		i++;
 	}
+	return (0);
 }
 
-/* FIXME: Make shorter */
-void	ps_token_list_expand_variables(t_glb *glb)
+static char *dup_value(char **env, char *key)
 {
-	char	*value;
-	char	*getenv;
-	t_token	*curr;
+	char *getenv;
 
-	curr = glb->tok[0];
-	while (curr)
+	getenv = env_getenv(env, key);
+	if (!getenv)
+		return (f_strdup(""));
+	else
+		return (f_strdup(getenv));
+}
+
+int	parsing_expand_variables(t_token **tok, char **env)
+{
+	size_t i;
+	char	*value;
+
+	i = 0;
+	if (parsing_recreate_variables(tok))
+		return (1);
+	while (tok[i])
 	{
-		if (curr->word[0] == '$' && curr->word[1] && curr->quote != SIMPLE)
+		if (*tok[i]->word == '$' && tok[i]->word[1] && tok[i]->quote != SIMPLE)
 		{
-			if (curr->word[1] == '?')
-			{
+			if (tok[i]->word[1] == '?')
 				value = f_itoa(g_rval);
-				g_rval = 0; // FIXME: Maybe move this some place else
-			}
 			else
-			{
-				getenv = env_getenv(glb->env, &curr->word[1]);
-				if (!getenv)
-					value = f_strdup("");
-				else
-					value = f_strdup(getenv);
-			}
+				value = dup_value(env, &tok[i]->word[1]);
 			if (!value)
-				panic(glb, CODE_MALLOC, NULL);
-			free(curr->word);
-			curr->word = value;
+				return (1);
+			free(tok[i]->word);
+			tok[i]->word = value;
 		}
-		curr = curr->next;
+		i++;
 	}
+	return (0);
 }

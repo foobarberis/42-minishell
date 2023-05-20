@@ -6,34 +6,32 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:38:36 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:38:44 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/20 12:52:18 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ps_token_list_fill_type(t_token **tok)
+void	parsing_fill_type(t_token **tok)
 {
-	t_token	*curr;
+	size_t i;
 
-	if (!tok)
-		return ;
-	curr = *tok;
-	while (curr)
+	i = 0;
+	while (tok[i])
 	{
-		if (curr->quote == NONE)
+		if (!tok[i]->quote)
 		{
-			if (!curr->next)
+			if (!tok[i+1])
 				break ;
-			if (!f_strcmp(curr->word, ">"))
-				curr->next->type = S_OUTPUT;
-			else if (!f_strcmp(curr->word, "<"))
-				curr->next->type = S_INPUT;
-			else if (!f_strcmp(curr->word, ">>"))
-				curr->next->type = D_OUTPUT;
-			else if (!f_strcmp(curr->word, "<<"))
-				curr->next->type = D_INPUT;
+			if (!f_strcmp(tok[i]->word, ">"))
+				tok[i+1]->type = S_OUTPUT;
+			else if (!f_strcmp(tok[i]->word, "<"))
+				tok[i+1]->type = S_INPUT;
+			else if (!f_strcmp(tok[i]->word, ">>"))
+				tok[i+1]->type = D_OUTPUT;
+			else if (!f_strcmp(tok[i]->word, "<<"))
+				tok[i+1]->type = D_INPUT;
 		}
-		curr = curr->next;
+		i++;
 	}
 }

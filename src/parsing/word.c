@@ -6,57 +6,53 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:39:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/19 15:29:44 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/20 12:55:25 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Regroup words between quotes in one string */
-void	ps_token_list_group_words(t_glb *glb)
+int	parsing_group_words(t_token **tok)
 {
-	char	*tmp;
-	t_token	*curr;
-	t_token	*next;
+	size_t i;
+	char  *tmp;
 
-	curr = glb->tok[0];
-	while (curr)
+	i = 0;
+	while (tok[i])
 	{
-		next = curr->next;
-		while (next && curr->quote != NONE && (curr->quote == next->quote))
+		while (tok[i + 1] && tok[i]->quote && (tok[i]->quote == tok[i + 1]->quote))
 		{
-			tmp = f_strjoin(curr->word, next->word);
+			tmp = f_strjoin(tok[i]->word, tok[i+1]->word);
 			if (!tmp)
-				panic(glb, CODE_MALLOC, NULL);
-			free(curr->word);
-			curr->word = tmp;
-			ps_token_list_node_rm(glb->tok, next);
-			next = curr->next;
+				return (1);
+			free(tok[i]->word);
+			tok[i]->word = tmp;
+			token_array_rm(tok, i + 1);
 		}
-		curr = curr->next;
+		i++;
 	}
+	return (0);
 }
 
-void	ps_token_list_recreate_words(t_glb *glb)
+int	parsing_recreate_words(t_token **tok)
 {
-	char	*tmp;
-	t_token	*curr;
-	t_token	*next;
+	size_t i;
+	char  *tmp;
 
-	curr = glb->tok[0];
-	while (curr)
+	i = 0;
+	while (tok[i])
 	{
-		next = curr->next;
-		while (next && (curr->word_index == next->word_index))
+		while (tok[i + 1] && (tok[i]->word_index == tok[i + 1]->word_index))
 		{
-			tmp = f_strjoin(curr->word, next->word);
+			tmp = f_strjoin(tok[i]->word, tok[i + 1]->word);
 			if (!tmp)
-				panic(glb, CODE_MALLOC, NULL);
-			free(curr->word);
-			curr->word = tmp;
-			ps_token_list_node_rm(glb->tok, next);
-			next = curr->next;
+				return (1);
+			free(tok[i]->word);
+			tok[i]->word = tmp;
+			token_array_rm(tok, i + 1);
 		}
-		curr = curr->next;
+		i++;
 	}
+	return (0);
 }

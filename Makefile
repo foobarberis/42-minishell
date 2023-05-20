@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/19 16:01:38 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/20 12:40:57 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 
 # Edit the $(NAME) and $(SRCS) variables as necessary.
 NAME		:=	minishell
-SRCS		:=	builtins/blt_utils.c \
+# SRCS		:=	builtins/blt_utils.c \
 				builtins/cd.c \
 				builtins/echo.c \
 				builtins/env.c \
@@ -38,18 +38,30 @@ SRCS		:=	builtins/blt_utils.c \
 				exec/ps_is_builtin.c \
 				exec/ps_redirects.c \
 				exec/utility_function.c \
-				misc/free.c \
 				misc/signal.c \
 				parsing/delete.c \
 				parsing/index.c \
 				parsing/parsing.c \
 				parsing/parsing_utils.c \
 				parsing/syntax.c \
-				parsing/token_list_utils.c \
+				parsing/token_arr_utils.c \
 				parsing/type.c \
 				parsing/variables.c \
 				parsing/word.c \
 				main.c
+
+SRCS		:=	parsing/delete.c \
+				parsing/index.c \
+				parsing/parsing.c \
+				parsing/parsing_utils.c \
+				parsing/syntax.c \
+				parsing/token_arr_utils.c \
+				parsing/type.c \
+				env/environ.c \
+				env/environ_utils.c \
+				main.c \
+				parsing/variables.c \
+				parsing/word.c
 
 CC			:=	cc
 RM			:=	rm

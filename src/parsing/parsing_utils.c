@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:32:38 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/15 12:30:20 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/20 12:54:53 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,35 +56,15 @@ int	ismeta(int c)
 	return (c == '<' || c == '>' || c == '|');
 }
 
-int	ps_token_list_from_array(t_token **tok, char *s)
+/* void	token_array_print(t_token *tok)
 {
-	char	buf[2];
-	t_token	*tmp;
-
-	buf[1] = '\0';
-	tmp = NULL;
-	while (*s)
-	{
-		buf[0] = *s++;
-		tmp = ps_token_list_node_create(buf);
-		if (!tmp)
-			return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
-		ps_token_list_node_add(tok, tmp);
-	}
-	return (0);
-}
-
-/* FIXME: Remove */
-void	ps_token_list_print(t_token **tok)
-{
-	t_token	*curr;
-
-	curr = *tok;
+	size_t i;
 	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n",
 		"type", "quote", "char *", "word", "cmd");
 	printf("-------------------------------------------------------------------"
 		"--------\n");
-	while (curr)
+	i = 0;
+	while (tok[i])
 	{
 		if (curr->word)
 		{
@@ -98,4 +78,4 @@ void	ps_token_list_print(t_token **tok)
 		curr = curr->next;
 	}
 	f_printf("\n");
-}
+} */

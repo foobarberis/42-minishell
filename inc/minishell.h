@@ -35,8 +35,10 @@ typedef struct s_cmd    t_cmd;
 #define ERR_PARSING "minishell: parsing error.\n"
 #define ERR_ID "minishell: export: not a valid identifier.\n"
 #define ERR_MALLOC "minishell: malloc() failed.\n"
-#define ERR_HERE_DOC "minishell: warning: here-document delimited by end-of-file (wanted `%s')\n"
-#define CODE_MALLOC 2
+#define ERR_HERE_DOC                                                      \
+	"minishell: warning: here-document delimited by end-of-file (wanted " \
+	"`%s')\n"
+#define CODE_MALLOC 42
 #define SUCCESS 0
 #define ERROR -1
 #define ERROR_REDIRECT -3
@@ -73,7 +75,7 @@ enum e_builtin
 	EXPORT,
 	UNSET,
 	ENV,
-	EXIT = -1,
+	EXIT
 };
 
 enum e_redirect
@@ -95,33 +97,32 @@ struct s_glb
 
 struct s_token
 {
-	char    *word;
-	int      type;
-	int      quote;
-	size_t   word_index;
-	size_t   cmd_index;
-	t_token *next;
+	char  *word;
+	int    type;
+	int    quote;
+	size_t word_index;
+	size_t cmd_index;
 };
 
 struct s_cmd
 {
-	int 	is_valid;
-	int       fd[2];
-	int       pid;
-	int       is_builtin;
-	char    **env;
-	char    **args;
-	char     *path_cmd;
-	int       final_input;
-	int       final_output;
-	char	*input;
-	char	*limiter;
-	int 	expand_here_doc;
-	int		type_in;
-	int		is_here_doc;
-	char 	*string_here_doc;
-	char *output;
-	int   type_out;
+	int    is_valid;
+	int    fd[2];
+	int    pid;
+	int    is_builtin;
+	char **env;
+	char **args;
+	char  *path_cmd;
+	int    final_input;
+	int    final_output;
+	char  *input;
+	char  *limiter;
+	int    expand_here_doc;
+	int    type_in;
+	int    is_here_doc;
+	char  *string_here_doc;
+	char  *output;
+	int    type_out;
 	t_glb *glb;
 };
 
@@ -129,7 +130,7 @@ struct s_cmd
  * PROTOTYPES
  */
 char *here_doc_expand_variables(char **env, char *buf);
-void panic(t_glb *glb, int code, t_cmd *cmd);
+void  panic(t_glb *glb, int code, t_cmd *cmd);
 
 /* ENV */
 int    env_strcmp(const char *s1, const char *s2);
@@ -156,33 +157,29 @@ int  blt_cd(t_glb *glb, int argc, char **argv);
 int  blt_compute_argc(char **argv);
 
 /* PARSING */
-t_token *ps_token_list_node_create(char *s);
-void     ps_token_list_node_destroy(t_token *node);
-void     ps_token_list_node_add(t_token **tok, t_token *node);
-void     ps_token_list_node_rm(t_token **tok, t_token *node);
-void     ps_token_list_free(t_token **tok);
-t_token *ps_token_list_goto_last(t_token **tok);
+t_token  *token_struct_create(char *word);
+t_token **token_array_create(char *s);
+void      token_struct_destroy(t_token *p);
+void      token_array_destroy(t_token **tok);
+void      token_array_rm(t_token **tok, size_t pos);
 
 int   ismeta(int c);
 char *f_itoa(intmax_t n);
-bool  ps_line_has_balanced_quotes(t_token **tok);
-int   ps_token_list_from_array(t_token **tok, char *s);
-void  ps_token_list_print(t_token **tok);
-void  ps_token_list_set_index_quote(t_token **tok);
-void  ps_token_list_set_index_word(t_token **tok);
-void  ps_token_list_update_index_word(t_token **tok);
-void  ps_token_list_set_index_cmd(t_token **tok);
-void  ps_token_list_delete_space(t_token **tok);
-void  ps_token_list_delete_quote(t_token **tok);
-void  ps_token_list_delete_pipe(t_token **tok);
-void  ps_token_list_delete_bracket(t_token **tok);
-void  ps_token_list_recreate_words(t_glb *glb);
-void  ps_token_list_recreate_variables(t_glb *glb);
-void  ps_token_list_fill_type(t_token **tok);
-void  ps_token_list_expand_variables(t_glb *glb);
-void  ps_token_list_group_words(t_glb *glb);
-bool  ps_token_list_has_syntax_error(t_token **tok);
-int   parsing(t_glb *glb);
+
+void parsing_set_index_quote(t_token **tok);
+void parsing_set_index_word(t_token **tok);
+void parsing_update_index_word(t_token **tok);
+void parsing_set_index_cmd(t_token **tok);
+void parsing_delete_space(t_token **tok);
+void parsing_delete_quote(t_token **tok);
+void parsing_delete_pipe(t_token **tok);
+void parsing_delete_bracket(t_token **tok);
+int  parsing_recreate_words(t_token **tok);
+void parsing_fill_type(t_token **tok);
+int  parsing_expand_variables(t_token **tok, char **env);
+int  parsing_group_words(t_token **tok);
+bool parsing_has_syntax_error(t_token **tok);
+int  parsing(t_glb *glb);
 
 /* MISC */
 void sigint_handler(int sig);
@@ -219,7 +216,7 @@ int open_output(t_cmd *files);
 int open_input(t_cmd *files);
 
 /*** ex_builtin ***/
-void ex_builtin(t_glb *glb, t_cmd * cmd, int builtin, char **arg);
+void ex_builtin(t_glb *glb, t_cmd *cmd, int builtin, char **arg);
 
 /*** ex_redirection ***/
 void nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
@@ -233,8 +230,8 @@ int    ft_strncmp(const char *s1, const char *s2, size_t n);
 char  *ft_strjoin(char const *s1, char const *s2);
 
 /*** free ***/
-int  free_t_cmd(t_cmd *cmd, int nb_cmd);
-void close_fd(t_cmd *cmd, int nb_cmd);
-char	**ft_free_double_array(char **ptr);
+int    free_t_cmd(t_cmd *cmd, int nb_cmd);
+void   close_fd(t_cmd *cmd, int nb_cmd);
+char **ft_free_double_array(char **ptr);
 
 #endif

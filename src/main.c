@@ -7,11 +7,10 @@ static t_glb *msh_init(char **envp)
 	glb = malloc(sizeof(t_glb));
 	if (!glb)
 		panic(glb, CODE_MALLOC, NULL);
-	glb->tok = malloc(sizeof(t_token *));
-	glb->tok[0] = NULL;
+	glb->tok = NULL;
 	glb->rl = NULL;
 	glb->env = env_init(envp);
-	if (!glb->tok || !glb->env)
+	if (!glb->env)
 		panic(glb, CODE_MALLOC, NULL);
 	return (glb);
 }
@@ -23,10 +22,7 @@ static void msh_exit(t_glb *glb)
 	if (glb->rl)
 		free(glb->rl);
 	if (glb->tok)
-	{
-		ps_token_list_free(glb->tok);
-		free(glb->tok);
-	}
+		token_array_destroy(glb->tok);
 	if (glb->env)
  		env_array_destroy(glb->env, env_array_get_size(glb->env));
 	free(glb);
@@ -35,16 +31,16 @@ static void msh_exit(t_glb *glb)
 
 static void reset(t_glb *glb)
 {
-	ps_token_list_free(glb->tok);
-	glb->tok[0] = NULL;
+	token_array_destroy(glb->tok);
 	free(glb->rl);
 	glb->rl = NULL;
+	glb->tok = NULL;
 }
 
 void panic(t_glb *glb, int code, t_cmd *cmd)
 {
-	close_fd(cmd, glb->multiple_cmd);
-	free_t_cmd(cmd, cmd->glb->multiple_cmd);
+	// close_fd(cmd, glb->multiple_cmd);
+	// free_t_cmd(cmd, cmd->glb->multiple_cmd);
 	msh_exit(glb);
 	if (code == CODE_MALLOC)
 		f_dprintf(STDERR_FILENO, ERR_MALLOC);
@@ -52,7 +48,7 @@ void panic(t_glb *glb, int code, t_cmd *cmd)
 }
 
 int g_rval = 0; /* Global variable init */
-int main(int ac, char *av[], char *ep[])
+/* int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;
 	(void) av;
@@ -69,7 +65,7 @@ int main(int ac, char *av[], char *ep[])
 		if (!glb->rl[0])
 			continue;
 		add_history(glb->rl);
-		if (ps_token_list_from_array(glb->tok, glb->rl))
+		if (parsing_from_array(glb->tok, glb->rl))
 			panic(glb, EXIT_FAILURE, NULL);
 		if (parsing(glb))
 		{
@@ -77,6 +73,35 @@ int main(int ac, char *av[], char *ep[])
 			continue;
 		}
 		exec(glb);
+		reset(glb);
+	}
+	msh_exit(glb);
+	return (EXIT_SUCCESS);
+} */
+
+int main(int ac, char *av[], char *ep[])
+{
+	(void) ac;
+	(void) av;
+	t_glb *glb;
+
+	glb = msh_init(ep);
+	while (glb)
+	{
+		glb->rl = readline("MSH $ ");
+		if (!glb->rl)
+			break;
+		if (!glb->rl[0])
+			continue;
+		add_history(glb->rl);
+		glb->tok = token_array_create(glb->rl);
+		if (!glb->tok)
+			panic(glb, EXIT_FAILURE, NULL);
+		if (parsing(glb))
+		{
+			reset(glb);
+			continue;
+		}
 		reset(glb);
 	}
 	msh_exit(glb);

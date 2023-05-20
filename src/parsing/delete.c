@@ -6,79 +6,72 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:29:55 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/11 10:30:33 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/20 12:54:53 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ps_token_list_delete_space(t_token **tok)
+void	parsing_delete_space(t_token **tok)
 {
-	t_token	*next;
-	t_token	*curr;
+	size_t i;
 
-	curr = *tok;
-	while (curr)
+	i = 0;
+	while (tok[i])
 	{
-		next = curr->next;
-		if (curr->quote == NONE && f_isspace(curr->word[0]))
-			ps_token_list_node_rm(tok, curr);
-		curr = next;
+		if (tok[i]->quote == NONE && f_isspace(tok[i]->word[0]))
+			token_array_rm(tok, i);
+		else
+			i++;
 	}
 }
 
-void	ps_token_list_delete_quote(t_token **tok)
+void	parsing_delete_pipe(t_token **tok)
 {
-	t_token	*next;
-	t_token	*curr;
+	size_t i;
 
-	curr = *tok;
-	while (curr)
+	i = 0;
+	while (tok[i])
 	{
-		next = curr->next;
-		if (curr->quote == NONE
-			&& (curr->word[0] == '\'' || curr->word[0] == '"'))
+		if (tok[i]->quote == NONE && tok[i]->word[0] == '|')
+			token_array_rm(tok, i);
+		else
+			i++;
+	}
+}
+
+void	parsing_delete_quote(t_token **tok)
+{
+	size_t i;
+
+	i = 0;
+	while (tok[i])
+	{
+		if (!tok[i]->quote && (*tok[i]->word == '\'' || *tok[i]->word == '"'))
 		{
-			if (next && (curr->word[0] == next->word[0]))
+			if (tok[i + 1] && (*tok[i]->word == *tok[i + 1]->word))
 			{
-				curr->word[0] = 0;
-				next = next->next;
-				ps_token_list_node_rm(tok, curr->next);
+				*tok[i++]->word = '\0';
+				token_array_rm(tok, i);
 			}
 			else
-				ps_token_list_node_rm(tok, curr);
+				token_array_rm(tok, i);
 		}
-		curr = next;
+		i++;
 	}
 }
 
-void	ps_token_list_delete_bracket(t_token **tok)
+void parsing_delete_bracket(t_token **tok)
 {
-	t_token	*next;
-	t_token	*curr;
+	size_t i;
 
-	curr = *tok;
-	while (curr)
+	i = 0;
+	while (tok[i])
 	{
-		next = curr->next;
-		if (curr->quote == NONE && curr->type == BASIC
-			&& (curr->word[0] == '<' || curr->word[0] == '>'))
-			ps_token_list_node_rm(tok, curr);
-		curr = next;
-	}
-}
-
-void	ps_token_list_delete_pipe(t_token **tok)
-{
-	t_token	*next;
-	t_token	*curr;
-
-	curr = *tok;
-	while (curr)
-	{
-		next = curr->next;
-		if (next && curr->quote == NONE && curr->word[0] == '|')
-			ps_token_list_node_rm(tok, curr);
-		curr = next;
+		if (!tok[i]->quote && !tok[i]->type
+		&& (*tok[i]->word == '<' || *tok[i]->word == '>'))
+			token_array_rm(tok, i);
+		else
+			i++;
 	}
 }

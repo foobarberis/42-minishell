@@ -34,24 +34,41 @@
  *   permission etc.).
  */
 
+static void token_array_print(t_token **tok)
+{
+	size_t i;
+	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n", "type", "quote", "char *", "word", "cmd");
+	printf("-------------------------------------------------------------------"
+	       "--------\n");
+	i = 0;
+	while (tok[i])
+	{
+		printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", tok[i]->type, tok[i]->quote, tok[i]->word, tok[i]->word_index, tok[i]->cmd_index);
+		i++;
+	}
+	f_printf("\n");
+}
+
 int	parsing(t_glb *glb)
 {
-	ps_token_list_set_index_quote(glb->tok);
-	ps_token_list_set_index_word(glb->tok);
-	ps_token_list_set_index_cmd(glb->tok);
-	ps_token_list_delete_space(glb->tok);
-	if (ps_token_list_has_syntax_error(glb->tok))
-		return (1);
-	ps_token_list_delete_quote(glb->tok);
-	ps_token_list_update_index_word(glb->tok);
-	ps_token_list_delete_pipe(glb->tok);
-	ps_token_list_recreate_variables(glb);
-	ps_token_list_expand_variables(glb);
-	ps_token_list_recreate_words(glb);
-	ps_token_list_fill_type(glb->tok);
-	ps_token_list_delete_bracket(glb->tok);
-	ps_token_list_group_words(glb);
-	glb->multiple_cmd = (int)(ps_token_list_goto_last(glb->tok)->cmd_index) + 1;
-	// ps_token_list_print(glb->tok); /* FIXME: Remove before review */
+	parsing_set_index_quote(glb->tok);
+	parsing_set_index_word(glb->tok);
+	parsing_set_index_cmd(glb->tok);
+	parsing_delete_space(glb->tok);
+	// if (parsing_check_syntax(glb->tok))
+	// 	return (1);
+	parsing_delete_quote(glb->tok);
+	parsing_update_index_word(glb->tok);
+	parsing_delete_pipe(glb->tok);
+	if (parsing_expand_variables(glb->tok, glb->env))
+		return (CODE_MALLOC);
+	if (parsing_recreate_words(glb->tok))
+		return (CODE_MALLOC);
+	parsing_fill_type(glb->tok);
+	parsing_delete_bracket(glb->tok);
+	if (parsing_group_words(glb->tok))
+		return (CODE_MALLOC);
+	glb->multiple_cmd = (int)(((t_token *)(&glb->tok + 1))[-1].cmd_index + 1);
+	token_array_print(glb->tok); /* FIXME: Remove before review */
 	return (0);
 }

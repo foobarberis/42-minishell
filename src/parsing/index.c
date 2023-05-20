@@ -6,13 +6,13 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:30:51 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/19 15:46:10 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/20 12:52:18 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ps_token_list_update_quote_state(char c, int state)
+static int	parsing_update_quote_state(char c, int state)
 {
 	if (c == '\'' && state == SIMPLE)
 		state = NONE;
@@ -25,90 +25,87 @@ static int	ps_token_list_update_quote_state(char c, int state)
 	return (state);
 }
 
-void	ps_token_list_set_index_quote(t_token **tok)
+void	parsing_set_index_quote(t_token **tok)
 {
+	size_t i;
 	int		state;
-	t_token	*curr;
 
-	curr = *tok;
+	i = 0;
 	state = NONE;
-	while (curr)
+	while (tok[i])
 	{
-		if (state == NONE && (curr->word[0] == '\'' || curr->word[0] == '"'))
+		if (state == NONE && (*tok[i]->word == '\'' || *tok[i]->word == '"'))
 		{
-			curr->quote = NONE;
-			state = ps_token_list_update_quote_state(curr->word[0], state);
-			curr = curr->next;
+			tok[i]->quote = NONE;
+			state = parsing_update_quote_state(*tok[i]->word, state);
 		}
 		else
 		{
-			state = ps_token_list_update_quote_state(curr->word[0], state);
-			curr->quote = state;
-			curr = curr->next;
+			state = parsing_update_quote_state(*tok[i]->word, state);
+			tok[i]->quote = state;
 		}
+		i++;
 	}
 }
 
-void	ps_token_list_set_index_cmd(t_token **tok)
+void	parsing_set_index_cmd(t_token **tok)
 {
+	size_t i;
 	size_t	cmd;
-	t_token	*curr;
 
+	i = 0;
 	cmd = 0;
-	curr = *tok;
-	while (curr)
+	while (tok[i])
 	{
-		if (curr->word[0] == '|')
+		if (*tok[i]->word == '|')
 			cmd++;
-		curr->cmd_index = cmd;
-		curr = curr->next;
+		tok[i]->cmd_index = cmd;
+		i++;
 	}
 }
 
 /* FIXME: Is there a less cumbersome way to write this */
-void	ps_token_list_set_index_word(t_token **tok)
+void parsing_set_index_word(t_token **tok)
 {
-	bool	sep;
-	size_t	word;
-	t_token	*curr;
+	bool   sep;
+	size_t i;
+	size_t word;
 
+	i = 0;
 	word = 0;
 	sep = false;
-	curr = *tok;
-	while (curr)
+	while (tok[i])
 	{
-		if (!curr->quote && ((ismeta(curr->word[0]) || f_isspace(curr->word[0])) && !sep))
+		if (!tok[i]->quote)
 		{
-			sep = true;
-			word++;
+			if (!sep && (ismeta(*tok[i]->word) || f_isspace(*tok[i]->word)))
+			{
+				sep = true;
+				word++;
+			}
+			else if (sep && !(ismeta(*tok[i]->word) || f_isspace(*tok[i]->word)))
+			{
+				sep = false;
+				word++;
+			}
 		}
-		else if (!curr->quote && (!(ismeta(curr->word[0]) || f_isspace(curr->word[0])) && sep))
-		{
-			sep = false;
-			word++;
-		}
-		curr->word_index = word;
-		curr = curr->next;
+		tok[i]->word_index = word;
+		i++;
 	}
 }
 
-void	ps_token_list_update_index_word(t_token **tok)
+void	parsing_update_index_word(t_token **tok)
 {
 	size_t	i;
-	t_token	*curr;
-	t_token	*next;
+	size_t	j;
 
-	if (!tok)
-		return ;
 	i = 0;
-	curr = *tok;
-	while (curr)
+	j = 0;
+	while (tok[i])
 	{
-		next = curr->next;
-		curr->word_index += i;
-		if (next && curr->word[0] == '|'
-			&& (next->word[0] == '<' || next->word[0] == '>'))
-			i++;
-		curr = next;
+		tok[i]->word_index += j;
+		if (tok[i + 1] && *tok[i]->word == '|' && (*tok[i + 1]->word == '<' || *tok[i + 1]->word == '>'))
+			j++;
+		i++;
 	}
 }
