@@ -33,16 +33,18 @@ static void msh_exit(t_glb *glb)
 
 static void reset(t_glb *glb)
 {
-	token_array_destroy(glb->tok);
-	free(glb->rl);
+	if (glb->tok)
+		token_array_destroy(glb->tok);
+	if (glb->rl)
+		free(glb->rl);
 	glb->rl = NULL;
 	glb->tok = NULL;
 }
 
 void panic(t_glb *glb, int code, t_cmd *cmd)
 {
-	// close_fd(cmd, glb->multiple_cmd);
-	// free_t_cmd(cmd, cmd->glb->multiple_cmd);
+	close_fd(cmd, glb->multiple_cmd);
+	free_t_cmd(cmd, cmd->glb->multiple_cmd);
 	msh_exit(glb);
 	if (code == CODE_MALLOC)
 		f_dprintf(STDERR_FILENO, ERR_MALLOC);
@@ -59,6 +61,7 @@ int main(int ac, char *av[], char *ep[])
 	glb = msh_init(ep);
 	while (glb)
 	{
+		reset(glb);
 		glb->rl = readline("MSH $ ");
 		if (!glb->rl)
 			break;
@@ -69,12 +72,8 @@ int main(int ac, char *av[], char *ep[])
 		if (!glb->tok)
 			break;
 		if (parsing(glb))
-		{
-			reset(glb);
 			continue;
-		}
-		// exec(glb);
-		reset(glb);
+		exec(glb);
 	}
 	msh_exit(glb);
 	return (EXIT_SUCCESS);
