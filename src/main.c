@@ -49,8 +49,8 @@ static void reset(t_glb *glb)
 
 void panic(t_glb *glb, int code, t_cmd *cmd)
 {
-	// close_fd(cmd, glb->multiple_cmd);
-	// free_t_cmd(cmd, cmd->glb->multiple_cmd);
+	close_fd(cmd, glb->multiple_cmd);
+	free_t_cmd(cmd, cmd->glb->multiple_cmd);
 	msh_exit(glb);
 	if (code == CODE_MALLOC)
 		f_dprintf(STDERR_FILENO, ERR_MALLOC);

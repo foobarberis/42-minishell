@@ -29,6 +29,7 @@ int	exec(t_glb *glb)
 	ex_launch(glb, &cmd[i], glb->multiple_cmd);
 	while (i < glb->multiple_cmd)
 	{
+		printf("pid: %d, status: %d\n", cmd[i].pid, status);
 		waitpid(cmd[i].pid, &status, 0);
 		if (WIFEXITED(status))
 			g_rval = WEXITSTATUS(status);
@@ -126,7 +127,7 @@ void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 	if (cmd[i].is_builtin)
 	{
 		ex_builtin(glb, cmd, cmd[i].is_builtin, cmd[i].args);
-		
+
 	}
 	else
 		execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env);

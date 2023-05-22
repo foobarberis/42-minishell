@@ -85,8 +85,7 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 		cmd[i].glb = glob;
 		cmd[i].env = glob->env;
 		cmd[i].is_valid = ps_fill_cmd_struct(&cmd[i], glob->split[i]);
-		if (cmd[i].is_valid == CODE_MALLOC || (cmd[i].is_here_doc && \
-												cmd[i].string_here_doc == NULL))
+		if (cmd[i].is_valid == CODE_MALLOC) //  FIXME: Remove this || (cmd[i].is_here_doc && cmd[i].string_here_doc == NULL))
 			panic(cmd->glb, CODE_MALLOC, cmd);
 		if (cmd[i].is_valid == 127 && (access(cmd[i].args[0], F_OK) == 0) && \
 										(access(cmd[i].args[0], X_OK) != 0))
