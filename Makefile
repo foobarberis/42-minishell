@@ -30,7 +30,7 @@ SRCS		:=	builtins/blt_utils.c \
 				exec/ex_free.c \
 				exec/ex_close.c \
 				exec/ps_fill_all_cmd.c \
-				exec/ps_get_args_n_here_doc.c \
+				exec/ps_get_args.c \
 				exec/ps_get_redirect.c \
 				exec/ps_get_path_cmd.c \
 				exec/here_doc.c \

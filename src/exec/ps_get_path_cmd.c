@@ -13,7 +13,7 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 
 	if (cmd == NULL)
 	{
-		printf(": command not found:\n");
+		f_dprintf(2, ": command not found:\n");
 		return (NULL);
 	}
 	if (check_cmd(cmd) == ERROR)
@@ -22,7 +22,7 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 	split_path = ft_split(path, ':');
 	if (split_path == NULL || path == NULL)
 	{
-		printf(" : no such file or directory: %s\n", cmd);
+		f_dprintf(2, " : no such file or directory: %s\n", cmd);
 		return (NULL);
 	}
 	path_cmd = ft_compute_path(split_path, cmd);
@@ -30,7 +30,7 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 	if (path_cmd && f_strcmp(path_cmd, ERR_MALLOC) == 0)
 		return (ERR_MALLOC);
 	if (path_cmd == NULL)
-		return (printf("minishell : %s: command not found\n", cmd), NULL);
+		return (f_dprintf(2, "minishell : %s: command not found\n", cmd), NULL);
 	return (path_cmd);
 }
 
@@ -96,7 +96,7 @@ int	check_cmd(char *cmd)
 	error = 0;
 	if (!f_strcmp(cmd, "."))
 	{
-		dprintf(2, "minishell: .: filename argument required\n");
+		f_dprintf(2, "minishell: .: filename argument required\n");
 		error = ERROR;
 	}
 	else if (access(cmd, X_OK) && directory > 0)
@@ -106,7 +106,7 @@ int	check_cmd(char *cmd)
 	}
 	else if (opendir(cmd))
 	{
-		dprintf(2, "minishell: %s: Is a directory\n", cmd);
+		f_dprintf(2, "minishell: %s: Is a directory\n", cmd);
 		error = ERROR;
 	}
 	return (error);

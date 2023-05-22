@@ -11,24 +11,23 @@ void	init_to_null_cmd_struct(t_cmd *cmd)
 	cmd->input = NULL;
 	cmd->limiter = NULL;
 	cmd->is_here_doc = 0;
-	cmd->expand_here_doc = 0;
 	cmd->string_here_doc = NULL;
 	cmd->output = NULL;
 	cmd->final_output = -1;
 	cmd->final_input = -1;
 }
 
-int	ps_check_redirect_n_blt(t_cmd *cmd, t_token *tok, int index_cmd, int *error)
+int	ps_check_redirect_n_blt(t_cmd *cmd, t_token *tok, int *error)
 {
 	int	check_input;
 	int	check_output;
 
-	check_input = ps_get_input(tok, cmd, index_cmd);
+	check_input = ps_get_input(tok, cmd);
 	if (check_input == CODE_MALLOC)
 		return (CODE_MALLOC);
 	else if (check_input == ERROR)
 		*error = 1;
-	check_output = ps_get_output(tok, cmd, index_cmd);
+	check_output = ps_get_output(tok, cmd);
 	if (check_output == CODE_MALLOC)
 		return (CODE_MALLOC);
 	else if (check_output == ERROR)
@@ -41,7 +40,7 @@ int	ps_check_redirect_n_blt(t_cmd *cmd, t_token *tok, int index_cmd, int *error)
 	return (SUCCESS);
 }
 
-int	ps_fill_cmd_struct(t_cmd *cmd, t_token *tok, int index_cmd)
+int	ps_fill_cmd_struct(t_cmd *cmd, t_token *tok)
 {
 	int	nb_args;
 	int	error;
@@ -49,18 +48,16 @@ int	ps_fill_cmd_struct(t_cmd *cmd, t_token *tok, int index_cmd)
 	int	check_middle;
 
 	error = 0;
-	nb_args = count_type(tok, BASIC, BASIC, index_cmd) + 1;
+	nb_args = count_type(tok, BASIC) + 1;
 	cmd->args = malloc(sizeof(char *) * nb_args);
 	if (!cmd->args)
 		return (CODE_MALLOC);
-	args = ps_get_args_cmd(tok, cmd, nb_args, index_cmd);
+	args = ps_get_args_cmd(tok, cmd);
 	if (args == CODE_MALLOC)
 		return (CODE_MALLOC);
 	else if (args == ERROR)
 		error = 2;
-	if (ps_get_here_doc(tok, cmd, index_cmd) == CODE_MALLOC)
-		return (CODE_MALLOC);
-	check_middle = ps_check_redirect_n_blt(cmd, tok, index_cmd, &error);
+	check_middle = ps_check_redirect_n_blt(cmd, tok, &error);
 	if (check_middle == CODE_MALLOC)
 		return (CODE_MALLOC);
 	if (!cmd->is_builtin && cmd->path_cmd == NULL)
@@ -86,7 +83,7 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 	{
 		cmd[i].glb = glob;
 		cmd[i].env = glob->env;
-		cmd[i].is_valid = ps_fill_cmd_struct(&cmd[i], glob->tok[0], i);
+		cmd[i].is_valid = ps_fill_cmd_struct(&cmd[i], glob->tok[i]);
 		if (cmd[i].is_valid == CODE_MALLOC || (cmd[i].is_here_doc && \
 												cmd[i].string_here_doc == NULL))
 			panic(cmd->glb, CODE_MALLOC, cmd);

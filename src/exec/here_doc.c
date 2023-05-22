@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static char *here_doc_loop(char *here_doc, char *rl, char *tmp, char *lim)
+static char	*here_doc_loop(char *here_doc, char *rl, char *tmp, char *lim)
 {
 	while (1)
 	{
@@ -9,7 +9,7 @@ static char *here_doc_loop(char *here_doc, char *rl, char *tmp, char *lim)
 		if (!rl)
 			f_dprintf(STDERR_FILENO, ERR_HERE_DOC, lim);
 		if (!rl || !f_strcmp(rl, lim))
-			break;
+			break ;
 		tmp = f_strjoin(here_doc, rl);
 		if (!tmp)
 			return (free(here_doc), free(rl), NULL);
@@ -22,9 +22,9 @@ static char *here_doc_loop(char *here_doc, char *rl, char *tmp, char *lim)
 	return (here_doc);
 }
 
-char *here_doc(char *lim)
+char	*here_doc(char *lim)
 {
-	char *buf[3];
+	char	*buf[3];
 
 	buf[0] = f_strdup("");
 	if (!buf[0])

@@ -14,8 +14,6 @@ void	in_out_redirect(t_cmd *cmd, size_t i)
 
 	if (cmd[i].is_here_doc)
 	{
-		if (cmd[i].expand_here_doc == 1)
-			cmd[i].string_here_doc = here_doc_expand_variables(cmd[i].env, cmd[i].string_here_doc);
 		len = f_strlen(cmd[i].string_here_doc);
 		write(cmd[i].fd[1], cmd[i].string_here_doc, len);
 		dup2(cmd[i].fd[0], STDIN_FILENO);
@@ -35,8 +33,6 @@ void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 
 	if (cmd[i].is_here_doc)
 	{
-		if (cmd[i].expand_here_doc == 1)
-			cmd[i].string_here_doc = here_doc_expand_variables(cmd[i].env, cmd[i].string_here_doc);
 		len = f_strlen(cmd[i].string_here_doc);
 		write(cmd[i].fd[1], cmd[i].string_here_doc, len);
 		close(cmd[i].fd[1]);
