@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/20 17:35:12 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/22 13:28:09 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 
 # Edit the $(NAME) and $(SRCS) variables as necessary.
 NAME		:=	minishell
-SRCS		:=	builtins/blt_utils.c \
+# SRCS		:=	builtins/blt_utils.c \
 				builtins/cd.c \
 				builtins/echo.c \
 				builtins/env.c \
@@ -50,13 +50,16 @@ SRCS		:=	builtins/blt_utils.c \
 				parsing/word.c \
 				main.c
 
-# SRCS		:=	parsing/delete.c \
+SRCS		:=	parsing/delete.c \
 				parsing/index.c \
 				parsing/parsing.c \
 				parsing/parsing_utils.c \
 				parsing/syntax.c \
 				parsing/token_arr_utils.c \
 				parsing/type.c \
+				parsing/here_doc.c \
+				parsing/here_doc_expand.c \
+				parsing/split.c \
 				env/environ.c \
 				env/environ_utils.c \
 				main.c \

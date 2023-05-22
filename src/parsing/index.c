@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:30:51 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/20 16:38:13 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/22 11:59:57 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	parsing_set_index_cmd(t_token **tok)
 	size_t	cmd;
 
 	i = 0;
-	cmd = 1;
+	cmd = 0;
 	while (tok[i])
 	{
 		if (*tok[i]->word == '|')
