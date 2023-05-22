@@ -91,6 +91,7 @@ struct s_glb
 {
 	char    **env;
 	t_token **tok;
+	t_cmd 	**cmd;
 	char     *rl;
 	int       multiple_cmd;
 };
@@ -186,50 +187,29 @@ void sigint_handler(int sig);
 
 /* EXEC */
 int exec(t_glb *glob);
-
-/*** pe_is_builtin ***/
 int ps_is_builtin(char *cmd);
-
-/*** pe_get_cmd_path ***/
 char *ps_get_path_cmd(char *cmd, char **envp, char *path_cmd);
-
-/*** pe_fill_all_cmd ***/
 int  ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
 void init_to_null_cmd_struct(t_cmd *cmd);
-
-/*** ex_here_doc ***/
 char *here_doc(char *lim);
-
-/*** ps_fill_arrays_struct_cmd ***/
-int ps_get_args_cmd(t_token *tok, t_cmd *cmd, int nb_args, size_t index);
-int ps_get_here_doc(t_token *tok, t_cmd *cm, size_t index);
-
-/*** ps_get_redirect ***/
-int ps_get_input(t_token *tok, t_cmd *cmd, size_t index);
-int ps_get_output(t_token *tok, t_cmd *cmd, size_t index);
-
-/*** ps_fill_cmd_struct ***/
-int count_type(t_token *tok, int type1, int type2, size_t i);
-
-/*** pe_redirect ***/
+/* FIXME: Revert to t_token * */
+int ps_get_args_cmd(t_token **tok, t_cmd *cmd, int nb_args, size_t index);
+int ps_get_here_doc(t_token **tok, t_cmd *cm, size_t index);
+int ps_get_input(t_token **tok, t_cmd *cmd, size_t index);
+int ps_get_output(t_token **tok, t_cmd *cmd, size_t index);
+int	count_type(t_token **tok, int type1, int type2, size_t i);
 int open_output(t_cmd *files);
 int open_input(t_cmd *files);
-
-/*** ex_builtin ***/
 void ex_builtin(t_glb *glb, t_cmd *cmd, int builtin, char **arg);
-
-/*** ex_redirection ***/
 void nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
 void in_out_redirect(t_cmd *cmd, size_t i);
 void in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
 void out_redirect(t_cmd *cmd, size_t i);
 
-/*** utility_fonctions ***/
 char **ft_split(char const *s, char c);
 int    ft_strncmp(const char *s1, const char *s2, size_t n);
 char  *ft_strjoin(char const *s1, char const *s2);
 
-/*** free ***/
 int    free_t_cmd(t_cmd *cmd, int nb_cmd);
 void   close_fd(t_cmd *cmd, int nb_cmd);
 char **ft_free_double_array(char **ptr);

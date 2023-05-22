@@ -73,7 +73,7 @@ int main(int ac, char *av[], char *ep[])
 			break;
 		if (parsing(glb))
 			continue;
-		exec(glb);
+		// exec(glb);
 	}
 	msh_exit(glb);
 	return (EXIT_SUCCESS);

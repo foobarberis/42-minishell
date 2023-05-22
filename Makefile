@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/20 15:12:04 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/20 17:35:12 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 
 # Edit the $(NAME) and $(SRCS) variables as necessary.
 NAME		:=	minishell
-# SRCS		:=	builtins/blt_utils.c \
+SRCS		:=	builtins/blt_utils.c \
 				builtins/cd.c \
 				builtins/echo.c \
 				builtins/env.c \
@@ -50,7 +50,7 @@ NAME		:=	minishell
 				parsing/word.c \
 				main.c
 
-SRCS		:=	parsing/delete.c \
+# SRCS		:=	parsing/delete.c \
 				parsing/index.c \
 				parsing/parsing.c \
 				parsing/parsing_utils.c \
@@ -77,7 +77,7 @@ MLCDIR		:=	mlc
 INCFLAGS	:= -I$(INCDIR) -I$(SYSINC) -I$(MLCDIR)/inc
 LIBFLAGS	:= -L$(MLCDIR) -lreadline -lft
 # CFLAGS	:=	-Wall -Wextra -Werror
-CFLAGS		:= -g3 -fPIE -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion #-fsanitize=undefined,address
+CFLAGS		:= -g3 -fPIE -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address
 LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 

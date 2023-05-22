@@ -5,7 +5,17 @@ void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd);
 void	parent_exec(t_cmd *cmd, size_t i);
 void	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd);
 
-int	exec(t_glb *glob)
+static size_t get_max_cmd(t_token **tok)
+{
+	size_t i;
+
+	i = 0;
+	while (tok[i])
+		i++;
+	return (tok[i - 1]->cmd_index);
+}
+
+int	exec(t_glb *glb)
 {
 	int		status;
 	int		i;
@@ -13,20 +23,19 @@ int	exec(t_glb *glob)
 
 	i = 0;
 	status = 0;
-	glob->multiple_cmd = (int)(((t_token *)(&glob->tok + 1))[-1].cmd_index + 1);
-	cmd = malloc(sizeof(t_cmd) * glob->multiple_cmd);
-	ps_initialisation_cmds(cmd, glob);
-	ex_launch(glob, &cmd[i], glob->multiple_cmd);
-	i = 0;
-	while (i < glob->multiple_cmd)
+	glb->multiple_cmd = (int)get_max_cmd(glb->tok);
+	cmd = malloc(sizeof(t_cmd) * glb->multiple_cmd);
+	ps_initialisation_cmds(cmd, glb);
+	ex_launch(glb, &cmd[i], glb->multiple_cmd);
+	while (i < glb->multiple_cmd)
 	{
 		waitpid(cmd[i].pid, &status, 0);
 		if (WIFEXITED(status))
 			g_rval = WEXITSTATUS(status);
 		i++;
 	}
-	close_fd(cmd, glob->multiple_cmd);
-	free_t_cmd(cmd, glob->multiple_cmd);
+	close_fd(cmd, glb->multiple_cmd);
+	free_t_cmd(cmd, glb->multiple_cmd);
 	return (0);
 }
 
