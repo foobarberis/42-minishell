@@ -189,7 +189,7 @@ int exec(t_glb *glob);
 int ps_is_builtin(char *cmd);
 char *ps_get_path_cmd(char *cmd, char **envp, char *path_cmd);
 int  ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
-void init_to_null_cmd_struct(t_cmd *cmd);
+void init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd);
 char *here_doc(char *lim);
 /* FIXME: Revert to t_token * */
 int ps_get_args_cmd(t_token *tok, t_cmd *cmd);
@@ -206,7 +206,6 @@ void out_redirect(t_cmd *cmd, size_t i);
 
 char **ft_split(char const *s, char c);
 int    ft_strncmp(const char *s1, const char *s2, size_t n);
-char  *ft_strjoin(char const *s1, char const *s2);
 
 int    free_t_cmd(t_cmd *cmd, int nb_cmd);
 void   close_fd(t_cmd *cmd, int nb_cmd);

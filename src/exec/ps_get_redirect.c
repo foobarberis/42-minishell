@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ps_input_is_here_doc(t_token tok, t_cmd *cmd);
+void	ps_input_is_here_doc(t_cmd *cmd);
 
 int	ps_get_input(t_token *tok, t_cmd *cmd)
 {
@@ -14,10 +14,10 @@ int	ps_get_input(t_token *tok, t_cmd *cmd)
 			if (cmd->input)
 				free(cmd->input);
 			cmd->input = NULL;
-			cmd->input = f_strdup(tok->word);
+			cmd->input = f_strdup(tok[i].word);
 			if (!cmd->input)
 				return (CODE_MALLOC);
-			cmd->type_in = tok->type;
+			cmd->type_in = S_INPUT;
 			cmd->limiter = NULL;
 			cmd->is_here_doc = 0;
 			cmd->final_input = open_input(cmd);
@@ -25,18 +25,18 @@ int	ps_get_input(t_token *tok, t_cmd *cmd)
 				return (ERROR);
 		}
 		else if (tok[i].type == D_INPUT)
-			ps_input_is_here_doc(tok[i], cmd);
+			ps_input_is_here_doc(cmd);
 		i++;
 	}
 	return (SUCCESS);
 }
 
-void	ps_input_is_here_doc(t_token tok, t_cmd *cmd)
+void	ps_input_is_here_doc(t_cmd *cmd)
 {
 	if (cmd->input)
 		free(cmd->input);
 	cmd->input = NULL;
-	cmd->type_in = tok.type;
+	cmd->type_in = D_INPUT;
 	cmd->is_here_doc = 1;
 }
 

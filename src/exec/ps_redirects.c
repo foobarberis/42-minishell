@@ -26,7 +26,6 @@ int	open_output(t_cmd *files)
 {
 	int	valid;
 
-	valid = -1;
 	if (files->type_out == S_OUTPUT)
 		valid = open(files->output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	else

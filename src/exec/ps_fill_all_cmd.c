@@ -1,20 +1,28 @@
 #include "../inc/minishell.h"
 
-void	init_to_null_cmd_struct(t_cmd *cmd)
+void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd)
 {
-	cmd->is_valid = 0;
-	cmd->pid = -1;
-	cmd->is_builtin = NONE;
-	cmd->path_cmd = NULL;
-	cmd->args = NULL;
-	cmd->env = NULL;
-	cmd->input = NULL;
-	cmd->limiter = NULL;
-	cmd->is_here_doc = 0;
-	cmd->string_here_doc = NULL;
-	cmd->output = NULL;
-	cmd->final_output = -1;
-	cmd->final_input = -1;
+	int	i;
+
+	i = 0;
+	while (i < nb_cmd)
+	{
+		pipe(cmd[i].fd);
+		cmd[i].is_valid = 0;
+		cmd[i].pid = -1;
+		cmd[i].is_builtin = NONE;
+		cmd[i].path_cmd = NULL;
+		cmd[i].args = NULL;
+		cmd[i].env = NULL;
+		cmd[i].input = NULL;
+		cmd[i].limiter = NULL;
+		cmd[i].is_here_doc = 0;
+		cmd[i].string_here_doc = NULL;
+		cmd[i].output = NULL;
+		cmd[i].final_output = -1;
+		cmd[i].final_input = -1;
+		i++;
+	}
 }
 
 int	ps_check_redirect_n_blt(t_cmd *cmd, t_token *tok, int *error)
@@ -72,13 +80,7 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 	int	i;
 
 	i = 0;
-	while (i < glob->multiple_cmd)
-	{
-		pipe(cmd[i].fd);
-		init_to_null_cmd_struct(&cmd[i]);
-		i++;
-	}
-	i = 0;
+	init_to_null_cmd_struct(cmd, glob->multiple_cmd);
 	while (i < glob->multiple_cmd)
 	{
 		cmd[i].glb = glob;

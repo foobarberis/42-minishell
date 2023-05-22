@@ -3,7 +3,7 @@
 int		ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd);
 void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd);
 void	parent_exec(t_cmd *cmd, size_t i);
-void	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd);
+void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd);
 
 static	size_t get_max_cmd(t_token **tok)
 {
@@ -59,7 +59,7 @@ int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 		}
 		if (i == nb_cmd)
 			break ;
-		ex_no_builtin(glb, cmd, i, nb_cmd);
+		ex_childs(glb, cmd, i, nb_cmd);
 		i++;
 	}
 	if (i > 0 && cmd[i - 1].fd[0])
@@ -67,7 +67,7 @@ int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	return (SUCCESS);
 }
 
-void	ex_no_builtin(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
+void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 {
 	int	pid;
 

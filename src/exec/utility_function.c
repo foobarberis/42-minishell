@@ -28,35 +28,6 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (u1[i] - u2[i]);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	i;
-	size_t	j;
-	size_t	size_tot;
-	char	*res;
-
-	i = -1;
-	j = 0;
-	if (!s1 && !s2)
-		return (NULL);
-	if (!s2)
-		return ((char *) s1);
-	if (!s1)
-		return ((char *) s2);
-	size_tot = f_strlen((char *) s1) + f_strlen((char *) s2);
-	if (size_tot >= SIZE_MAX)
-		return (NULL);
-	res = malloc(sizeof(char) * (size_tot + 1));
-	if (!res)
-		return (NULL);
-	while (s1[++i])
-		res[i] = s1[i];
-	while (s2[j])
-		res[i++] = s2[j++];
-	res[i] = '\0';
-	return (res);
-}
-
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*substr;
