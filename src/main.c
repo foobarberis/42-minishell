@@ -82,5 +82,5 @@ int main(int ac, char *av[], char *ep[])
 		exec(glb);
 	}
 	msh_exit(glb);
-	return (EXIT_SUCCESS);
+	return (g_rval);
 }
