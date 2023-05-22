@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
+#    By: vburton <vburton@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/22 13:28:09 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/22 16:38:02 by vburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 
 # Edit the $(NAME) and $(SRCS) variables as necessary.
 NAME		:=	minishell
-# SRCS		:=	builtins/blt_utils.c \
+SRCS		:=	builtins/blt_utils.c \
 				builtins/cd.c \
 				builtins/echo.c \
 				builtins/env.c \
@@ -33,8 +33,6 @@ NAME		:=	minishell
 				exec/ps_get_args.c \
 				exec/ps_get_redirect.c \
 				exec/ps_get_path_cmd.c \
-				exec/here_doc.c \
-				exec/here_doc_expand.c \
 				exec/ps_is_builtin.c \
 				exec/ps_redirects.c \
 				exec/utility_function.c \
@@ -48,24 +46,10 @@ NAME		:=	minishell
 				parsing/type.c \
 				parsing/variables.c \
 				parsing/word.c \
-				main.c
-
-SRCS		:=	parsing/delete.c \
-				parsing/index.c \
-				parsing/parsing.c \
-				parsing/parsing_utils.c \
-				parsing/syntax.c \
-				parsing/token_arr_utils.c \
-				parsing/type.c \
 				parsing/here_doc.c \
 				parsing/here_doc_expand.c \
 				parsing/split.c \
-				env/environ.c \
-				env/environ_utils.c \
-				main.c \
-				parsing/variables.c \
-				misc/signal.c \
-				parsing/word.c
+				main.c
 
 CC			:=	cc
 RM			:=	rm
@@ -80,7 +64,7 @@ MLCDIR		:=	mlc
 INCFLAGS	:= -I$(INCDIR) -I$(SYSINC) -I$(MLCDIR)/inc
 LIBFLAGS	:= -L$(MLCDIR) -lreadline -lft
 # CFLAGS	:=	-Wall -Wextra -Werror
-CFLAGS		:= -g3 -fPIE -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address
+CFLAGS		:= -g3 -fPIE -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion #-fsanitize=undefined,address
 LDFLAGS		:=	$(CFLAGS)
 RMFLAGS		:=	-f
 

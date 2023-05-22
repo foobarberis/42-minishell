@@ -15,7 +15,6 @@ void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd)
 		cmd[i].args = NULL;
 		cmd[i].env = NULL;
 		cmd[i].input = NULL;
-		cmd[i].limiter = NULL;
 		cmd[i].is_here_doc = 0;
 		cmd[i].string_here_doc = NULL;
 		cmd[i].output = NULL;
@@ -25,7 +24,7 @@ void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd)
 	}
 }
 
-int	ps_check_redirect_n_blt(t_cmd *cmd, t_token *tok, int *error)
+int	ps_check_redirect_n_blt(t_cmd *cmd, t_token **tok, int *error)
 {
 	int	check_input;
 	int	check_output;
@@ -48,7 +47,7 @@ int	ps_check_redirect_n_blt(t_cmd *cmd, t_token *tok, int *error)
 	return (SUCCESS);
 }
 
-int	ps_fill_cmd_struct(t_cmd *cmd, t_token *tok)
+int	ps_fill_cmd_struct(t_cmd *cmd, t_token **tok)
 {
 	int	nb_args;
 	int	error;
@@ -85,7 +84,7 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 	{
 		cmd[i].glb = glob;
 		cmd[i].env = glob->env;
-		cmd[i].is_valid = ps_fill_cmd_struct(&cmd[i], glob->tok[i]);
+		cmd[i].is_valid = ps_fill_cmd_struct(&cmd[i], glob->split[i]);
 		if (cmd[i].is_valid == CODE_MALLOC || (cmd[i].is_here_doc && \
 												cmd[i].string_here_doc == NULL))
 			panic(cmd->glb, CODE_MALLOC, cmd);

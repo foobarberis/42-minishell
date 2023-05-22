@@ -13,13 +13,10 @@ int	free_t_cmd(t_cmd *cmd, int nb_cmd)
 			free(cmd[i].path_cmd);
 		if (cmd[i].input)
 			free(cmd[i].input);
-		if (cmd[i].limiter)
-			free(cmd[i].limiter);
 		if (cmd[i].string_here_doc)
 			free(cmd[i].string_here_doc);
 		if (cmd[i].output)
 			free(cmd[i].output);
-		init_to_null_cmd_struct(&cmd[i], nb_cmd);
 		i++;
 	}
 	free(cmd);

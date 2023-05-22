@@ -122,7 +122,6 @@ struct s_cmd
 	char	*path_cmd;
 	char	*input;
 	char	*output;
-	char	*limiter;
 	char	*string_here_doc;
 	t_glb	*glb;
 };
@@ -196,10 +195,10 @@ int  ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
 void init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd);
 char *here_doc(char *lim);
 /* FIXME: Revert to t_token * */
-int ps_get_args_cmd(t_token *tok, t_cmd *cmd);
-int ps_get_input(t_token *tok, t_cmd *cmd);
-int ps_get_output(t_token *tok, t_cmd *cmd);
-int	count_type(t_token *tok, int type);
+int ps_get_args_cmd(t_token **tok, t_cmd *cmd);
+int ps_get_input(t_token **tok, t_cmd *cmd);
+int ps_get_output(t_token **tok, t_cmd *cmd);
+int	count_type(t_token **tok, int type);
 int open_output(t_cmd *files);
 int open_input(t_cmd *files);
 void ex_builtin(t_glb *glb, t_cmd *cmd, int builtin, char **arg);

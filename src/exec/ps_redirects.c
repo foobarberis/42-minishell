@@ -8,8 +8,6 @@ int	open_input(t_cmd *files)
 		valid = open(files->input, O_RDONLY);
 	else
 	{
-		files->string_here_doc = here_doc(files->limiter);
-		// FIXME: Add check for NULL
 		files->is_here_doc = 1;
 		valid = 0;
 	}

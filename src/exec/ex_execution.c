@@ -12,7 +12,7 @@ static	size_t get_max_cmd(t_token **tok)
 	i = 0;
 	while (tok[i])
 		i++;
-	return (tok[i - 1]->cmd_index);
+	return (tok[i - 1]->cmd_index + 1);
 }
 
 int	exec(t_glb *glb)
@@ -78,7 +78,8 @@ void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 	if (pid == 0)
 	{
 		child_exec(glb, cmd, i, nb_cmd);
-		close (cmd[i - 1].fd[0]);
+		if (i > 0)
+			close (cmd[i - 1].fd[0]);
 		panic(glb, 0, cmd);
 		exit(1);
 	}
@@ -123,7 +124,10 @@ void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 	close(cmd[i].fd[0]);
 	close (cmd[i].fd[1]);
 	if (cmd[i].is_builtin)
+	{
 		ex_builtin(glb, cmd, cmd[i].is_builtin, cmd[i].args);
+		
+	}
 	else
 		execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env);
 }
