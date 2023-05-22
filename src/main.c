@@ -10,6 +10,7 @@ static t_glb *msh_init(char **envp)
 	if (!glb)
 		panic(glb, CODE_MALLOC, NULL);
 	glb->tok = NULL;
+	glb->split = NULL;
 	glb->rl = NULL;
 	glb->env = env_init(envp);
 	if (!glb->env)
@@ -25,6 +26,8 @@ static void msh_exit(t_glb *glb)
 		free(glb->rl);
 	if (glb->tok)
 		token_array_destroy(glb->tok);
+	if (glb->split)
+		token_split_destroy(glb->split);
 	if (glb->env)
  		env_array_destroy(glb->env, env_array_get_size(glb->env));
 	free(glb);
@@ -35,16 +38,19 @@ static void reset(t_glb *glb)
 {
 	if (glb->tok)
 		token_array_destroy(glb->tok);
+	if (glb->split)
+		token_split_destroy(glb->split);
 	if (glb->rl)
 		free(glb->rl);
 	glb->rl = NULL;
 	glb->tok = NULL;
+	glb->split = NULL;
 }
 
 void panic(t_glb *glb, int code, t_cmd *cmd)
 {
-	close_fd(cmd, glb->multiple_cmd);
-	free_t_cmd(cmd, cmd->glb->multiple_cmd);
+	// close_fd(cmd, glb->multiple_cmd);
+	// free_t_cmd(cmd, cmd->glb->multiple_cmd);
 	msh_exit(glb);
 	if (code == CODE_MALLOC)
 		f_dprintf(STDERR_FILENO, ERR_MALLOC);

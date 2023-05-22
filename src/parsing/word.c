@@ -6,11 +6,34 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:39:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/20 15:23:38 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/22 11:35:13 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int parsing_here_doc(t_token **tok, char **env)
+{
+	size_t i;
+	char  *tmp;
+
+	i = 0;
+	while (tok[i])
+	{
+		if (tok[i]->type == D_INPUT)
+		{
+			tmp = here_doc(tok[i]->word);
+			if (tmp && !tok[i]->quote)
+				tmp = here_doc_expand_variables(env, tmp);
+			if (!tmp)
+				return (1);
+			free(tok[i]->word);
+			tok[i]->word = tmp;
+		}
+		i++;
+	}
+	return (0);
+}
 
 int	parsing_recreate_words(t_token **tok)
 {

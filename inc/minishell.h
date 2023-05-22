@@ -91,6 +91,7 @@ struct s_glb
 {
 	char    **env;
 	t_token **tok;
+	t_token ***split;
 	t_cmd 	**cmd;
 	char     *rl;
 	int       multiple_cmd;
@@ -158,11 +159,13 @@ int  blt_cd(t_glb *glb, int argc, char **argv);
 int  blt_compute_argc(char **argv);
 
 /* PARSING */
-t_token  *token_struct_create(char *word);
-t_token **token_array_create(char *s);
-void      token_struct_destroy(t_token *p);
-void      token_array_destroy(t_token **tok);
-void      token_array_rm(t_token **tok, size_t pos);
+t_token   *token_struct_create(char *word);
+t_token  **token_array_create(char *s);
+void       token_struct_destroy(t_token *p);
+void       token_array_destroy(t_token **tok);
+void       token_array_rm(t_token **tok, size_t pos);
+t_token ***token_split_create(t_token **tok);
+void       token_split_destroy(t_token ***split);
 
 int   ismeta(int c);
 char *f_itoa(intmax_t n);
@@ -177,9 +180,10 @@ void parsing_delete_pipe(t_token **tok);
 void parsing_delete_bracket(t_token **tok);
 int  parsing_expand_variables(t_token **tok, char **env);
 int  parsing_recreate_words(t_token **tok);
-int  parsing_group_words(t_token **tok);
+int parsing_here_doc(t_token **tok, char **env);
 void parsing_fill_type(t_token **tok);
 int  parsing_check_syntax(t_token **tok);
+t_token ***parsing_split_into_cmd(t_token **tok);
 int  parsing(t_glb *glb);
 
 /* MISC */
