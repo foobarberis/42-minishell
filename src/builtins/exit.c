@@ -50,5 +50,5 @@ int blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
 		g_rval = (int)f_abs(n % 256);
 		free(tmp);
 	}
-	exit(SIGINT);
+	panic(glb, g_rval, cmd);
 }

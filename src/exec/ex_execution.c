@@ -124,10 +124,7 @@ void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 	close(cmd[i].fd[0]);
 	close (cmd[i].fd[1]);
 	if (cmd[i].is_builtin)
-	{
 		ex_builtin(glb, cmd, cmd[i].is_builtin, cmd[i].args);
-		
-	}
 	else
 		execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env);
 }
