@@ -30,19 +30,29 @@ static bool isnum(char *s)
 	return (true);
 }
 
-static int blt_exit_update_rval(char *path, int argc, char **argv)
+static void blt_exit_update_rval(char **argv)
 {
-	return 0;
-}
-
-/* FIXME: Make shorter*/
-void blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
-{
-	char *tmp;
-	char *tmp2;
+	char    *p;
+	char    *q;
 	intmax_t n;
 
-	n = 0;
+	n = f_exit_atoi(argv[1]);
+	p = f_itoa(n);
+	q = argv[1];
+	if (*q == '+')
+		q++;
+	if (!isnum(argv[1]) || (f_strcmp(q, p)))
+	{
+		g_rval = 2;
+		f_dprintf(STDERR_FILENO, "minishell: exit: numeric argument required\n");
+	}
+	else
+		g_rval = (uint8_t)n;
+	free(p);
+}
+
+void blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
+{
 	g_rval = 0;
 	printf("exit\n");
 	if (argc > 2)
@@ -51,20 +61,6 @@ void blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
 		f_dprintf(STDERR_FILENO, "minishell: exit: too many arguments\n");
 	}
 	else if (argc == 2)
-	{
-		n = f_exit_atoi(argv[1]);
-		tmp = f_itoa(n);
-		tmp2 = argv[1];
-		if (*argv[1] == '+')
-			tmp2 = argv[1] + 1;
-		if (!isnum(argv[1]) || (f_strcmp(tmp2, tmp)))
-		{
-			g_rval = 2;
-			f_dprintf(STDERR_FILENO, "minishell: exit: numeric argument required\n");
-		}
-		else
-			g_rval = (uint8_t)n;
-		free(tmp);
-	}
+		blt_exit_update_rval(argv);
 	panic(glb, g_rval, cmd);
 }
