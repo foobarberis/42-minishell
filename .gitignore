@@ -5,9 +5,7 @@
 # Whitelist the file you're interested in.
 !*.c
 !*.h
-!*.txt
 !*.pdf
 !*.xlsx
 !Makefile
 !.gitignore
-.idea

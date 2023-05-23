@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int update_pwd(t_glb *glb)
+static void update_pwd(t_glb *glb)
 {
 	char *tmp;
 	char buf[PATH_MAX];
@@ -12,15 +12,18 @@ static int update_pwd(t_glb *glb)
 	glb->env = env_key_add(glb->env, f_strjoin("PWD=", getcwd(buf, PATH_MAX)));
 	if (!glb->env)
 		panic(glb, CODE_MALLOC, NULL);
-	return (0);
 }
 
 int blt_cd(t_glb *glb, int argc, char **argv)
 {
 	char *path;
 
+	g_rval = 0;
 	if (argc > 2)
-		return (f_dprintf(STDERR_FILENO, "minishell: cd: too many arguments\n"));
+	{
+		g_rval = 1;
+		f_dprintf(STDERR_FILENO, "minishell: cd: too many arguments\n");
+	}
 	else if (!argv[1])
 	{
 		path = env_getenv(glb->env, "HOME");

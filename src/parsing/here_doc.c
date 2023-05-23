@@ -22,6 +22,11 @@ static char	*here_doc_loop(char *here_doc, char *rl, char *tmp, char *lim)
 	return (here_doc);
 }
 
+// If any part of word is quoted, the delimiter shall be formed by
+// performing quote removal on word, and the here-document lines shall not
+// be expanded. Otherwise, the delimiter shall be the word itself.
+// https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_03
+/* FIXME: If some part of the delimiter was quoted, it is not recognized i.e <<E"OF" cat*/
 char	*here_doc(char *lim)
 {
 	char	*buf[3];
