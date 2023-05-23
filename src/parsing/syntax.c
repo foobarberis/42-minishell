@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:44:55 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 13:25:01 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 14:05:38 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ static int check_syntax_brackets(t_token **tok)
 int parsing_check_syntax(t_token **tok)
 {
 	if (parsing_check_quotes(tok))
-		return (1);
+		return (g_rval = 2, 1);
 	if (check_syntax_newline(tok))
-		return (f_dprintf(STDERR_FILENO, ERR_SYNTAX, "newline"), 1);
+		return (g_rval = 2, f_dprintf(STDERR_FILENO, ERR_SYNTAX, "newline"), 1);
 	if (check_syntax_pipes(tok))
-		return (f_dprintf(STDERR_FILENO, ERR_SYNTAX, "|"), 1);
+		return (g_rval = 2, f_dprintf(STDERR_FILENO, ERR_SYNTAX, "|"), 1);
 	if (check_syntax_brackets(tok))
-		return (1);
+		return (g_rval = 2, 1);
 	return (0);
 }
