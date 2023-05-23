@@ -146,14 +146,14 @@ char **env_init(char **envp);
 
 /* BUILTINS */
 bool env_is_valid_id(char *s);
-int  blt_export(t_glb *glb, int argc, char **argv);
+void  blt_export(t_glb *glb, int argc, char **argv);
 void blt_export__print(t_glb *glb);
-int  blt_unset(t_glb *glb, int argc, char **argv);
-int  blt_env(t_glb *glb);
-int  blt_echo(char **argv);
-int  blt_pwd(void);
-int  blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv);
-int  blt_cd(t_glb *glb, int argc, char **argv);
+void blt_unset(t_glb *glb, int argc, char **argv);
+void blt_env(t_glb *glb);
+void blt_echo(char **argv);
+void  blt_pwd(void);
+void  blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv);
+void  blt_cd(t_glb *glb, int argc, char **argv);
 int  blt_compute_argc(char **argv);
 
 /* PARSING */

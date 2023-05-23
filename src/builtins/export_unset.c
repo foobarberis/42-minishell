@@ -1,12 +1,13 @@
 #include "minishell.h"
 
-int blt_export(t_glb *glb, int argc, char **argv)
+void blt_export(t_glb *glb, int argc, char **argv)
 {
 	size_t i;
 
 	i = 1;
+	g_rval = 0;
 	if (argc == 1)
-		return (blt_export__print(glb), 0);
+		return (blt_export__print(glb));
 	while (argv[i])
 	{
 		if (!env_is_valid_id(argv[i]))
@@ -18,14 +19,14 @@ int blt_export(t_glb *glb, int argc, char **argv)
 				panic(glb, CODE_MALLOC, NULL);
 		}
 	}
-	return (0);
 }
 
-int blt_unset(t_glb *glb, int argc, char **argv)
+void blt_unset(t_glb *glb, int argc, char **argv)
 {
 	size_t i;
 
 	i = 1;
+	g_rval = 0;
 	while (argv[i])
 	{
 		if (f_strchr(argv[i], '='))
@@ -33,5 +34,4 @@ int blt_unset(t_glb *glb, int argc, char **argv)
 		else
 			env_key_del(glb->env, argv[i++]);
 	}
-	return (0);
 }

@@ -15,13 +15,14 @@ static bool contains_valid_option(char *s)
 	return (false);
 }
 
-int blt_echo(char **argv)
+void blt_echo(char **argv)
 {
 	size_t i;
 	bool   newline;
 
+	g_rval = 0;
 	if (!argv || !argv[1])
-		return (0);
+		return;
 	i = 1;
 	newline = true;
 	while (contains_valid_option(argv[i]))
@@ -37,5 +38,4 @@ int blt_echo(char **argv)
 	}
 	if (newline)
 		printf("\n");
-	return (0);
 }
