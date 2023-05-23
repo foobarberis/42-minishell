@@ -30,10 +30,16 @@ static bool isnum(char *s)
 	return (true);
 }
 
+static int blt_exit_update_rval(char *path, int argc, char **argv)
+{
+	return 0;
+}
+
 /* FIXME: Make shorter*/
 void blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
 {
 	char *tmp;
+	char *tmp2;
 	intmax_t n;
 
 	n = 0;
@@ -48,16 +54,16 @@ void blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
 	{
 		n = f_exit_atoi(argv[1]);
 		tmp = f_itoa(n);
+		tmp2 = argv[1];
 		if (*argv[1] == '+')
-			argv[1]++;
-		if (!isnum(argv[1]) || (f_strcmp(argv[1], tmp)))
+			tmp2 = argv[1] + 1;
+		if (!isnum(argv[1]) || (f_strcmp(tmp2, tmp)))
 		{
 			g_rval = 2;
 			f_dprintf(STDERR_FILENO, "minishell: exit: numeric argument required\n");
 		}
 		else
 			g_rval = (uint8_t)n;
-			// g_rval = (uint8_t)f_abs(n % 256);
 		free(tmp);
 	}
 	panic(glb, g_rval, cmd);

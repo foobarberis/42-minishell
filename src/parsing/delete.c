@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:29:55 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/20 12:54:53 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 12:50:41 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	parsing_delete_space(t_token **tok)
 	i = 0;
 	while (tok[i])
 	{
-		if (tok[i]->quote == NONE && f_isspace(tok[i]->word[0]))
+		if (!tok[i]->quote && f_isspace(tok[i]->word[0]))
 			token_array_rm(tok, i);
 		else
 			i++;
