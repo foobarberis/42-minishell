@@ -31,7 +31,7 @@ int	exec(t_glb *glb)
 	{
 		waitpid(cmd[i].pid, &status, 0);
 		if (WIFEXITED(status))
-			g_rval = WEXITSTATUS(status);
+			g_rval = (uint8_t)WEXITSTATUS(status);
 		i++;
 	}
 	close_fd(cmd, glb->multiple_cmd);
@@ -53,7 +53,7 @@ int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	{
 		while (i < nb_cmd && cmd[i].is_valid > 0)
 		{
-			g_rval = cmd[i].is_valid;
+			g_rval = (uint8_t)cmd[i].is_valid;
 			parent_exec(cmd, i);
 			i++;
 		}
@@ -80,7 +80,7 @@ void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 		child_exec(glb, cmd, i, nb_cmd);
 		if (i > 0)
 			close (cmd[i - 1].fd[0]);
-		g_rval = cmd[i].is_valid;
+		g_rval = (uint8_t)cmd[i].is_valid;
 		panic(glb, g_rval, cmd);
 	}
 	parent_exec(cmd, i);

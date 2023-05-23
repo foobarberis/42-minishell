@@ -57,7 +57,7 @@ void panic(t_glb *glb, int code, t_cmd *cmd)
 	exit(code);
 }
 
-int g_rval = 0; /* Global variable init */
+uint8_t g_rval = 0; /* Global variable init */
 int main(int ac, char *av[], char *ep[])
 {
 	(void) ac;

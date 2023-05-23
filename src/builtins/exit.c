@@ -56,7 +56,8 @@ void blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
 			f_dprintf(STDERR_FILENO, "minishell: exit: numeric argument required\n");
 		}
 		else
-			g_rval = (unsigned char)f_abs(n % 256);
+			g_rval = (uint8_t)n;
+			// g_rval = (uint8_t)f_abs(n % 256);
 		free(tmp);
 	}
 	panic(glb, g_rval, cmd);
