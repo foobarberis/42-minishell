@@ -37,6 +37,7 @@ void	ps_input_is_here_doc(t_cmd *cmd, char *here_doc)
 	cmd->input = NULL;
 	cmd->type_in = D_INPUT;
 	cmd->is_here_doc = 1;
+	cmd->final_input = 1;
 	cmd->string_here_doc = here_doc;
 }
 

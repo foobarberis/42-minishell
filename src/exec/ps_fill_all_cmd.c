@@ -33,12 +33,12 @@ int	ps_check_redirect_n_blt(t_cmd *cmd, t_token **tok, int *error)
 	if (check_input == CODE_MALLOC)
 		return (CODE_MALLOC);
 	else if (check_input == ERROR)
-		*error = 1;
+		return (*error = 1, ERROR);
 	check_output = ps_get_output(tok, cmd);
 	if (check_output == CODE_MALLOC)
 		return (CODE_MALLOC);
 	else if (check_output == ERROR)
-		*error = 1;
+		return (*error = 1, ERROR);
 	cmd->is_builtin = ps_is_builtin(cmd->args[0]);
 	if (cmd->is_builtin == 0)
 		cmd->path_cmd = ps_get_path_cmd(cmd->args[0], cmd->env, cmd->path_cmd);
@@ -67,6 +67,8 @@ int	ps_fill_cmd_struct(t_cmd *cmd, t_token **tok)
 	check_middle = ps_check_redirect_n_blt(cmd, tok, &error);
 	if (check_middle == CODE_MALLOC)
 		return (CODE_MALLOC);
+	if (check_middle == ERROR)
+		return (error);
 	if (!cmd->is_builtin && cmd->path_cmd == NULL && error == 0)
 		error = 127;
 	if (error == 0)
