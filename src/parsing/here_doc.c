@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:33:31 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:33:32 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 16:09:13 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static char	*here_doc_loop(char *here_doc, char *rl, char *tmp, char *lim)
 		free(rl);
 		rl = readline("> ");
 		if (!rl)
-			f_dprintf(STDERR_FILENO, ERR_HERE_DOC, lim);
+			f_dprintf(STDERR_FILENO, "minishell: warning: here-document \
+			delimited by end-of-file (wanted `%s')\n", lim);
 		if (!rl || !f_strcmp(rl, lim))
 			break ;
 		tmp = f_strjoin(here_doc, rl);

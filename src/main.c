@@ -1,8 +1,20 @@
-#include "../inc/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 15:54:05 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/23 15:55:38 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static t_glb *msh_init(char **envp)
+#include "minishell.h"
+
+static t_glb	*msh_init(char **envp)
 {
-	t_glb *glb;
+	t_glb	*glb;
 
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sigint_handler);
@@ -18,10 +30,10 @@ static t_glb *msh_init(char **envp)
 	return (glb);
 }
 
-static void msh_exit(t_glb *glb)
+static void	msh_exit(t_glb *glb)
 {
 	if (!glb)
-		return;
+		return ;
 	if (glb->rl)
 		free(glb->rl);
 	if (glb->tok)
@@ -29,12 +41,12 @@ static void msh_exit(t_glb *glb)
 	if (glb->split)
 		token_split_destroy(glb->split);
 	if (glb->env)
- 		env_array_destroy(glb->env, env_array_get_size(glb->env));
+		env_array_destroy(glb->env, env_array_get_size(glb->env));
 	free(glb);
 	rl_clear_history();
 }
 
-static void reset(t_glb *glb)
+static void	reset(t_glb *glb)
 {
 	if (glb->tok)
 		token_array_destroy(glb->tok);
@@ -47,7 +59,7 @@ static void reset(t_glb *glb)
 	glb->split = NULL;
 }
 
-void panic(t_glb *glb, int code, t_cmd *cmd)
+void	panic(t_glb *glb, int code, t_cmd *cmd)
 {
 	close_fd(cmd, glb->multiple_cmd);
 	free_t_cmd(cmd, cmd->glb->multiple_cmd);
@@ -57,28 +69,29 @@ void panic(t_glb *glb, int code, t_cmd *cmd)
 	exit(code);
 }
 
-uint8_t g_rval = 0; /* Global variable init */
-int main(int ac, char *av[], char *ep[])
+uint8_t	g_rval = 0; /* Global variable init */
+
+int	main(int ac, char *av[], char *ep[])
 {
+	t_glb	*glb;
+
 	(void) ac;
 	(void) av;
-	t_glb *glb;
-
 	glb = msh_init(ep);
 	while (glb)
 	{
 		reset(glb);
 		glb->rl = readline("MSH $ ");
 		if (!glb->rl)
-			break;
+			break ;
 		if (!*glb->rl)
-			continue;
+			continue ;
 		add_history(glb->rl);
 		glb->tok = token_array_create(glb->rl);
 		if (!glb->tok)
-			break;
+			break ;
 		if (parsing(glb))
-			continue;
+			continue ;
 		exec(glb);
 	}
 	msh_exit(glb);

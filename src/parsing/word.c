@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:39:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:44:31 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:56:36 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ int	parsing_recreate_strings(t_token **tok)
 	while (tok[i])
 	{
 		while (tok[i + 1] && tok[i]->quote
-			&& (tok[i]->quote == tok[i + 1]->quote) && (tok[i]->type == tok[i + 1]->type))
+			&& (tok[i]->quote == tok[i + 1]->quote)
+			&& (tok[i]->type == tok[i + 1]->type))
 		{
 			tmp = f_strjoin(tok[i]->word, tok[i + 1]->word);
 			if (!tmp)

@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:52:48 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:52:57 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 16:08:01 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	blt_export(t_glb *glb, int argc, char **argv)
 		if (!env_is_valid_id(argv[i]))
 		{
 			g_rval = 1;
-			f_dprintf(STDERR_FILENO, ERR_ID, argv[i++]);
+			f_dprintf(STDERR_FILENO,
+				"minishell: export: `%s': not a valid identifier\n", argv[i++]);
 		}
 		else
 		{

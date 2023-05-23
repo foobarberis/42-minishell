@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:44:55 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:42:11 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:57:24 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	check_syntax_newline(t_token **tok)
 	i = 0;
 	while (tok[i])
 		i++;
-	if (!tok[i- 1]->quote && ismeta(*tok[i - 1]->word))
+	if (!tok[i - 1]->quote && ismeta(*tok[i - 1]->word))
 		return (1);
 	return (0);
 }

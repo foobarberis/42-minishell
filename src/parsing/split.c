@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:37:47 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:41:11 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:57:11 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_token	***token_split_create(t_token **tok)
 	while (tok[j])
 	{
 		new[tok[j]->cmd_index][i] = tok[j];
-		if (tok[j + 1] && (tok[j]->cmd_index != tok[j+1]->cmd_index))
+		if (tok[j + 1] && (tok[j]->cmd_index != tok[j + 1]->cmd_index))
 			i = 0;
 		else
 			i++;
