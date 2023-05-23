@@ -31,7 +31,9 @@ int	exec(t_glb *glb)
 	{
 		waitpid(cmd[i].pid, &status, 0);
 		if (WIFEXITED(status) && cmd[i].is_valid == 0 && !cmd[i].is_builtin)
+		{
 			g_rval = (uint8_t)WEXITSTATUS(status);
+		}
 		i++;
 	}
 	close_fd(cmd, glb->multiple_cmd);

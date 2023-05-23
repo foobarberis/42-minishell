@@ -20,9 +20,11 @@ void blt_echo(char **argv)
 	size_t i;
 	bool   newline;
 
-	g_rval = 0;
 	if (!argv || !argv[1])
+	{
+		printf("\n");
 		return;
+	}
 	i = 1;
 	newline = true;
 	while (contains_valid_option(argv[i]))
