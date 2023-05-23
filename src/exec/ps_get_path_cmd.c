@@ -17,7 +17,7 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 	}
 	if (check_cmd(cmd) == ERROR)
 		return (NULL);
-	path = env_getenv(envp, "PATH"); // ft_grep_path(envp);
+	path = env_getenv(envp, "PATH");
 	split_path = ft_split(path, ':');
 	if (split_path == NULL || path == NULL)
 	{
@@ -32,15 +32,6 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 		return (f_dprintf(2, "minishell : %s: command not found\n", cmd), NULL);
 	return (path_cmd);
 }
-
-/* char	*ft_grep_path(char **envp)
-{
-	while (*envp && ft_strncmp("PATH", *envp, 4))
-		(envp)++;
-	if (*envp == NULL)
-		return (NULL);
-	return (*envp + 5);
-} */
 
 char	*ft_compute_path(char **path, char *cmd)
 {
@@ -106,6 +97,7 @@ int	check_cmd(char *cmd)
 	else if (opendir(cmd))
 	{
 		f_dprintf(2, "minishell: %s: Is a directory\n", cmd);
+		printf("DEBUG\n");
 		error = ERROR;
 	}
 	return (error);

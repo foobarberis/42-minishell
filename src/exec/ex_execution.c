@@ -30,8 +30,8 @@ int	exec(t_glb *glb)
 	while (i < glb->multiple_cmd)
 	{
 		waitpid(cmd[i].pid, &status, 0);
-		if (WIFEXITED(status) && cmd[i].is_valid == 0)
-			g_rval = WEXITSTATUS(status);
+		if (WIFEXITED(status) && cmd[i].is_valid == 0 && !cmd[i].is_builtin)
+			g_rval = (uint8_t)WEXITSTATUS(status);
 		i++;
 	}
 	close_fd(cmd, glb->multiple_cmd);
@@ -78,7 +78,7 @@ void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 		perror(" :fork failed\n");
 	if (pid == 0)
 	{
-		g_rval = cmd[i].is_valid;
+		g_rval = (uint8_t)cmd[i].is_valid;
 		child_exec(glb, cmd, i, nb_cmd);
 		if (i > 0)
 			close (cmd[i - 1].fd[0]);
