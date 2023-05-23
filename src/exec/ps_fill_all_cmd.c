@@ -67,7 +67,7 @@ int	ps_fill_cmd_struct(t_cmd *cmd, t_token **tok)
 	check_middle = ps_check_redirect_n_blt(cmd, tok, &error);
 	if (check_middle == CODE_MALLOC)
 		return (CODE_MALLOC);
-	if (!cmd->is_builtin && cmd->path_cmd == NULL)
+	if (!cmd->is_builtin && cmd->path_cmd == NULL && error == 0)
 		error = 127;
 	if (error == 0)
 		return (SUCCESS);

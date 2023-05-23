@@ -80,8 +80,8 @@ void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 		child_exec(glb, cmd, i, nb_cmd);
 		if (i > 0)
 			close (cmd[i - 1].fd[0]);
-		panic(glb, 0, cmd);
-		exit(1);
+		g_rval = cmd[i].is_valid;
+		panic(glb, g_rval, cmd);
 	}
 	parent_exec(cmd, i);
 }
