@@ -66,6 +66,9 @@ int	parsing(t_glb *glb)
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 	parsing_fill_type(glb->tok);
 	parsing_delete_bracket(glb->tok);
+	if (parsing_recreate_strings(glb->tok))
+		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
+	// token_array_print(glb->tok);
 	if (parsing_here_doc(glb->tok, glb->env))
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 	glb->split = token_split_create(glb->tok);

@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:44:55 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/20 14:51:43 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 12:20:06 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int check_syntax_newline(t_token **tok)
 	i = 0;
 	while (tok[i])
 		i++;
-	if (ismeta(*tok[i - 1]->word))
+	if (!tok[i- 1]->quote && ismeta(*tok[i - 1]->word))
 		return (1);
 	return (0);
 }
@@ -55,7 +55,7 @@ static int check_syntax_pipes(t_token **tok)
 	i = 0;
 	while (tok[i])
 	{
-		if (*tok[i]->word == '|')
+		if (!tok[i]->quote && *tok[i]->word == '|')
 		{
 			if (!i)
 				return (1);
@@ -76,7 +76,7 @@ static int check_syntax_brackets(t_token **tok)
 	i = 0;
 	while (tok[i])
 	{
-		if (tok[i + 1] && (*tok[i]->word == '<' || *tok[i]->word == '>'))
+		if (!tok[i]->quote && tok[i + 1] && (*tok[i]->word == '<' || *tok[i]->word == '>'))
 		{
 			if (*tok[i]->word == '>' && *tok[i + 1]->word == '<')
 				return (f_dprintf(STDERR_FILENO, ERR_SYNTAX, "<"), 1);
