@@ -8,7 +8,7 @@ int	free_t_cmd(t_cmd *cmd, int nb_cmd)
 	while (i < nb_cmd)
 	{
 		if (cmd[i].args)
-			ft_free_double_array(cmd[i].args);
+			ft_free_double_array(cmd[i].args); /* FIXME: This causes `attempting free on address which was not malloc()-ed' when using panic() inside exit.*/
 		if (cmd[i].path_cmd)
 			free(cmd[i].path_cmd);
 		if (cmd[i].input)

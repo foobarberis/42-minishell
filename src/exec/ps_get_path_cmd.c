@@ -5,7 +5,6 @@ int		check_cmd(char *cmd);
 char	*ft_grep_path(char **envp);
 char	*ft_compute_path(char **path, char *cmd);
 
-/* FIXME: Can this be replaced with env_getenv ? */
 char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 {
 	char	*path;
@@ -18,7 +17,7 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 	}
 	if (check_cmd(cmd) == ERROR)
 		return (NULL);
-	path = ft_grep_path(envp);
+	path = env_getenv(envp, "PATH"); // ft_grep_path(envp);
 	split_path = ft_split(path, ':');
 	if (split_path == NULL || path == NULL)
 	{
@@ -34,14 +33,14 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 	return (path_cmd);
 }
 
-char	*ft_grep_path(char **envp)
+/* char	*ft_grep_path(char **envp)
 {
 	while (*envp && ft_strncmp("PATH", *envp, 4))
 		(envp)++;
 	if (*envp == NULL)
 		return (NULL);
 	return (*envp + 5);
-}
+} */
 
 char	*ft_compute_path(char **path, char *cmd)
 {

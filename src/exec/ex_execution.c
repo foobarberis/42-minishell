@@ -29,6 +29,7 @@ int	exec(t_glb *glb)
 	ex_launch(glb, &cmd[i], glb->multiple_cmd);
 	while (i < glb->multiple_cmd)
 	{
+		// printf("pid: %d, status: %d\n", cmd[i].pid, status); /* FIXME: Debug */
 		waitpid(cmd[i].pid, &status, 0);
 		if (WIFEXITED(status))
 			g_rval = WEXITSTATUS(status);
