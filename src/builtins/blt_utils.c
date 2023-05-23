@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blt_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 15:47:56 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/23 15:48:26 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int blt_compute_argc(char **argv)
+int	blt_compute_argc(char **argv)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!argv)
@@ -27,10 +39,10 @@ bool	env_is_valid_id(char *s)
 	return (true);
 }
 
-static void blt_export__sort(char **arr)
+static void	blt_export__sort(char **arr)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	while (arr[i] && arr[i + 1])
@@ -46,10 +58,10 @@ static void blt_export__sort(char **arr)
 	}
 }
 
-static char **blt_export__copy_sort(t_glb *glb)
+static char	**blt_export__copy_sort(t_glb *glb)
 {
-	int i;
-	char **new;
+	int		i;
+	char	**new;
 
 	i = 0;
 	new = f_calloc(env_array_get_size(glb->env) + 1, sizeof(char *));
@@ -64,11 +76,11 @@ static char **blt_export__copy_sort(t_glb *glb)
 	return (new);
 }
 
-void blt_export__print(t_glb *glb)
+void	blt_export__print(t_glb *glb)
 {
-	int i;
-	char *p;
-	char **new;
+	int		i;
+	char	*p;
+	char	**new;
 
 	i = 0;
 	new = blt_export__copy_sort(glb);

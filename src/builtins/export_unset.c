@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_unset.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 15:52:48 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/23 15:52:57 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void blt_export(t_glb *glb, int argc, char **argv)
+void	blt_export(t_glb *glb, int argc, char **argv)
 {
-	size_t i;
+	size_t	i;
 
 	i = 1;
 	g_rval = 0;
@@ -24,9 +36,9 @@ void blt_export(t_glb *glb, int argc, char **argv)
 	}
 }
 
-void blt_unset(t_glb *glb, int argc, char **argv)
+void	blt_unset(t_glb *glb, int argc, char **argv)
 {
-	size_t i;
+	size_t	i;
 
 	i = 1;
 	g_rval = 0;

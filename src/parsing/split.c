@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 15:37:47 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/23 15:41:11 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static size_t get_max_cmd(t_token **tok)
+size_t	get_max_cmd(t_token **tok)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (tok[i])
@@ -10,12 +22,12 @@ static size_t get_max_cmd(t_token **tok)
 	return (tok[i - 1]->cmd_index + 1);
 }
 
-static t_token ***init_array(t_token **tok)
+static t_token	***init_array(t_token **tok)
 {
-	size_t i;
-	size_t j;
-	size_t count;
-	t_token ***new;
+	size_t	i;
+	size_t	j;
+	size_t	count;
+	t_token	***new;
 
 	i = 0;
 	j = 0;
@@ -32,15 +44,15 @@ static t_token ***init_array(t_token **tok)
 		}
 		new[j] = f_calloc(count + 1, sizeof(t_token *));
 		if (!new[j])
-			return (NULL); /* FIXME Error checking */
+			return (token_split_destroy(new), NULL);
 		j++;
 	}
 	return (new);
 }
 
-void token_split_destroy(t_token ***split)
+void	token_split_destroy(t_token ***split)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (split[i])
@@ -48,11 +60,11 @@ void token_split_destroy(t_token ***split)
 	free(split);
 }
 
-t_token ***token_split_create(t_token **tok)
+t_token	***token_split_create(t_token **tok)
 {
-	int i;
-	int j;
-	t_token ***new;
+	int		i;
+	int		j;
+	t_token	***new;
 
 	i = 0;
 	j = 0;

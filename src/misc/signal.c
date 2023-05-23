@@ -1,8 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 15:45:35 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/23 15:45:38 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-/* FIXME: Be careful of return code when using ctrl-c */
-/* FIXME: Handle signal in different contexts i.e during exec, during here-doc */
-void sigint_handler(int sig)
+void	sigint_handler(int sig)
 {
 	(void)sig;
 	write(1, "\n", 1);

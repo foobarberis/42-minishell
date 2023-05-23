@@ -6,13 +6,13 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:41:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/19 13:29:38 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:47:48 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char **env_init_base(char **env, char *path)
+static char	**env_init_base(char **env, char *path)
 {
 	int		shlvl;
 	char	*tmp;
@@ -35,10 +35,10 @@ static char **env_init_base(char **env, char *path)
 	return (env);
 }
 
-char **env_init(char **envp)
+char	**env_init(char **envp)
 {
-	char **new;
-	char path[PATH_MAX];
+	char	**new;
+	char	path[PATH_MAX];
 
 	if (!getcwd(path, PATH_MAX))
 		return (perror("minishell: getcwd: "), NULL);
@@ -48,10 +48,10 @@ char **env_init(char **envp)
 	return (env_init_base(new, path));
 }
 
-char *env_getenv(char **env, char *s)
+char	*env_getenv(char **env, char *s)
 {
-	char *p;
-	int pos;
+	char	*p;
+	int		pos;
 
 	pos = env_key_get_pos(env, s);
 	if (pos == KEY_NOT_FOUND)
@@ -62,11 +62,11 @@ char *env_getenv(char **env, char *s)
 	return (env[pos] + f_strlen(env[pos]));
 }
 
-char **env_key_add(char **env, char *key)
+char	**env_key_add(char **env, char *key)
 {
-	int pos;
-	char **new;
-	size_t size;
+	int		pos;
+	char	**new;
+	size_t	size;
 
 	if (env && !key)
 		return (env_array_destroy(env, env_array_get_size(env)), NULL);
@@ -76,7 +76,8 @@ char **env_key_add(char **env, char *key)
 	size = env_array_get_size(env) + 1;
 	new = env_array_realloc(env, size);
 	if (!new)
-		return (env_array_destroy(env, env_array_get_size(env)), free(key), NULL);
+		return (env_array_destroy(env, env_array_get_size(env)), free(key),
+			NULL);
 	env_array_destroy(env, env_array_get_size(env));
 	new[size - 1] = key;
 	return (new);
@@ -85,13 +86,13 @@ char **env_key_add(char **env, char *key)
 /**
  * @brief Remove a key from the environment. Key must be of the form 'key'.
  */
-void env_key_del(char **env, char *key)
+void	env_key_del(char **env, char *key)
 {
-	int pos;
+	int	pos;
 
 	pos = env_key_get_pos(env, key);
 	if (pos == KEY_NOT_FOUND)
-		return;
+		return ;
 	free(env[pos]);
 	while (env[pos])
 	{

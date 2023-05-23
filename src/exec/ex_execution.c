@@ -5,16 +5,6 @@ void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd);
 void	parent_exec(t_cmd *cmd, size_t i);
 void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd);
 
-static	size_t get_max_cmd(t_token **tok)
-{
-	size_t	i;
-
-	i = 0;
-	while (tok[i])
-		i++;
-	return (tok[i - 1]->cmd_index + 1);
-}
-
 int	exec(t_glb *glb)
 {
 	int		status;

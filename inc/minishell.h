@@ -129,7 +129,7 @@ struct s_cmd
 /*
  * PROTOTYPES
  */
-char *here_doc_expand_variables(char **env, char *buf);
+
 void  panic(t_glb *glb, int code, t_cmd *cmd);
 
 /* ENV */
@@ -157,6 +157,8 @@ void blt_cd(t_glb *glb, int argc, char **argv);
 int  blt_compute_argc(char **argv);
 
 /* PARSING */
+size_t	get_max_cmd(t_token **tok);
+char *here_doc_expand_variables(char **env, char *buf);
 t_token   *token_struct_create(char *word);
 t_token  **token_array_create(char *s);
 void       token_struct_destroy(t_token *p);

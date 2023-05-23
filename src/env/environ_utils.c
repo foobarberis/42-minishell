@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:37 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/19 13:24:53 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:46:10 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int	env_strcmp(const char *s1, const char *s2)
 	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
-size_t env_array_get_size(char **env)
+size_t	env_array_get_size(char **env)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (env[i])
@@ -34,22 +34,22 @@ size_t env_array_get_size(char **env)
 	return (i);
 }
 
-void env_array_destroy(char **env, size_t size)
+void	env_array_destroy(char **env, size_t size)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	if (!env)
-		return;
+		return ;
 	while (env[i] && i < size)
 		free(env[i++]);
 	free(env);
 }
 
-char **env_array_realloc(char **env, size_t size)
+char	**env_array_realloc(char **env, size_t size)
 {
-	size_t i;
-	char **new;
+	size_t	i;
+	char	**new;
 
 	i = 0;
 	new = f_calloc(size + 1, sizeof(char *));
@@ -65,9 +65,9 @@ char **env_array_realloc(char **env, size_t size)
 	return (new);
 }
 
-int env_key_get_pos(char **env, char *key)
+int	env_key_get_pos(char **env, char *key)
 {
-	int    pos;
+	int	pos;
 
 	pos = 0;
 	while (env[pos])

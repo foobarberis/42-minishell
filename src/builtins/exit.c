@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 15:52:26 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/23 15:52:44 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static intmax_t	f_exit_atoi(const char *s)
@@ -18,7 +30,7 @@ static intmax_t	f_exit_atoi(const char *s)
 	return (x * sign);
 }
 
-static bool isnum(char *s)
+static bool	isnum(char *s)
 {
 	if (!s || !*s)
 		return (false);
@@ -30,11 +42,11 @@ static bool isnum(char *s)
 	return (true);
 }
 
-static void blt_exit_update_rval(char **argv)
+static void	blt_exit_update_rval(char **argv)
 {
-	char    *p;
-	char    *q;
-	intmax_t n;
+	char		*p;
+	char		*q;
+	intmax_t	n;
 
 	n = f_exit_atoi(argv[1]);
 	p = f_itoa(n);
@@ -51,7 +63,7 @@ static void blt_exit_update_rval(char **argv)
 	free(p);
 }
 
-void blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
+void	blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
 {
 	g_rval = 0;
 	printf("exit\n");

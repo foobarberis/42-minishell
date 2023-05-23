@@ -1,13 +1,12 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:12:55 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/23 15:34:48 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +33,18 @@
  *   permission etc.).
  */
 
-static void token_array_print(t_token **tok)
+static void	token_array_print(t_token **tok)
 {
-	size_t i;
+	size_t	i;
+
 	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n", "type", "quote", "char *", "word", "cmd");
 	printf("-------------------------------------------------------------------"
 	       "--------\n");
 	i = 0;
 	while (tok[i])
 	{
-		printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", tok[i]->type, tok[i]->quote, tok[i]->word, tok[i]->word_index, tok[i]->cmd_index);
+		printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", tok[i]->type, tok[i]->quote,
+		       tok[i]->word, tok[i]->word_index, tok[i]->cmd_index);
 		i++;
 	}
 	f_printf("\n");
@@ -70,7 +71,6 @@ int	parsing(t_glb *glb)
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 	if (parsing_here_doc(glb->tok, glb->env))
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
-	// token_array_print(glb->tok);
 	glb->split = token_split_create(glb->tok);
 	if (!glb->split)
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);

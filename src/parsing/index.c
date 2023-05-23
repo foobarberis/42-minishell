@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:30:51 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 13:37:34 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:34:11 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	parsing_update_quote_state(char c, int state)
 
 void	parsing_set_index_quote(t_token **tok)
 {
-	size_t i;
+	size_t	i;
 	int		state;
 
 	i = 0;
@@ -50,7 +50,7 @@ void	parsing_set_index_quote(t_token **tok)
 
 void	parsing_set_index_cmd(t_token **tok)
 {
-	size_t i;
+	size_t	i;
 	size_t	cmd;
 
 	i = 0;
@@ -64,11 +64,11 @@ void	parsing_set_index_cmd(t_token **tok)
 	}
 }
 
-void parsing_set_index_word(t_token **tok)
+void	parsing_set_index_word(t_token **tok)
 {
-	int    word;
-	size_t i;
-	size_t word_index;
+	int		word;
+	size_t	i;
+	size_t	word_index;
 
 	i = 0;
 	word = 0;
@@ -90,23 +90,22 @@ void parsing_set_index_word(t_token **tok)
 	}
 }
 
-void parsing_update_index_word(t_token **tok)
+void	parsing_update_index_word(t_token **tok)
 {
-	size_t i;
-	size_t j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	j = 0;
 	while (tok[i])
 	{
-		// if (!tok[i]->quote) /* FIXME: */
-			tok[i]->word_index += j;
+		tok[i]->word_index += j;
 		if (tok[i + 1])
 		{
 			if (ismeta(*tok[i]->word) && !ismeta(*tok[i + 1]->word))
 				j++;
 			else if (*tok[i]->word == '|'
-					&& (*tok[i + 1]->word == '<' || *tok[i + 1]->word == '>'))
+				&& (*tok[i + 1]->word == '<' || *tok[i + 1]->word == '>'))
 				j++;
 		}
 		i++;

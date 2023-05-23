@@ -1,10 +1,21 @@
-#include "minishell.h"
-#include <errno.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 15:48:36 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/23 15:51:49 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static void update_pwd(t_glb *glb)
+#include "minishell.h"
+
+static void	update_pwd(t_glb *glb)
 {
-	char *tmp;
-	char  buf[PATH_MAX];
+	char	*tmp;
+	char	buf[PATH_MAX];
 
 	tmp = env_getenv(glb->env, "PWD");
 	glb->env = env_key_add(glb->env, f_strjoin("OLDPWD=", tmp));
@@ -15,7 +26,7 @@ static void update_pwd(t_glb *glb)
 		panic(glb, CODE_MALLOC, NULL);
 }
 
-static int blt_cd_update_rval(char *path, int argc, char **argv)
+static int	blt_cd_update_rval(char *path, int argc, char **argv)
 {
 	if (argv[1] && !*argv[1])
 		return (1);
@@ -34,14 +45,14 @@ static int blt_cd_update_rval(char *path, int argc, char **argv)
 	return (0);
 }
 
-void blt_cd(t_glb *glb, int argc, char **argv)
+void	blt_cd(t_glb *glb, int argc, char **argv)
 {
-	char *path;
+	char	*path;
 
 	g_rval = 0;
 	path = env_getenv(glb->env, "HOME");
 	if (blt_cd_update_rval(path, argc, argv))
-		return;
+		return ;
 	if (argc == 1)
 	{
 		if (chdir(path))

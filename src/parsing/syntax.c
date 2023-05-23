@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:44:55 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 14:05:38 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:42:11 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	parsing_check_quotes(t_token **tok)
 {
-	size_t i;
+	size_t	i;
 	size_t	nsimple;
 	size_t	ndouble;
 
@@ -36,9 +36,9 @@ static int	parsing_check_quotes(t_token **tok)
 	return (0);
 }
 
-static int check_syntax_newline(t_token **tok)
+static int	check_syntax_newline(t_token **tok)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (tok[i])
@@ -48,9 +48,9 @@ static int check_syntax_newline(t_token **tok)
 	return (0);
 }
 
-static int check_syntax_pipes(t_token **tok)
+static int	check_syntax_pipes(t_token **tok)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (tok[i])
@@ -69,14 +69,15 @@ static int check_syntax_pipes(t_token **tok)
 	return (0);
 }
 
-static int check_syntax_brackets(t_token **tok)
+static int	check_syntax_brackets(t_token **tok)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (tok[i])
 	{
-		if (!tok[i]->quote && tok[i + 1] && (*tok[i]->word == '<' || *tok[i]->word == '>'))
+		if (!tok[i]->quote && tok[i + 1]
+			&& (*tok[i]->word == '<' || *tok[i]->word == '>'))
 		{
 			if (*tok[i]->word == '>' && *tok[i + 1]->word == '<')
 				return (f_dprintf(STDERR_FILENO, ERR_SYNTAX, "<"), 1);
@@ -92,7 +93,7 @@ static int check_syntax_brackets(t_token **tok)
 	return (0);
 }
 
-int parsing_check_syntax(t_token **tok)
+int	parsing_check_syntax(t_token **tok)
 {
 	if (parsing_check_quotes(tok))
 		return (g_rval = 2, 1);

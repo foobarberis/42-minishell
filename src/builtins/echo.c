@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/23 15:51:54 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/23 15:52:13 by mbarberi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static bool contains_valid_option(char *s)
+static bool	contains_valid_option(char *s)
 {
 	if (f_strlen(s) < 2)
 		return (false);
@@ -15,14 +27,14 @@ static bool contains_valid_option(char *s)
 	return (false);
 }
 
-void blt_echo(char **argv)
+void	blt_echo(char **argv)
 {
-	size_t i;
-	bool   newline;
+	bool	newline;
+	size_t	i;
 
 	g_rval = 0;
 	if (!argv || !argv[1])
-		return;
+		return ;
 	i = 1;
 	newline = true;
 	while (contains_valid_option(argv[i]))
