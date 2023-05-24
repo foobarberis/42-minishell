@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 16:14:24 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/24 14:30:54 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/24 14:36:07 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,8 +203,9 @@ int		ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
 void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd);
 char	*here_doc(char *lim);
 int		ps_get_args_cmd(t_token **tok, t_cmd *cmd);
-int		ps_get_input(t_token **tok, t_cmd *cmd);
-int		ps_get_output(t_token **tok, t_cmd *cmd);
+int		ps_get_input(t_token *tok, t_cmd *cmd);
+int		ps_get_output(t_token *tok, t_cmd *cmd);
+int		ps_get_redirect(t_token **tok, t_cmd *cmd);
 int		count_type(t_token **tok, int type);
 int		open_output(t_cmd *files);
 int		open_input(t_cmd *files);

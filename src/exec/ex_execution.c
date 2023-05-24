@@ -36,11 +36,10 @@ int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	i = 0;
 	if (nb_cmd == 1 && cmd[i].is_builtin)
 	{
-		g_rval = 0;
-		ex_builtin(glb, cmd, cmd[i].is_builtin, cmd[i].args);
-		i++;
+			child_exec(glb, cmd, i, nb_cmd);
+			panic(glb, g_rval, cmd);
 	}
-	while (i < nb_cmd)
+	while (i < nb_cmd && nb_cmd >= 1)
 	{
 		while (i < nb_cmd && cmd[i].is_valid > 0)
 		{
