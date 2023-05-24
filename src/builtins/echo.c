@@ -20,6 +20,7 @@ void blt_echo(char **argv)
 	size_t i;
 	bool   newline;
 
+	g_rval = 0;
 	if (!argv || !argv[1])
 	{
 		printf("\n");

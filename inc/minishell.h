@@ -197,8 +197,8 @@ void  init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd);
 char *here_doc(char *lim);
 /* FIXME: Revert to t_token * */
 int  ps_get_args_cmd(t_token **tok, t_cmd *cmd);
-int  ps_get_input(t_token **tok, t_cmd *cmd);
-int  ps_get_output(t_token **tok, t_cmd *cmd);
+int  ps_get_input(t_token *tok, t_cmd *cmd);
+int  ps_get_output(t_token *tok, t_cmd *cmd);
 int  count_type(t_token **tok, int type);
 int  open_output(t_cmd *files);
 int  open_input(t_cmd *files);
@@ -214,5 +214,8 @@ int    ft_strncmp(const char *s1, const char *s2, size_t n);
 int    free_t_cmd(t_cmd *cmd, int nb_cmd);
 void   close_fd(t_cmd *cmd, int nb_cmd);
 char **ft_free_double_array(char **ptr);
+
+
+int ps_get_redirect(t_token **tok, t_cmd *cmd);
 
 #endif
