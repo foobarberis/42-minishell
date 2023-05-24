@@ -10,11 +10,11 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 	char	*path;
 	char	**split_path;
 
-//	if (cmd == NULL)
-//	{
-//		f_dprintf(2, ": command not found:\n");
-//		return (NULL);
-//	}
+	if (cmd == NULL)
+	{
+		f_dprintf(2, ": command not found:\n");
+		return (NULL);
+	}
 	if (check_cmd(cmd) == ERROR)
 		return (NULL);
 	path = env_getenv(envp, "PATH");
@@ -28,7 +28,7 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 	ft_free_double_array(split_path);
 	if (path_cmd && f_strcmp(path_cmd, ERR_MALLOC) == 0)
 		return (ERR_MALLOC);
-	if (path_cmd == NULL || f_strlen(cmd) == 0)
+	if (path_cmd == NULL)
 		return (f_dprintf(2, "minishell : %s: command not found\n", cmd), NULL);
 	return (path_cmd);
 }

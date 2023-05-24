@@ -32,6 +32,7 @@ void	blt_echo(char **argv)
 	bool	newline;
 	size_t	i;
 
+	g_rval = 0;
 	if (!argv || !argv[1])
 	{
 		printf("\n");

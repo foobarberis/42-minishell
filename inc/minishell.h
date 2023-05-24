@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 16:14:24 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 16:20:37 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/24 14:30:54 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,5 +220,13 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		free_t_cmd(t_cmd *cmd, int nb_cmd);
 void	close_fd(t_cmd *cmd, int nb_cmd);
 char	**ft_free_double_array(char **ptr);
+
+
+int ps_get_redirect(t_token **tok, t_cmd *cmd);
+
+
+int    free_t_cmd(t_cmd *cmd, int nb_cmd);
+void   close_fd(t_cmd *cmd, int nb_cmd);
+char **ft_free_double_array(char **ptr);
 
 #endif

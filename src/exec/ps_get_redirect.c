@@ -2,31 +2,24 @@
 
 void	ps_input_is_here_doc(t_cmd *cmd, char *here_doc);
 
-int	ps_get_input(t_token **tok, t_cmd *cmd)
+int	ps_get_input(t_token *tok, t_cmd *cmd)
 {
-	int	i;
-
-	i = 0;
-	while (tok[i])
+	if (tok->type == S_INPUT)
 	{
-		if (tok[i]->type == S_INPUT)
-		{
-			if (cmd->input)
-				free(cmd->input);
-			cmd->input = NULL;
-			cmd->input = f_strdup(tok[i]->word);
-			if (!cmd->input)
-				return (CODE_MALLOC);
-			cmd->type_in = S_INPUT;
-			cmd->is_here_doc = 0;
-			cmd->final_input = open_input(cmd);
-			if (cmd->final_input == ERROR_REDIRECT)
-				return (ERROR);
-		}
-		else if (tok[i]->type == D_INPUT)
-			ps_input_is_here_doc(cmd, tok[i]->word);
-		i++;
+		if (cmd->input)
+			free(cmd->input);
+		cmd->input = NULL;
+		cmd->input = f_strdup(tok->word);
+		if (!cmd->input)
+			return (CODE_MALLOC);
+		cmd->type_in = S_INPUT;
+		cmd->is_here_doc = 0;
+		cmd->final_input = open_input(cmd);
+		if (cmd->final_input == ERROR_REDIRECT)
+			return (ERROR);
 	}
+	else if (tok->type == D_INPUT)
+		ps_input_is_here_doc(cmd, tok->word);
 	return (SUCCESS);
 }
 
@@ -70,18 +63,36 @@ int	ps_get_output_loop(t_token *tok, t_cmd *cmd)
 	return (SUCCESS);
 }
 
-int	ps_get_output(t_token **tok, t_cmd *cmd)
+int	ps_get_output(t_token *tok, t_cmd *cmd)
 {
-	int	i;
-	int	check;
+	int check;
+
+	check = ps_get_output_loop(tok, cmd);
+	if (check == CODE_MALLOC)
+		return (CODE_MALLOC);
+	if (check == ERROR)
+		return (ERROR);
+	return (SUCCESS);
+}
+
+int ps_get_redirect(t_token **tok, t_cmd *cmd)
+{
+	int i;
+	int input;
+	int output;
 
 	i = 0;
 	while (tok[i])
 	{
-		check = ps_get_output_loop(tok[i], cmd);
-		if (check == CODE_MALLOC)
+		output = ps_get_output(tok[i], cmd);
+		if (output == CODE_MALLOC)
 			return (CODE_MALLOC);
-		if (check == ERROR)
+		if (output == ERROR)
+			return (ERROR);
+		input = ps_get_input(tok[i], cmd);
+		if (input == CODE_MALLOC)
+			return (CODE_MALLOC);
+		if (input == ERROR)
 			return (ERROR);
 		i++;
 	}

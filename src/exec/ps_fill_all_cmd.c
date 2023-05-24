@@ -26,18 +26,12 @@ void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd)
 
 int	ps_check_redirect_n_blt(t_cmd *cmd, t_token **tok, int *error)
 {
-	int	check_input;
-	int	check_output;
+	int check_redirect;
 
-	check_input = ps_get_input(tok, cmd);
-	if (check_input == CODE_MALLOC)
+	check_redirect = ps_get_redirect(tok, cmd);
+	if (check_redirect == CODE_MALLOC)
 		return (CODE_MALLOC);
-	else if (check_input == ERROR)
-		return (*error = 1, ERROR);
-	check_output = ps_get_output(tok, cmd);
-	if (check_output == CODE_MALLOC)
-		return (CODE_MALLOC);
-	else if (check_output == ERROR)
+	if (check_redirect == ERROR)
 		return (*error = 1, ERROR);
 	cmd->is_builtin = ps_is_builtin(cmd->args[0]);
 	if (cmd->is_builtin == 0)
@@ -89,9 +83,10 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 		cmd[i].is_valid = ps_fill_cmd_struct(&cmd[i], glob->split[i]);
 		if (cmd[i].is_valid == CODE_MALLOC)
 			panic(cmd->glb, CODE_MALLOC, cmd);
-		if (cmd[i].is_valid == 127 && (access(cmd[i].args[0], F_OK) == 0) && \
-										(access(cmd[i].args[0], X_OK) != 0))
+		if (cmd[i].is_valid == 127 && access(cmd[i].args[0], F_OK) == 0 && access(cmd[i].args[0], X_OK) == 0)
 			cmd[i].is_valid = 126;
+//		if (access(cmd[i].args[0], X_OK) == 0 && cmd[i].is_valid > 0)
+//			cmd[i].is_valid = 126;
 		i++;
 	}
 	return (0);
