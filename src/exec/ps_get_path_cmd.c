@@ -97,7 +97,6 @@ int	check_cmd(char *cmd)
 	else if (opendir(cmd))
 	{
 		f_dprintf(2, "minishell: %s: Is a directory\n", cmd);
-		printf("DEBUG\n");
 		error = ERROR;
 	}
 	return (error);
