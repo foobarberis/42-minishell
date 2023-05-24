@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:37:47 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:57:11 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:38:28 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	get_max_cmd(t_token **tok)
 	size_t	i;
 
 	i = 0;
+	if (!tok || !*tok)
+		return (0);
 	while (tok[i])
 		i++;
 	return (tok[i - 1]->cmd_index + 1);

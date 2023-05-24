@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:38:50 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:44:04 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:52:49 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,14 @@ static int	parsing_recreate_variables(t_token **tok)
 	return (0);
 }
 
-static char	*dup_value(char **env, char *key)
+static char	*get_value(char **env, char *key)
 {
 	char	*getenv;
 
 	getenv = env_getenv(env, key);
-	if (!getenv)
+	if (*key == '?')
+		return (f_itoa(g_rval));
+	else if (!getenv)
 		return (f_strdup(""));
 	else
 		return (f_strdup(getenv));
@@ -67,12 +69,15 @@ int	parsing_expand_variables(t_token **tok, char **env)
 	{
 		if (*tok[i]->word == '$' && tok[i]->word[1] && tok[i]->quote != SIMPLE)
 		{
-			if (tok[i]->word[1] == '?')
-				value = f_itoa(g_rval);
-			else
-				value = dup_value(env, &tok[i]->word[1]);
+			value = get_value(env, &tok[i]->word[1]);
 			if (!value)
 				return (1);
+			if (!*value)
+			{
+				token_array_rm(tok, i);
+				free(value);
+				continue ;
+			}
 			free(tok[i]->word);
 			tok[i]->word = value;
 		}
