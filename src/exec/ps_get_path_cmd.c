@@ -79,11 +79,13 @@ int	check_slash(char *cmd)
 
 int	check_cmd(char *cmd)
 {
+	DIR *dir;
 	int	directory;
 	int	error;
 
 	directory = check_slash(cmd);
 	error = 0;
+	dir = opendir(cmd);
 	if (!f_strcmp(cmd, "."))
 	{
 		f_dprintf(2, "minishell: .: filename argument required\n");
@@ -94,9 +96,10 @@ int	check_cmd(char *cmd)
 		perror(cmd);
 		error = ERROR;
 	}
-	else if (opendir(cmd))
+	else if (dir)
 	{
 		f_dprintf(2, "minishell: %s: Is a directory\n", cmd);
+		closedir(dir);
 		error = ERROR;
 	}
 	return (error);

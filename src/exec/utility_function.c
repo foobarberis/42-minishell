@@ -1,5 +1,6 @@
 #include "../inc/minishell.h"
 
+/* FIXME: Delete */
 void	print_double_array(char **array, char *title)
 {
 	int	i;

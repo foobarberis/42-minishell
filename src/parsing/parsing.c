@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/24 12:54:14 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/24 13:50:38 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
  *   permission etc.).
  */
 
+/* FIXME: Delete */
 static void	token_array_print(t_token **tok)
 {
 	size_t	i;
