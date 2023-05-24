@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:51:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:52:13 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/24 13:39:20 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ void	blt_echo(char **argv)
 	bool	newline;
 	size_t	i;
 
-	g_rval = 0;
 	if (!argv || !argv[1])
-		return ;
+	{
+		printf("\n");
+		return;
+	}
 	i = 1;
 	newline = true;
 	while (contains_valid_option(argv[i]))
