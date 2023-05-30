@@ -92,6 +92,8 @@ int	main(int ac, char *av[], char *ep[])
 			break ;
 		if (parsing(glb))
 			continue ;
+		if (!glb->env)
+			break ;
 		exec(glb);
 	}
 	msh_exit(glb);
