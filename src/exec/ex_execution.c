@@ -99,7 +99,7 @@ int	exec(t_glb *glb)
 	i = 0;
 	status = 0;
 	glb->multiple_cmd = (int)get_max_cmd(glb->tok);
-	cmd = NULL; //malloc(sizeof(t_cmd) * glb->multiple_cmd);
+	cmd = malloc(sizeof(t_cmd) * glb->multiple_cmd);
 	if (!cmd)
 		return (0);
 	ps_initialisation_cmds(cmd, glb);
