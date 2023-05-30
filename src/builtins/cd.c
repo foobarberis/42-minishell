@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:48:36 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/30 12:26:24 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/30 14:19:59 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	update_pwd(t_glb *glb)
 		panic(glb, CODE_MALLOC, NULL);
 	tmp = f_strjoin("PWD=", getcwd(buf, PATH_MAX));
 	if (!tmp)
-			return (perror("minishell: cd: getcwd"));
+		return (perror("minishell: cd: getcwd"));
 	glb->env = env_key_add(glb->env, tmp);
 	if (!glb->env)
 		panic(glb, CODE_MALLOC, NULL);

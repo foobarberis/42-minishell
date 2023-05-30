@@ -1,4 +1,16 @@
-#include "../inc/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ex_execution.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/30 13:39:22 by vburton           #+#    #+#             */
+/*   Updated: 2023/05/30 14:08:57 by vburton          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 static void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 {
@@ -67,7 +79,8 @@ static int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	size_t	i;
 
 	i = 0;
-	if (nb_cmd == 1 && (cmd[i].is_builtin == EXPORT || cmd[i].is_builtin == UNSET || cmd[i].is_builtin == EXIT || cmd[i].is_builtin == CD))
+	if (nb_cmd == 1 && (cmd[i].is_builtin == EXPORT || cmd[i].is_builtin == \
+				UNSET || cmd[i].is_builtin == EXIT || cmd[i].is_builtin == CD))
 	{
 		child_exec(glb, cmd, i, nb_cmd);
 		i++;

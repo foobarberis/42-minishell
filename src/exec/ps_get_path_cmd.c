@@ -1,37 +1,16 @@
-#include "../../inc/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ps_get_path_cmd.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/30 14:10:13 by vburton           #+#    #+#             */
+/*   Updated: 2023/05/30 14:18:54 by vburton          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int		check_slash(char *cmd);
-int		check_cmd(char *cmd);
-char	*ft_grep_path(char **envp);
-char	*ft_compute_path(char **path, char *cmd);
-
-char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
-{
-	char	*path;
-	char	**split_path;
-
-	if (cmd == NULL)
-	{
-		f_dprintf(2, ": command not found:\n");
-		return (NULL);
-	}
-	if (check_cmd(cmd) == ERROR)
-		return (NULL);
-	path = env_getenv(envp, "PATH");
-	split_path = ft_split(path, ':');
-	if (split_path == NULL || path == NULL)
-	{
-		f_dprintf(2, " : no such file or directory: %s\n", cmd);
-		return (NULL);
-	}
-	path_cmd = ft_compute_path(split_path, cmd);
-	ft_free_double_array(split_path);
-	if (path_cmd && f_strcmp(path_cmd, ERR_MALLOC) == 0)
-		return (ERR_MALLOC);
-	if (path_cmd == NULL)
-		return (f_dprintf(2, "minishell : %s: command not found\n", cmd), NULL);
-	return (path_cmd);
-}
+#include "minishell.h"
 
 char	*ft_compute_path(char **path, char *cmd)
 {
@@ -63,7 +42,7 @@ char	*ft_compute_path(char **path, char *cmd)
 
 int	check_cmd(char *cmd)
 {
-	DIR *dir;
+	DIR	*dir;
 	int	error;
 
 	error = 0;
@@ -85,4 +64,32 @@ int	check_cmd(char *cmd)
 		error = ERROR;
 	}
 	return (error);
+}
+
+char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
+{
+	char	*path;
+	char	**split_path;
+
+	if (cmd == NULL)
+	{
+		f_dprintf(2, ": command not found:\n");
+		return (NULL);
+	}
+	if (check_cmd(cmd) == ERROR)
+		return (NULL);
+	path = env_getenv(envp, "PATH");
+	split_path = ft_split(path, ':');
+	if (split_path == NULL || path == NULL)
+	{
+		f_dprintf(2, " : no such file or directory: %s\n", cmd);
+		return (NULL);
+	}
+	path_cmd = ft_compute_path(split_path, cmd);
+	ft_free_double_array(split_path);
+	if (path_cmd && f_strcmp(path_cmd, ERR_MALLOC) == 0)
+		return (ERR_MALLOC);
+	if (path_cmd == NULL)
+		return (f_dprintf(2, "minishell : %s: command not found\n", cmd), NULL);
+	return (path_cmd);
 }

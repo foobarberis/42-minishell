@@ -1,6 +1,18 @@
-#include "../inc/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ps_fill_all_cmd.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/30 14:07:42 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/30 14:19:32 by vburton          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd)
+#include "minishell.h"
+
+static void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd)
 {
 	int	i;
 
@@ -24,9 +36,9 @@ void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd)
 	}
 }
 
-int	ps_check_redirect_n_blt(t_cmd *cmd, t_token **tok, int *error)
+static int	ps_check_redirect_n_blt(t_cmd *cmd, t_token **tok, int *error)
 {
-	int check_redirect;
+	int	check_redirect;
 
 	check_redirect = ps_get_redirect(tok, cmd);
 	if (check_redirect == CODE_MALLOC)
@@ -41,7 +53,7 @@ int	ps_check_redirect_n_blt(t_cmd *cmd, t_token **tok, int *error)
 	return (SUCCESS);
 }
 
-int	ps_fill_cmd_struct(t_cmd *cmd, t_token **tok)
+static int	ps_fill_cmd_struct(t_cmd *cmd, t_token **tok)
 {
 	int	nb_args;
 	int	error;
@@ -83,7 +95,8 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 		cmd[i].is_valid = ps_fill_cmd_struct(&cmd[i], glob->split[i]);
 		if (cmd[i].is_valid == CODE_MALLOC)
 			panic(cmd->glb, CODE_MALLOC, cmd);
-		if (cmd[i].is_valid == 127 && !access(cmd[i].args[0], F_OK) && !access(cmd[i].args[0], X_OK))
+		if (cmd[i].is_valid == 127 && !access(cmd[i].args[0], F_OK) && \
+												!access(cmd[i].args[0], X_OK))
 				cmd[i].is_valid = 126;
 		i++;
 	}

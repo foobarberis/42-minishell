@@ -1,8 +1,19 @@
-#include "../../inc/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ex_redirects.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/30 14:06:00 by mbarberi          #+#    #+#             */
+/*   Updated: 2023/05/30 14:09:09 by vburton          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 {
-//	dprintf(2,"je passe ici\n");
 	if (i > 0 && cmd[i].is_builtin == 0)
 		dup2(cmd[i - 1].fd[0], STDIN_FILENO);
 	if (i < nb_cmd - 1)
@@ -50,7 +61,6 @@ void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 
 void	out_redirect(t_cmd *cmd, size_t i)
 {
-//	dprintf(2,"je passe la\n");
 	if (i > 0)
 		dup2(cmd[i - 1].fd[0], STDIN_FILENO);
 	dup2(cmd[i].final_output, STDOUT_FILENO);

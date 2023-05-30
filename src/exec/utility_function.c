@@ -1,17 +1,16 @@
-#include "../inc/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utility_function.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/30 14:15:35 by vburton           #+#    #+#             */
+/*   Updated: 2023/05/30 14:15:39 by vburton          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* FIXME: Delete */
-void	print_double_array(char **array, char *title)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		printf("%s : %s \n", title, array[i]);
-		i++;
-	}
-}
+#include "minishell.h"
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {

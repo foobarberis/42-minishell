@@ -1,8 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ps_get_redirect.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/30 14:12:47 by vburton           #+#    #+#             */
+/*   Updated: 2023/05/30 14:19:18 by vburton          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	ps_input_is_here_doc(t_cmd *cmd, char *here_doc);
+static void	ps_input_is_here_doc(t_cmd *cmd, char *here_doc)
+{
+	if (cmd->input)
+		free(cmd->input);
+	cmd->input = NULL;
+	cmd->type_in = D_INPUT;
+	cmd->is_here_doc = 1;
+	cmd->final_input = 1;
+	cmd->string_here_doc = here_doc;
+}
 
-int	ps_get_input(t_token *tok, t_cmd *cmd)
+static int	ps_get_input(t_token *tok, t_cmd *cmd)
 {
 	if (tok->type == S_INPUT)
 	{
@@ -23,18 +44,7 @@ int	ps_get_input(t_token *tok, t_cmd *cmd)
 	return (SUCCESS);
 }
 
-void	ps_input_is_here_doc(t_cmd *cmd, char *here_doc)
-{
-	if (cmd->input)
-		free(cmd->input);
-	cmd->input = NULL;
-	cmd->type_in = D_INPUT;
-	cmd->is_here_doc = 1;
-	cmd->final_input = 1;
-	cmd->string_here_doc = here_doc;
-}
-
-int	ps_get_output_loop(t_token *tok, t_cmd *cmd)
+static int	ps_get_output_loop(t_token *tok, t_cmd *cmd)
 {
 	if (tok->type == S_OUTPUT)
 	{
@@ -63,9 +73,9 @@ int	ps_get_output_loop(t_token *tok, t_cmd *cmd)
 	return (SUCCESS);
 }
 
-int	ps_get_output(t_token *tok, t_cmd *cmd)
+static int	ps_get_output(t_token *tok, t_cmd *cmd)
 {
-	int check;
+	int	check;
 
 	check = ps_get_output_loop(tok, cmd);
 	if (check == CODE_MALLOC)
@@ -75,11 +85,11 @@ int	ps_get_output(t_token *tok, t_cmd *cmd)
 	return (SUCCESS);
 }
 
-int ps_get_redirect(t_token **tok, t_cmd *cmd)
+int	ps_get_redirect(t_token **tok, t_cmd *cmd)
 {
-	int i;
-	int input;
-	int output;
+	int	i;
+	int	input;
+	int	output;
 
 	i = 0;
 	while (tok[i])

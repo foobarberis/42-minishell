@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 16:14:24 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/24 14:36:07 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/30 14:16:52 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,12 +169,10 @@ void	token_array_destroy(t_token **tok);
 void	token_array_rm(t_token **tok, size_t pos);
 t_token	***token_split_create(t_token **tok);
 void	token_split_destroy(t_token ***split);
-
 int		ismeta(int c);
 char	*f_itoa(intmax_t n);
 size_t	get_max_cmd(t_token **tok);
 char	*here_doc_expand_variables(char **env, char *buf);
-
 void	parsing_set_index_quote(t_token **tok);
 void	parsing_set_index_word(t_token **tok);
 void	parsing_set_index_cmd(t_token **tok);
@@ -200,11 +198,8 @@ int		exec(t_glb *glob);
 int		ps_is_builtin(char *cmd);
 char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd);
 int		ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
-void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd);
 char	*here_doc(char *lim);
 int		ps_get_args_cmd(t_token **tok, t_cmd *cmd);
-int		ps_get_input(t_token *tok, t_cmd *cmd);
-int		ps_get_output(t_token *tok, t_cmd *cmd);
 int		ps_get_redirect(t_token **tok, t_cmd *cmd);
 int		count_type(t_token **tok, int type);
 int		open_output(t_cmd *files);
@@ -214,20 +209,14 @@ void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
 void	in_out_redirect(t_cmd *cmd, size_t i);
 void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
 void	out_redirect(t_cmd *cmd, size_t i);
-
 char	**ft_split(char const *s, char c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-
 int		free_t_cmd(t_cmd *cmd, int nb_cmd);
 void	close_fd(t_cmd *cmd, int nb_cmd);
 char	**ft_free_double_array(char **ptr);
-
-
-int ps_get_redirect(t_token **tok, t_cmd *cmd);
-
-
-int    free_t_cmd(t_cmd *cmd, int nb_cmd);
-void   close_fd(t_cmd *cmd, int nb_cmd);
-char **ft_free_double_array(char **ptr);
+int		ps_get_redirect(t_token **tok, t_cmd *cmd);
+int		free_t_cmd(t_cmd *cmd, int nb_cmd);
+void	close_fd(t_cmd *cmd, int nb_cmd);
+char	**ft_free_double_array(char **ptr);
 
 #endif

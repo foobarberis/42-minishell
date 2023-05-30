@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:51:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/24 13:39:20 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/30 14:20:10 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	blt_echo(char **argv)
 	if (!argv || !argv[1])
 	{
 		printf("\n");
-		return;
+		return ;
 	}
 	i = 1;
 	newline = true;
