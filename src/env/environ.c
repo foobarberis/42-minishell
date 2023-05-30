@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:41:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:47:48 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/30 12:27:24 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**env_init(char **envp)
 	char	path[PATH_MAX];
 
 	if (!getcwd(path, PATH_MAX))
-		return (perror("minishell: getcwd: "), NULL);
+		return (perror("minishell: getcwd"), NULL);
 	new = env_array_realloc(envp, env_array_get_size(envp));
 	if (!new)
 		return (NULL);

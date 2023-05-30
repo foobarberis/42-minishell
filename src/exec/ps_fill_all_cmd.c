@@ -83,10 +83,8 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 		cmd[i].is_valid = ps_fill_cmd_struct(&cmd[i], glob->split[i]);
 		if (cmd[i].is_valid == CODE_MALLOC)
 			panic(cmd->glb, CODE_MALLOC, cmd);
-		if (cmd[i].is_valid == 127 && access(cmd[i].args[0], F_OK) == 0 && access(cmd[i].args[0], X_OK) == 0)
+		if (cmd[i].is_valid > 0 && access(cmd[i].args[0], F_OK) == 0 && access(cmd[i].args[0], X_OK))
 			cmd[i].is_valid = 126;
-//		if (access(cmd[i].args[0], X_OK) == 0 && cmd[i].is_valid > 0)
-//			cmd[i].is_valid = 126;
 		i++;
 	}
 	return (0);

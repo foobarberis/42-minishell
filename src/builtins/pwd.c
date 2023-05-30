@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:53:01 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:53:07 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/30 12:27:29 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	blt_pwd(void)
 	if (!getcwd(buf, PATH_MAX))
 	{
 		g_rval = 1;
-		perror("minishell: pwd: ");
+		perror("minishell: pwd");
 	}
 	else
 		printf("%s\n", buf);

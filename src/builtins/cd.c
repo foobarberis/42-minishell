@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:48:36 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:51:49 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/30 12:26:24 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ static void	update_pwd(t_glb *glb)
 	glb->env = env_key_add(glb->env, f_strjoin("OLDPWD=", tmp));
 	if (!glb->env)
 		panic(glb, CODE_MALLOC, NULL);
-	glb->env = env_key_add(glb->env, f_strjoin("PWD=", getcwd(buf, PATH_MAX)));
+	tmp = f_strjoin("PWD=", getcwd(buf, PATH_MAX));
+	if (!tmp)
+			return (perror("minishell: cd: getcwd"));
+	glb->env = env_key_add(glb->env, tmp);
 	if (!glb->env)
 		panic(glb, CODE_MALLOC, NULL);
 }

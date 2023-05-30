@@ -34,10 +34,10 @@ int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	size_t	i;
 
 	i = 0;
-	if (nb_cmd == 1 && cmd[i].is_builtin)
+	if (nb_cmd == 1 && (cmd[i].is_builtin == EXPORT || cmd[i].is_builtin == UNSET || cmd[i].is_builtin == EXIT || cmd[i].is_builtin == CD))
 	{
 			child_exec(glb, cmd, i, nb_cmd);
-			panic(glb, g_rval, cmd);
+			i++;
 	}
 	while (i < nb_cmd && nb_cmd >= 1)
 	{

@@ -61,29 +61,11 @@ char	*ft_compute_path(char **path, char *cmd)
 	return (NULL);
 }
 
-int	check_slash(char *cmd)
-{
-	int	i;
-	int	slash;
-
-	i = 0;
-	slash = 0;
-	while (cmd[i])
-	{
-		if (cmd[i] == '/')
-			slash++;
-		i++;
-	}
-	return (slash);
-}
-
 int	check_cmd(char *cmd)
 {
 	DIR *dir;
-	int	directory;
 	int	error;
 
-	directory = check_slash(cmd);
 	error = 0;
 	dir = opendir(cmd);
 	if (!f_strcmp(cmd, "."))
@@ -91,7 +73,7 @@ int	check_cmd(char *cmd)
 		f_dprintf(2, "minishell: .: filename argument required\n");
 		error = ERROR;
 	}
-	else if (access(cmd, X_OK) && directory > 0)
+	else if (access(cmd, X_OK) && f_strchr(cmd, '/'))
 	{
 		perror(cmd);
 		error = ERROR;
