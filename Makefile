@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/31 13:58:10 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/05/31 14:12:03 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ SRCS		:=	builtins/blt_utils.c \
 				parsing/word.c \
 				main.c
 
-CC			:=	gcc
+CC			:=	cc
 RM			:=	rm
 
 SRCDIR		:=	src

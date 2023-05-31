@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 13:39:22 by vburton           #+#    #+#             */
-/*   Updated: 2023/05/31 14:03:19 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/31 14:20:42 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ static void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 	if (cmd[i].is_builtin)
 		ex_builtin(glb, cmd, cmd[i].is_builtin, cmd[i].args);
 	else
+	{
+		signal(SIGQUIT, sigquit_handler);
 		execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env);
+	}
 }
 
 static void	parent_exec(t_cmd *cmd, size_t i)
