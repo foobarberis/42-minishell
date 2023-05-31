@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:54:05 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/31 12:46:11 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/31 13:25:11 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static void	msh_exit(t_glb *glb)
 		env_array_destroy(glb->env, env_array_get_size(glb->env));
 	free(glb);
 	rl_clear_history();
-	printf("exit\n");
 }
 
 static void	reset(t_glb *glb)
@@ -97,6 +96,5 @@ int	main(int ac, char *av[], char *ep[])
 			break ;
 		exec(glb);
 	}
-	msh_exit(glb);
-	return (g_rval);
+	return (printf("exit\n"), msh_exit(glb), g_rval);
 }

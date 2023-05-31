@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:52:26 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/31 12:46:32 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/31 13:24:37 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static void	blt_exit_update_rval(char **argv)
 void	blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
 {
 	g_rval = 0;
+	printf("exit\n");
 	if (argc > 2)
 	{
 		g_rval = 1;
