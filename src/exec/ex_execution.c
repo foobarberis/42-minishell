@@ -21,7 +21,7 @@ int	exec(t_glb *glb)
 	{
 		waitpid(cmd[i].pid, &status, 0);
 		if (WIFSIGNALED(status))
-			sig_child_handler(WIFSIGNALED(status), status);
+			sig_child_handler(status);
 		else if (WIFEXITED(status) && cmd[i].is_valid == 0 && cmd[i].pid != -1)
 			g_rval = (uint8_t)WEXITSTATUS(status);
 		i++;

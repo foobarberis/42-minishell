@@ -41,6 +41,7 @@ void	blt_unset(t_glb *glb, int argc, char **argv)
 {
 	size_t	i;
 
+	(void)argc;
 	i = 1;
 	g_rval = 0;
 	while (argv[i])

@@ -34,22 +34,22 @@
  */
 
 /* FIXME: Delete */
-static void	token_array_print(t_token **tok)
-{
-	size_t	i;
-
-	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n", "type", "quote", "char *", "word", "cmd");
-	printf("-------------------------------------------------------------------"
-	       "--------\n");
-	i = 0;
-	while (tok[i])
-	{
-		printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", tok[i]->type, tok[i]->quote,
-		       tok[i]->word, tok[i]->word_index, tok[i]->cmd_index);
-		i++;
-	}
-	f_printf("\n");
-}
+//static void	token_array_print(t_token **tok)
+//{
+//	size_t	i;
+//
+//	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n", "type", "quote", "char *", "word", "cmd");
+//	printf("-------------------------------------------------------------------"
+//	       "--------\n");
+//	i = 0;
+//	while (tok[i])
+//	{
+//		printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", tok[i]->type, tok[i]->quote,
+//		       tok[i]->word, tok[i]->word_index, tok[i]->cmd_index);
+//		i++;
+//	}
+//	f_printf("\n");
+//}
 
 int	parsing(t_glb *glb)
 {

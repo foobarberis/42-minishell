@@ -223,6 +223,6 @@ int ps_get_redirect(t_token **tok, t_cmd *cmd);
 int    free_t_cmd(t_cmd *cmd, int nb_cmd);
 void   close_fd(t_cmd *cmd, int nb_cmd);
 
-void sig_child_handler(int sig, int status);
+void sig_child_handler(int status);
 void	sigquit_handler(int sig);
 #endif

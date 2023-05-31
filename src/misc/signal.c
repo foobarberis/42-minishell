@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:45:35 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/31 14:37:30 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/31 14:40:34 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	sigquit_handler(int sig)
 	(void)sig;
 }
 
-void sig_child_handler(int sig, int status)
+void sig_child_handler(int status)
 {
 	if (WTERMSIG(status) == SIGINT)
 	{
