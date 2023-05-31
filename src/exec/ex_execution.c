@@ -20,10 +20,13 @@ int	exec(t_glb *glb)
 	while (i < glb->multiple_cmd)
 	{
 		waitpid(cmd[i].pid, &status, 0);
-		if (WIFEXITED(status) && cmd[i].is_valid == 0 && cmd[i].pid != -1)
+		if (WIFSIGNALED(status))
+			sig_child_handler(WIFSIGNALED(status), status);
+		else if (WIFEXITED(status) && cmd[i].is_valid == 0 && cmd[i].pid != -1)
 			g_rval = (uint8_t)WEXITSTATUS(status);
 		i++;
 	}
+	signal(SIGINT, sigint_handler);
 	close_fd(cmd, glb->multiple_cmd);
 	free_t_cmd(cmd, glb->multiple_cmd);
 	return (0);
@@ -34,10 +37,10 @@ int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	size_t	i;
 
 	i = 0;
-	if (nb_cmd == 1 && cmd[i].is_builtin)
+	if (nb_cmd == 1 && (cmd[i].is_builtin == EXPORT || cmd[i].is_builtin == CD || cmd[i].is_builtin == EXIT || cmd[i].is_builtin == UNSET))
 	{
 			child_exec(glb, cmd, i, nb_cmd);
-			panic(glb, g_rval, cmd);
+			i++;
 	}
 	while (i < nb_cmd && nb_cmd >= 1)
 	{
@@ -73,6 +76,7 @@ void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 			close (cmd[i - 1].fd[0]);
 		panic(glb, g_rval, cmd);
 	}
+	signal(SIGINT, SIG_IGN);
 	parent_exec(cmd, i);
 }
 
@@ -116,5 +120,8 @@ void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 	if (cmd[i].is_builtin)
 		ex_builtin(glb, cmd, cmd[i].is_builtin, cmd[i].args);
 	else
+	{
+		signal(SIGQUIT, sigquit_handler);
 		execve(cmd[i].path_cmd, cmd[i].args, cmd[i].env);
+	}
 }

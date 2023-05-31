@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:54:05 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:55:38 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/31 14:05:50 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,10 @@ int	main(int ac, char *av[], char *ep[])
 		reset(glb);
 		glb->rl = readline("MSH $ ");
 		if (!glb->rl)
+		{
+			printf("exit\n");
 			break ;
+		}
 		if (!*glb->rl)
 			continue ;
 		add_history(glb->rl);

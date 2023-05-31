@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 16:14:24 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/24 14:36:07 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/31 14:37:30 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,20 +214,15 @@ void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
 void	in_out_redirect(t_cmd *cmd, size_t i);
 void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
 void	out_redirect(t_cmd *cmd, size_t i);
-
 char	**ft_split(char const *s, char c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-
 int		free_t_cmd(t_cmd *cmd, int nb_cmd);
 void	close_fd(t_cmd *cmd, int nb_cmd);
 char	**ft_free_double_array(char **ptr);
-
-
 int ps_get_redirect(t_token **tok, t_cmd *cmd);
-
-
 int    free_t_cmd(t_cmd *cmd, int nb_cmd);
 void   close_fd(t_cmd *cmd, int nb_cmd);
-char **ft_free_double_array(char **ptr);
 
+void sig_child_handler(int sig, int status);
+void	sigquit_handler(int sig);
 #endif
