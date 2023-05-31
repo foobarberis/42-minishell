@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:52:48 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 16:08:01 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/05/31 12:50:33 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	blt_export(t_glb *glb, int argc, char **argv)
 	}
 }
 
-void	blt_unset(t_glb *glb, int argc, char **argv)
+void	blt_unset(t_glb *glb, char **argv)
 {
 	size_t	i;
 

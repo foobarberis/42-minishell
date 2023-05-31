@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ps_fill_all_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:07:42 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/30 14:19:32 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/31 12:59:52 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd)
 	i = 0;
 	while (i < nb_cmd)
 	{
-		pipe(cmd[i].fd);
+		(void)pipe(cmd[i].fd);
 		cmd[i].is_valid = 0;
 		cmd[i].pid = -1;
 		cmd[i].is_builtin = NONE;

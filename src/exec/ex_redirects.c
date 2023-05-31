@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_redirects.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:06:00 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/30 14:09:09 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/31 13:29:51 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,9 @@ void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 
 void	in_out_redirect(t_cmd *cmd, size_t i)
 {
-	size_t	len;
-
 	if (cmd[i].is_here_doc)
 	{
-		len = f_strlen(cmd[i].string_here_doc);
-		write(cmd[i].fd[1], cmd[i].string_here_doc, len);
+		f_dprintf(cmd[i].fd[1], cmd[i].string_here_doc);
 		dup2(cmd[i].fd[0], STDIN_FILENO);
 	}
 	else
@@ -41,12 +38,9 @@ void	in_out_redirect(t_cmd *cmd, size_t i)
 
 void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 {
-	size_t	len;
-
 	if (cmd[i].is_here_doc)
 	{
-		len = f_strlen(cmd[i].string_here_doc);
-		write(cmd[i].fd[1], cmd[i].string_here_doc, len);
+		f_dprintf(cmd[i].fd[1], cmd[i].string_here_doc);
 		close(cmd[i].fd[1]);
 		dup2(cmd[i].fd[0], STDIN_FILENO);
 	}

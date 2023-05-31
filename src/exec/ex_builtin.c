@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:05:36 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/30 14:08:49 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/31 12:51:03 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ex_builtin(t_glb *glb, t_cmd *cmd, int builtin, char **arg)
 	else if (builtin == EXPORT)
 		blt_export(glb, blt_compute_argc(arg), arg);
 	else if (builtin == UNSET)
-		blt_unset(glb, blt_compute_argc(arg), arg);
+		blt_unset(glb, arg);
 	else if (builtin == ENV)
 		blt_env(glb);
 	else if (builtin == EXIT)
