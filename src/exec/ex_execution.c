@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 13:39:22 by vburton           #+#    #+#             */
-/*   Updated: 2023/05/30 14:08:57 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/31 14:03:19 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,13 @@ static void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 		perror(" :fork failed\n");
 	if (pid == 0)
 	{
-		g_rval = (uint8_t)cmd[i].is_valid;
+		g_rval = (uint8_t) cmd[i].is_valid;
 		child_exec(glb, cmd, i, nb_cmd);
 		if (i > 0)
-			close (cmd[i - 1].fd[0]);
+			close(cmd[i - 1].fd[0]);
 		panic(glb, g_rval, cmd);
 	}
+	signal(SIGINT, SIG_IGN);
 	parent_exec(cmd, i);
 }
 
@@ -111,7 +112,7 @@ int	exec(t_glb *glb)
 
 	i = 0;
 	status = 0;
-	glb->multiple_cmd = (int)get_max_cmd(glb->tok);
+	glb->multiple_cmd = (int) get_max_cmd(glb->tok);
 	cmd = malloc(sizeof(t_cmd) * glb->multiple_cmd);
 	if (!cmd)
 		return (0);
@@ -120,10 +121,13 @@ int	exec(t_glb *glb)
 	while (i < glb->multiple_cmd)
 	{
 		waitpid(cmd[i].pid, &status, 0);
-		if (WIFEXITED(status) && cmd[i].is_valid == 0 && cmd[i].pid != -1)
-			g_rval = (uint8_t)WEXITSTATUS(status);
+		if (WIFSIGNALED(status))
+			sig_child_handler(status);
+		else if (WIFEXITED(status) && cmd[i].is_valid == 0 && cmd[i].pid != -1)
+			g_rval = (uint8_t) WEXITSTATUS(status);
 		i++;
 	}
+	signal(SIGINT, sigint_handler);
 	close_fd(cmd, glb->multiple_cmd);
 	free_t_cmd(cmd, glb->multiple_cmd);
 	return (0);

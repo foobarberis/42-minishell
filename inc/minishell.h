@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 16:14:24 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/30 14:16:52 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/31 13:57:40 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ char	**env_init(char **envp);
 bool	env_is_valid_id(char *s);
 void	blt_export(t_glb *glb, int argc, char **argv);
 void	blt_export__print(t_glb *glb);
-void	blt_unset(t_glb *glb, int argc, char **argv);
+void	blt_unset(t_glb *glb, char **argv);
 void	blt_env(t_glb *glb);
 void	blt_echo(char **argv);
 void	blt_pwd(void);
@@ -192,31 +192,32 @@ int		parsing(t_glb *glb);
 
 /* MISC */
 void	sigint_handler(int sig);
+void	sig_child_handler(int status);
+void	sigquit_handler(int sig);
 
 /* EXEC */
-int		exec(t_glb *glob);
 int		ps_is_builtin(char *cmd);
-char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd);
 int		ps_initialisation_cmds(t_cmd *cmd, t_glb *glob);
-char	*here_doc(char *lim);
+int		ps_get_redirect(t_token **tok, t_cmd *cmd);
 int		ps_get_args_cmd(t_token **tok, t_cmd *cmd);
 int		ps_get_redirect(t_token **tok, t_cmd *cmd);
 int		count_type(t_token **tok, int type);
 int		open_output(t_cmd *files);
 int		open_input(t_cmd *files);
+char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd);
+char	*here_doc(char *lim);
+void	in_out_redirect(t_cmd *cmd, size_t i);
+
+int		exec(t_glb *glob);
 void	ex_builtin(t_glb *glb, t_cmd *cmd, int builtin, char **arg);
 void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
-void	in_out_redirect(t_cmd *cmd, size_t i);
 void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
 void	out_redirect(t_cmd *cmd, size_t i);
-char	**ft_split(char const *s, char c);
+
+int		free_t_cmd(t_cmd *cmd, int nb_cmd);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-int		free_t_cmd(t_cmd *cmd, int nb_cmd);
-void	close_fd(t_cmd *cmd, int nb_cmd);
+char	**ft_split(char const *s, char c);
 char	**ft_free_double_array(char **ptr);
-int		ps_get_redirect(t_token **tok, t_cmd *cmd);
-int		free_t_cmd(t_cmd *cmd, int nb_cmd);
 void	close_fd(t_cmd *cmd, int nb_cmd);
-char	**ft_free_double_array(char **ptr);
 
 #endif
