@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
+#    By: vburton <vburton@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/05/31 14:12:03 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/06/01 11:13:33 by vburton          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ MLCDIR		:=	mlc
 INCFLAGS	:= -I$(INCDIR) -I$(SYSINC) -I$(MLCDIR)/inc
 LIBFLAGS	:= -L$(MLCDIR) -lreadline -lft
 # CFLAGS		:=	-O3 -Wall -Wextra -Werror
-CFLAGS		:= -g3 -fPIE -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion # -fsanitize=undefined,address
+CFLAGS		:= -g3 -fPIE -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion #-fsanitize=undefined,address
 RMFLAGS		:=	-f
 
 # Edit the $(HEADERS) variable as necessary.

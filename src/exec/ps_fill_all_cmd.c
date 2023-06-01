@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ps_fill_all_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:07:42 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/31 12:59:52 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:10:26 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd)
 		cmd[i].is_here_doc = 0;
 		cmd[i].string_here_doc = NULL;
 		cmd[i].output = NULL;
+		cmd[i].type_in = -1;
+		cmd[i].type_out = -1;
 		cmd[i].final_output = -1;
 		cmd[i].final_input = -1;
 		i++;

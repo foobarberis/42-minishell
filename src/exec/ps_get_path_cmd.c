@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ps_get_path_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:10:13 by vburton           #+#    #+#             */
-/*   Updated: 2023/05/30 14:18:54 by vburton          ###   ########.fr       */
+/*   Updated: 2023/05/31 18:51:31 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,17 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 	char	**split_path;
 
 	if (cmd == NULL)
+		return (NULL);
+	if (!*cmd)
 	{
-		f_dprintf(2, ": command not found:\n");
+		f_dprintf(2, ": command not found\n");
 		return (NULL);
 	}
 	if (check_cmd(cmd) == ERROR)
 		return (NULL);
 	path = env_getenv(envp, "PATH");
 	split_path = ft_split(path, ':');
-	if (split_path == NULL || path == NULL)
+	if ((split_path == NULL || path == NULL) && access(cmd, X_OK))
 	{
 		f_dprintf(2, " : no such file or directory: %s\n", cmd);
 		return (NULL);

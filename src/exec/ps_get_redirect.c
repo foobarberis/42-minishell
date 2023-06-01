@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ps_get_redirect.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:12:47 by vburton           #+#    #+#             */
-/*   Updated: 2023/05/30 14:19:18 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/01 15:47:19 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static int	ps_get_input(t_token *tok, t_cmd *cmd)
 			free(cmd->input);
 		cmd->input = NULL;
 		cmd->input = f_strdup(tok->word);
+		dprintf(2, "final_input = %s\n", cmd->input);
 		if (!cmd->input)
 			return (CODE_MALLOC);
 		cmd->type_in = S_INPUT;
@@ -106,5 +107,6 @@ int	ps_get_redirect(t_token **tok, t_cmd *cmd)
 			return (ERROR);
 		i++;
 	}
+	dprintf(2, "final_input = %s\n", cmd->input);
 	return (SUCCESS);
 }

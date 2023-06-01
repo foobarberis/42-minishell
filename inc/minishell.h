@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 16:14:24 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/31 13:57:40 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 10:44:11 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "mlc.h"
+# include "../mlc/inc/mlc.h"
 # include <dirent.h>            /* opendir */
 # include <fcntl.h>             /* ?? */
 # include <linux/limits.h>      /* PATH_MAX */
