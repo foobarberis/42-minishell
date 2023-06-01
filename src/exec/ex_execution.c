@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 13:39:22 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/01 14:36:32 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/01 17:04:01 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,10 @@
 
 static void	child_exec(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 {
-//	dprintf(2, "test 0, pid = %d, cmd = %s\n", cmd[i].pid, cmd[i].path_cmd);
 	if (cmd[i].is_valid)
 		exit(cmd[i].is_valid);
 	if (cmd[i].final_input < REDIRECTION && cmd[i].final_output < REDIRECTION)
-	{
-//		dprintf(2, "test 1, pid = %d, cmd = %s\n", cmd[i].pid, cmd[i].path_cmd);
 		nothing_to_redirect(cmd, i, nb_cmd);
-	}
 	else if (cmd[i].final_input >= REDIRECTION && \
 											cmd[i].final_output > REDIRECTION)
 		in_out_redirect(cmd, i);
@@ -59,10 +55,7 @@ static void	parent_exec(t_cmd *cmd, size_t i)
 		close(cmd[i].final_output);
 	close(cmd[i].fd[1]);
 	if (i > 0)
-	{
-//		dprintf(2,"test 5 et cmd = %s\n", cmd[i].path_cmd);
 		close(cmd[i - 1].fd[0]);
-	}
 }
 
 static void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
@@ -79,7 +72,6 @@ static void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 		child_exec(glb, cmd, i, nb_cmd);
 		if (i > 0)
 			close(cmd[i - 1].fd[0]);
-//		dprintf(2, "test -2\n");
 		panic(glb, g_rval, cmd);
 	}
 	signal(SIGINT, SIG_IGN);
@@ -128,7 +120,6 @@ int	exec(t_glb *glb)
 	if (!cmd)
 		return (0);
 	ps_initialisation_cmds(cmd, glb);
-//	dprintf(2, "test -1\n");
 	ex_launch(glb, &cmd[i], glb->multiple_cmd);
 	while (i < glb->multiple_cmd)
 	{
