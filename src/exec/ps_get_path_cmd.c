@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ps_get_path_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:10:13 by vburton           #+#    #+#             */
-/*   Updated: 2023/05/30 14:18:54 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/01 13:17:29 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ char	*ps_get_path_cmd(char *cmd, char **envp, char *path_cmd)
 	char	**split_path;
 
 	if (cmd == NULL)
+		return (NULL);
+	if (!*cmd)
 	{
 		f_dprintf(2, ": command not found:\n");
 		return (NULL);

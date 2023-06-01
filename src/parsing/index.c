@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:30:51 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/01 11:53:39 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 13:08:48 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,35 @@ void	parsing_update_index_word(t_token **tok)
 	while (tok[i])
 	{
 		tok[i]->word_index += j;
+		if (tok[i + 1])
+		{
+			if (!tok[i]->quote && ismeta(*tok[i]->word) && !ismeta(*tok[i + 1]->word))
+				j++;
+			if (!tok[i]->quote && ismeta(*tok[i]->word) && (ismeta(*tok[i + 1]->word) && tok[i + 1]->quote))
+				j++;
+			if ((tok[i]->quote && ismeta(*tok[i]->word)) && (!ismeta(*tok[i + 1]->word) || (ismeta(*tok[i + 1]->word) && !tok[i + 1]->quote)))
+				j++;
+			if (*tok[i]->word == '|' && (*tok[i + 1]->word == '<' || *tok[i + 1]->word == '>'))
+				j++;
+		}
+		i++;
+	}
+}
+
+
+/* void	parsing_update_index_word(t_token **tok)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (tok[i])
+	{
+		tok[i]->word_index += j;
 		if (tok[i + 1] && !tok[i]->quote)
 		{
-			if (ismeta(*tok[i]->word) && !ismeta(*tok[i + 1]->word))
+			if (ismeta(*tok[i]->word) && (!ismeta(*tok[i + 1]->word) || (ismeta(*tok[i + 1]->word) && tok[i + 1]->quote)))
 				j++;
 			else if (*tok[i]->word == '|'
 				&& (*tok[i + 1]->word == '<' || *tok[i + 1]->word == '>'))
@@ -110,4 +136,4 @@ void	parsing_update_index_word(t_token **tok)
 		}
 		i++;
 	}
-}
+} */
