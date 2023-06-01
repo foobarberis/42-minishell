@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/01 11:19:16 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 11:23:32 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static char	*token_array_to_string(t_token **tok)
 		return (NULL);
 	while (tok[i])
 	{
-		tmp = NULL; // f_strjoin(new, tok[i++]->word);
+		tmp = f_strjoin(new, tok[i++]->word);
 		free(new);
 		if (!tmp)
 			return (NULL);
