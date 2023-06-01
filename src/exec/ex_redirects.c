@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_redirects.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:06:00 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/01 15:10:26 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/01 14:09:14 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 //		{
 //			dprintf(2, " 1111111111111111111111111111111111je passe la11111111111111111111111111111111111\n");
 //		}
+
+
 		dprintf(2,"Type in = %d et type out = %d et i = %ld\n", cmd[i].type_in, cmd[i].type_out, i);
 		if (f_strcmp(cmd[i].args[0], "cat") == 0 && f_strcmp(cmd[i - 1].args[0], "cat") == 0 && cmd[i - 1].args[1] == NULL && cmd[i].type_in == -1)
 		{
