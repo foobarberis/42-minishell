@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:54:05 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/31 13:25:11 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 11:05:14 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,11 @@ static void	reset(t_glb *glb)
 
 void	panic(t_glb *glb, int code, t_cmd *cmd)
 {
-	close_fd(cmd, glb->multiple_cmd);
-	free_t_cmd(cmd, cmd->glb->multiple_cmd);
+	if (cmd)
+	{
+		close_fd(cmd, glb->multiple_cmd);
+		free_t_cmd(cmd, cmd->glb->multiple_cmd);
+	}
 	msh_exit(glb);
 	if (code == CODE_MALLOC)
 		f_dprintf(STDERR_FILENO, ERR_MALLOC);

@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:38:50 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/24 12:52:49 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 11:09:05 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,34 @@ static int	parsing_recreate_variables(t_token **tok)
 	return (0);
 }
 
-static char	*get_value(char **env, char *key)
+/**
+ * @brief Delete duplicate whitespaces in a string. If the string contains
+ * only whitespaces, return the empty string.
+ * @param s
+ * @return
+ */
+static char	*get_value_rm_whitespace(char *s)
 {
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if (f_isspace(s[i]) && s[i] != ' ')
+			s[i] = ' ';
+		if (!f_isspace(s[i]) || (i > 0 && !f_isspace(s[i - 1])))
+			s[j++] = s[i];
+		i++;
+	}
+	s[j] = '\0';
+	return (s);
+}
+
+static char	*get_value(char **env, char *key, int quote)
+{
+	char	*new;
 	char	*getenv;
 
 	getenv = env_getenv(env, key);
@@ -54,7 +80,15 @@ static char	*get_value(char **env, char *key)
 	else if (!getenv)
 		return (f_strdup(""));
 	else
-		return (f_strdup(getenv));
+	{
+		new = f_strdup(getenv);
+		if (!new)
+			return (NULL);
+		if (quote != DOUBLE)
+			return (get_value_rm_whitespace(new));
+		else
+			return (new);
+	}
 }
 
 int	parsing_expand_variables(t_token **tok, char **env)
@@ -69,7 +103,7 @@ int	parsing_expand_variables(t_token **tok, char **env)
 	{
 		if (*tok[i]->word == '$' && tok[i]->word[1] && tok[i]->quote != SIMPLE)
 		{
-			value = get_value(env, &tok[i]->word[1]);
+			value = get_value(env, &tok[i]->word[1], tok[i]->quote);
 			if (!value)
 				return (1);
 			if (!*value)

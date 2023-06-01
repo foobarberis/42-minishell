@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/31 13:16:01 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 11:19:16 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,71 @@
  *   permission etc.).
  */
 
+/* FIXME: Delete */
+static void	token_array_print(t_token **tok)
+{
+	size_t	i;
+
+	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n", "type", "quote", "char *", "word", "cmd");
+	printf("-------------------------------------------------------------------"
+	       "--------\n");
+	i = 0;
+	while (tok[i])
+	{
+		printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", tok[i]->type, tok[i]->quote,
+		       tok[i]->word, tok[i]->word_index, tok[i]->cmd_index);
+		i++;
+	}
+	f_printf("\n");
+}
+
+static char	*token_array_to_string(t_token **tok)
+{
+	int		i;
+	char	*tmp;
+	char	*new;
+
+	i = 1;
+	if (!*tok)
+		return (f_strdup(""));
+	new = f_strdup(tok[0]->word);
+	if (!new)
+		return (NULL);
+	while (tok[i])
+	{
+		tmp = NULL; // f_strjoin(new, tok[i++]->word);
+		free(new);
+		if (!tmp)
+			return (NULL);
+		new = tmp;
+	}
+	return (new);
+}
+
+static int	parsing_expand(t_glb *glb)
+{
+	char	*new;
+
+	parsing_set_index_quote(glb->tok);
+	parsing_set_index_word(glb->tok);
+	parsing_set_index_cmd(glb->tok);
+	if (parsing_expand_variables(glb->tok, glb->env))
+		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
+	new = token_array_to_string(glb->tok);
+	if (!new)
+		panic(glb, CODE_MALLOC, NULL);
+	token_array_destroy(glb->tok);
+	glb->tok = token_array_create(new);
+	free(new);
+	if (!glb->tok)
+		panic(glb, CODE_MALLOC, NULL);
+	return (0);
+}
+
 int	parsing(t_glb *glb)
 {
+	if (parsing_expand(glb))
+		return (1);
 	parsing_set_index_quote(glb->tok);
 	parsing_set_index_word(glb->tok);
 	parsing_set_index_cmd(glb->tok);
@@ -44,8 +107,6 @@ int	parsing(t_glb *glb)
 		return (1);
 	parsing_update_index_word(glb->tok);
 	parsing_delete_pipe(glb->tok);
-	if (parsing_expand_variables(glb->tok, glb->env))
-		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 	if (parsing_recreate_words(glb->tok))
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 	parsing_fill_type(glb->tok);
