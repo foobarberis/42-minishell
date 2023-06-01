@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:37 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:46:10 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 08:37:57 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	env_strcmp(const char *s1, const char *s2)
 		s1++;
 		s2++;
 	}
-	if (!*s1 && (*s2 == '=' || !*s2))
+	if ((*s1 == '=' || !*s1) && (*s2 == '=' || !*s2))
 		return (0);
 	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }

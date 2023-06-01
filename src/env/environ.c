@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:41:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/30 12:27:24 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 08:38:01 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,22 @@ char	**env_init(char **envp)
 	return (env_init_base(new, path));
 }
 
-char	*env_getenv(char **env, char *s)
+/**
+ * @brief The getenv() function searches the environment list to find the
+ * environment variable name, and returns a pointer to the corresponding
+ * value string.
+ * @param env The environment.
+ * @param name The string to find.
+ * @return A pointer to the value associated with name. If the name was not
+ * found, returns NULL. If the name was found has no value associated to
+ * it, retuns a pointer to the termninating NULL character.
+ */
+char	*env_getenv(char **env, char *name)
 {
 	char	*p;
 	int		pos;
 
-	pos = env_key_get_pos(env, s);
+	pos = env_key_get_pos(env, name);
 	if (pos == KEY_NOT_FOUND)
 		return (NULL);
 	p = f_strchr(env[pos], '=');
