@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:47:56 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:48:26 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 09:31:15 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,19 @@ int	blt_compute_argc(char **argv)
 
 bool	env_is_valid_id(char *s)
 {
-	if (!*s || *s == '=')
+	if (!*s || *s == '=' || *s == '+')
 		return (false);
 	if (f_isdigit(s[0]))
 		return (false);
 	while (*s && *s != '=')
 	{
 		if (!(f_isalnum(*s) || *s == '_'))
-			return (false);
+		{
+			if ((*s == '+') && (*(s + 1) == '='))
+				s++;
+			else
+				return (false);
+		}
 		s++;
 	}
 	return (true);
