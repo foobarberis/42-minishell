@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:30:51 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:34:11 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 11:53:39 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	parsing_update_index_word(t_token **tok)
 	while (tok[i])
 	{
 		tok[i]->word_index += j;
-		if (tok[i + 1])
+		if (tok[i + 1] && !tok[i]->quote)
 		{
 			if (ismeta(*tok[i]->word) && !ismeta(*tok[i + 1]->word))
 				j++;
