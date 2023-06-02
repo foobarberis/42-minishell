@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_redirects.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:06:00 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/31 13:29:51 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:50:22 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,14 @@
 void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 {
 	if (i > 0 && cmd[i].is_builtin == 0)
-		dup2(cmd[i - 1].fd[0], STDIN_FILENO);
+	{
+		if (!f_strcmp(cmd[i].args[0], "cat") && \
+			!f_strcmp(cmd[i - 1].args[0], "cat") && !cmd[i - 1].args[1] && \
+									!cmd[i - 1].input && !cmd[i - 1].output)
+			;
+		else
+			dup2(cmd[i - 1].fd[0], STDIN_FILENO);
+	}
 	if (i < nb_cmd - 1)
 		dup2(cmd[i].fd[1], STDOUT_FILENO);
 }

@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 13:39:22 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/01 13:15:40 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/02 08:20:43 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 		child_exec(glb, cmd, i, nb_cmd);
 		i++;
 	}
-	while (i < nb_cmd && nb_cmd >= 1)
+	while (i < nb_cmd)
 	{
 		while (i < nb_cmd && cmd[i].is_valid > 0)
 		{

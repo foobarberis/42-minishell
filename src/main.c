@@ -6,11 +6,11 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:54:05 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/01 11:05:14 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/02 08:20:24 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
 static t_glb	*msh_init(char **envp)
 {

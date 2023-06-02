@@ -42,6 +42,8 @@ int	open_output(t_cmd *files)
 		valid = open(files->output, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (valid < SUCCESS)
 	{
+		if (valid == -1)
+			valid = -2;
 		files->is_valid = ERROR;
 		perror(files->output);
 		return (ERROR_REDIRECT);
