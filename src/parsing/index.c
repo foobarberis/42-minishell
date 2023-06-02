@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:30:51 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/01 13:08:48 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/02 13:38:31 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,50 +90,31 @@ void	parsing_set_index_word(t_token **tok)
 	}
 }
 
-void	parsing_update_index_word(t_token **tok)
+void	parsing_update_index_word(t_token **t)
 {
 	size_t	i;
 	size_t	j;
 
 	i = 0;
 	j = 0;
-	while (tok[i])
+	while (t[i])
 	{
-		tok[i]->word_index += j;
-		if (tok[i + 1])
+		t[i]->word_index += j;
+		if (t[i + 1])
 		{
-			if (!tok[i]->quote && ismeta(*tok[i]->word) && !ismeta(*tok[i + 1]->word))
+			if (!t[i]->quote)
+				if ((ismeta(*t[i]->word) && (!ismeta(*t[i + 1]->word)
+							|| (ismeta(*t[i + 1]->word) && t[i + 1]->quote)))
+					|| (!ismeta(*t[i]->word) && ismeta(*t[i + 1]->word)))
+					j++;
+			if ((t[i]->quote && ismeta(*t[i]->word))
+				&& (!ismeta(*t[i + 1]->word)
+					|| (ismeta(*t[i + 1]->word) && !t[i + 1]->quote)))
 				j++;
-			if (!tok[i]->quote && ismeta(*tok[i]->word) && (ismeta(*tok[i + 1]->word) && tok[i + 1]->quote))
-				j++;
-			if ((tok[i]->quote && ismeta(*tok[i]->word)) && (!ismeta(*tok[i + 1]->word) || (ismeta(*tok[i + 1]->word) && !tok[i + 1]->quote)))
-				j++;
-			if (*tok[i]->word == '|' && (*tok[i + 1]->word == '<' || *tok[i + 1]->word == '>'))
+			if (*t[i]->word == '|'
+				&& (*t[i + 1]->word == '<' || *t[i + 1]->word == '>'))
 				j++;
 		}
 		i++;
 	}
 }
-
-
-/* void	parsing_update_index_word(t_token **tok)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	while (tok[i])
-	{
-		tok[i]->word_index += j;
-		if (tok[i + 1] && !tok[i]->quote)
-		{
-			if (ismeta(*tok[i]->word) && (!ismeta(*tok[i + 1]->word) || (ismeta(*tok[i + 1]->word) && tok[i + 1]->quote)))
-				j++;
-			else if (*tok[i]->word == '|'
-				&& (*tok[i + 1]->word == '<' || *tok[i + 1]->word == '>'))
-				j++;
-		}
-		i++;
-	}
-} */
