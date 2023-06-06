@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/02 13:38:18 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/06 14:51:22 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,31 @@
  * - Error checking (i.e file exists, program exists, file and folder
  *   permission etc.).
  */
+
+static void token_array_print(t_token **tok)
+{
+	size_t i;
+
+	printf("%-15s | %-15s | %-15s | %-15s | %-15s\n", "type", "quote", "char *", "word", "cmd");
+
+	printf("-------------------------------------------------------------------"
+
+	       "--------\n");
+
+	i = 0;
+
+	while (tok[i])
+
+	{
+		printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", tok[i]->type, tok[i]->quote,
+
+		       tok[i]->word, tok[i]->word_index, tok[i]->cmd_index);
+
+		i++;
+	}
+
+	f_printf("\n");
+}
 
 static char	*token_array_to_string(t_token **tok)
 {
@@ -87,6 +112,7 @@ int	parsing(t_glb *glb)
 	if (parsing_check_syntax(glb->tok))
 		return (1);
 	parsing_delete_quote(glb->tok);
+	token_array_print(glb->tok);
 	parsing_update_index_word(glb->tok);
 	parsing_delete_pipe(glb->tok);
 	if (parsing_recreate_words(glb->tok))
