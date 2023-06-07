@@ -24,3 +24,4 @@
 + <<EOF cd src
   > cat main.c
   -> cat main.c should not be executed, just cd src/
++ Return code of <<EOF should be 0 but we get 2.

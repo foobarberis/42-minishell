@@ -6,18 +6,34 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:33:31 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/06 12:37:38 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/07 10:00:06 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	here_doc_handler(int sig)
+{
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_done = 1;
+	g_rval = (uint8_t)(128 + sig);
+}
+
+static int	event(void)
+{
+	return (0);
+}
 
 static char	*here_doc_loop(char *here_doc, char *rl, char *tmp, char *lim)
 {
 	while (1)
 	{
 		free(rl);
+		rl_event_hook = event;
 		rl = readline("> ");
+		if (g_rval == 130)
+			break ;
 		if (!rl)
 			f_dprintf(STDERR_FILENO,
 				"minishell: warning: here-document delimited"
@@ -33,6 +49,7 @@ static char	*here_doc_loop(char *here_doc, char *rl, char *tmp, char *lim)
 		if (!here_doc)
 			return (free(rl), NULL);
 	}
+	free(rl);
 	return (here_doc);
 }
 
@@ -40,10 +57,12 @@ char	*here_doc(char *lim)
 {
 	char	*buf[3];
 
+	g_rval = 0;
 	buf[0] = f_strdup("");
 	if (!buf[0])
 		return (NULL);
 	buf[1] = NULL;
 	buf[2] = NULL;
+	signal(SIGINT, here_doc_handler);
 	return (here_doc_loop(buf[0], buf[1], buf[2], lim));
 }

@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/06 14:51:22 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/07 09:10:56 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	parsing(t_glb *glb)
 	if (parsing_check_syntax(glb->tok))
 		return (1);
 	parsing_delete_quote(glb->tok);
-	token_array_print(glb->tok);
+	// token_array_print(glb->tok);
 	parsing_update_index_word(glb->tok);
 	parsing_delete_pipe(glb->tok);
 	if (parsing_recreate_words(glb->tok))
