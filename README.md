@@ -1,15 +1,15 @@
 # 42-minishell
 
-+ Ctrl-C in here-doc should exit here-doc and discard the buffer (WARNING: LEAKS)
-+ echo ""'test'""
-+ echo """"'test'""""
-+ export A && export A=test && export A -> A=test
++ [X] Ctrl-C in here-doc should exit here-doc and discard the buffer (WARNING: LEAKS)
++ [X] echo ""'test'""
++ [X] echo """"'test'""""
++ [X] export A && export A=test && export A -> A=test
++ [X] echo ""'$PATH'
++ "e"cho "hello		world"
 + Check for recompile when touching file from mlc -> should recompile minishell
 + [ -d dir ] to test for existence of dir before mkdir -p
 + Make builtin RM variable
 + update template Makefile
-+ "e"cho "hello		world"
-+ echo ""'$PATH'
 + `minishell` should not work, only `./minishell` should work
 + exit | exit -> should not write exit
 + exit "  3  " -> should exit with code 3
