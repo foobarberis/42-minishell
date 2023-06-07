@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 16:14:24 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/06 12:36:33 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/07 12:35:27 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ void	blt_cd(t_glb *glb, int argc, char **argv);
 int		blt_compute_argc(char **argv);
 
 /* PARSING */
+char	*token_array_to_string(t_token **tok);
 t_token	*token_struct_create(char *word);
 t_token	**token_array_create(char *s);
 void	token_struct_destroy(t_token *p);

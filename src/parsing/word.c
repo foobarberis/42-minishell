@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:39:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/23 15:56:36 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/07 11:54:53 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	parsing_recreate_words(t_token **tok)
 	return (0);
 }
 
-int	parsing_recreate_strings(t_token **tok)
+int	parsing_recreate_strings(t_token **tok) /* FIXME: Might not be useful */
 {
 	size_t	i;
 	char	*tmp;

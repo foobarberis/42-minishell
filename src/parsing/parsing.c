@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/07 12:27:17 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/07 13:00:07 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void token_array_print(t_token **tok)
 	f_printf("\n");
 }
 
-static char	*token_array_to_string(t_token **tok)
+char	*token_array_to_string(t_token **tok)
 {
 	int		i;
 	char	*tmp;
@@ -112,7 +112,6 @@ int	parsing(t_glb *glb)
 	if (parsing_check_syntax(glb->tok))
 		return (1);
 	parsing_delete_quote(glb->tok);
-	// token_array_print(glb->tok);
 	parsing_update_index_word(glb->tok);
 	parsing_delete_pipe(glb->tok);
 	if (parsing_recreate_words(glb->tok))
