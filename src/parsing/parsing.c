@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/07 09:10:56 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/07 12:27:17 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ int	parsing(t_glb *glb)
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 	parsing_fill_type(glb->tok);
 	parsing_delete_bracket(glb->tok);
-	if (parsing_recreate_strings(glb->tok))
-		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
+/* 	if (parsing_recreate_strings(glb->tok))
+		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1); */
 	if (parsing_here_doc(glb->tok, glb->env))
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 	glb->split = token_split_create(glb->tok);

@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:29:55 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/06 12:46:00 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/07 11:50:43 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,11 @@ void	parsing_delete_quote(t_token **tok)
 		if (!tok[i]->quote && (*tok[i]->word == '\'' || *tok[i]->word == '"'))
 		{
 			if (tok[i + 1] && (*tok[i]->word == *tok[i + 1]->word))
-			{
 				*tok[i++]->word = '\0';
-				token_array_rm(tok, i);
-			}
-			else
-				token_array_rm(tok, i);
+			token_array_rm(tok, i);
 		}
-		i++;
+		else
+			i++;
 	}
 }
 
