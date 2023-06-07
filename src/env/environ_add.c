@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 11:09:49 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/01 11:10:06 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/07 10:05:56 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static char	**env_key_modify(char **env, char *key, int pos)
 	char	*p;
 	char	*new;
 
+	if (f_strchr(env[pos], '=') && !f_strchr(key, '='))
+		return (env);
 	p = f_strchr(key, '+');
 	if (!p)
 		return (free(env[pos]), env[pos] = key, env);
@@ -54,7 +56,7 @@ char	**env_key_add(char **env, char *key)
 	if (env && !key)
 		return (env_array_destroy(env, env_array_get_size(env)), NULL);
 	pos = env_key_get_pos(env, key);
-	if (pos != KEY_NOT_FOUND)
+	if (pos >= 0)
 		return (env_key_modify(env, key, pos));
 	env_key_del_plus(key);
 	size = env_array_get_size(env) + 1;
