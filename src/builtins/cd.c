@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:48:36 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/06 13:29:04 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 11:38:05 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	update_pwd(t_glb *glb)
 	if (!tmp)
 		tmp = f_strdup("");
 	glb->env = env_key_add(glb->env, f_strjoin("OLDPWD=", tmp));
-	free(tmp); /* FIXME: Free not malloce'd if PWD exists */
+//	free(tmp); /* FIXME: Free not malloce'd if PWD exists */
 	if (!glb->env)
 		panic(glb, CODE_MALLOC, NULL);
 	tmp = f_strjoin("PWD=", getcwd(buf, PATH_MAX));

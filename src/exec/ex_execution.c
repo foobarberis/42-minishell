@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 13:39:22 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/08 10:56:56 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/08 11:38:05 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ static int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	if (nb_cmd == 1 && (cmd[i].is_builtin == EXPORT || cmd[i].is_builtin == \
 				UNSET || cmd[i].is_builtin == EXIT || cmd[i].is_builtin == CD))
 	{
-		ex_builtin(glb, cmd, cmd->is_builtin, cmd->args);
-		close_unused(cmd);
+		exec_n_close_unused(cmd);
 		i++;
 	}
 	while (i < nb_cmd)

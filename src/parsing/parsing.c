@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/07 12:27:17 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 11:48:34 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,11 @@ int	parsing(t_glb *glb)
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 	parsing_fill_type(glb->tok);
 	parsing_delete_bracket(glb->tok);
-/* 	if (parsing_recreate_strings(glb->tok))
-		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1); */
+ 	if (parsing_recreate_strings(glb->tok))
+		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 	if (parsing_here_doc(glb->tok, glb->env))
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
+//	 token_array_print(glb->tok);
 	glb->split = token_split_create(glb->tok);
 	if (!glb->split)
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);

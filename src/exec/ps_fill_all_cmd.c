@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:07:42 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/01 15:10:26 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/08 13:44:02 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ static int	ps_fill_cmd_struct(t_cmd *cmd, t_token **tok)
 		return (error);
 	if (!cmd->is_builtin && cmd->path_cmd == NULL && error == 0)
 		error = 127;
+	if (error == 127 && cmd->final_input && cmd->final_output && cmd->args[0] == NULL)
+		error = 0;
 	if (error == 0)
 		return (SUCCESS);
 	return (error);
@@ -99,7 +101,7 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 			panic(cmd->glb, CODE_MALLOC, cmd);
 		if (cmd[i].is_valid == 127 && !access(cmd[i].args[0], F_OK) && \
 												!access(cmd[i].args[0], X_OK))
-				cmd[i].is_valid = 126;
+			cmd[i].is_valid = 126;
 		i++;
 	}
 	return (0);
