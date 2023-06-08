@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:52:26 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/08 11:42:20 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 11:47:25 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,11 @@ static bool	isnum(char *s)
 	return (false);
 }
 
-/* static bool	isnum(char *s)
+static char	*trim_spaces(char *s)
 {
-	if (!s || !*s)
-		return (false);
-	while (f_isspace(*s))
-		s++;
-	if (*s == '-' || *s == '+')
-		s++;
-	while (*s)
-		if (!f_isdigit(*s++))
-			return (false);
-	return (true);
-} */
-
-static char *trim_spaces(char *s)
-{
-	int i;
-	int j;
-	char *new;
+	int		i;
+	int		j;
+	char	*new;
 
 	i = 0;
 	j = 0;
@@ -94,7 +80,7 @@ static void	blt_exit_update_rval(char **argv)
 	{
 		g_rval = 2;
 		f_dprintf(STDERR_FILENO,
-		"minishell: exit: %s: numeric argument required\n", argv[1]);
+			"minishell: exit: %s: numeric argument required\n", argv[1]);
 	}
 	else
 		g_rval = (uint8_t)n;

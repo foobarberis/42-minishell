@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:16:05 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/07 12:42:14 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 11:48:09 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ char	*here_doc_expand_variables(char **env, char *buf)
 	parsing_set_index_quote(tok);
 	parsing_set_index_word(tok);
 	if (parsing_expand_variables(tok, env))
-		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), token_array_destroy(tok), NULL);
+		return (f_dprintf(STDERR_FILENO, ERR_MALLOC),
+			token_array_destroy(tok), NULL);
 	s = token_array_to_string(tok);
 	if (!s)
-		return NULL;
+		return (NULL);
 	token_array_destroy(tok);
 	return (s);
 }
