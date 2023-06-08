@@ -19,7 +19,7 @@
 > '$USER'
 > "$USER"
 + Return exit code of the last command when exiting (if exit has no arg return g_rval else r)
-+ exit test 52 -> should return 2 check for numeric arg first then num
++ exit test 52 -> should return 2 check for numeric arg vfirst then num
 + < Makefile cd src > oufile -> should go to src
 + <<EOF cd src
   > cat main.c
