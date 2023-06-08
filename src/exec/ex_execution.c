@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 13:39:22 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/08 11:07:51 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 11:51:28 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 	if (nb_cmd == 1 && (cmd[i].is_builtin == EXPORT || cmd[i].is_builtin == \
 				UNSET || cmd[i].is_builtin == EXIT || cmd[i].is_builtin == CD))
 	{
-		child_exec(glb, cmd, i, nb_cmd);
+		exec_n_close_unused(cmd);
 		i++;
 	}
 	while (i < nb_cmd)

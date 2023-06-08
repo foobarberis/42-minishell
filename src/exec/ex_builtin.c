@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:05:36 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/31 12:51:03 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 11:39:49 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,24 @@ void	ex_builtin(t_glb *glb, t_cmd *cmd, int builtin, char **arg)
 		blt_env(glb);
 	else if (builtin == EXIT)
 		blt_exit(glb, cmd, (int)blt_compute_argc(arg), arg);
+}
+
+void	exec_n_close_unused(t_cmd *cmd)
+{
+	ex_builtin(cmd->glb, cmd, cmd->is_builtin, cmd->args);
+	if (cmd->final_input >= REDIRECTION && cmd->final_output > REDIRECTION)
+	{
+		close (cmd->final_input);
+		close(cmd->final_output);
+	}
+	if (cmd->final_output > REDIRECTION)
+	{
+		close(cmd->final_output);
+	}
+	if (cmd->final_input > REDIRECTION)
+	{
+		close(cmd->final_input);
+	}
+	close(cmd->fd[0]);
+	close(cmd->fd[1]);
 }

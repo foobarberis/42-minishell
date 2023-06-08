@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ps_get_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:09:38 by vburton           #+#    #+#             */
-/*   Updated: 2023/05/30 14:09:39 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/08 13:19:19 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,5 @@ int	ps_get_args_cmd(t_token **tok, t_cmd *cmd)
 		i++;
 	}
 	cmd->args[y] = NULL;
-	if (y == 0)
-		return (ERROR);
 	return (SUCCESS);
 }

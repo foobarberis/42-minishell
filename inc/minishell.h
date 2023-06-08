@@ -215,6 +215,7 @@ void	ex_builtin(t_glb *glb, t_cmd *cmd, int builtin, char **arg);
 void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
 void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd);
 void	out_redirect(t_cmd *cmd, size_t i);
+void	exec_n_close_unused(t_cmd *cmd);
 
 int		free_t_cmd(t_cmd *cmd, int nb_cmd);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
