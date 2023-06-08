@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:52:26 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/06 14:49:05 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 11:42:20 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,49 @@ static bool	isnum(char *s)
 {
 	if (!s || !*s)
 		return (false);
+	while (f_isspace(*s))
+		s++;
+	if (*s == '-' || *s == '+')
+		s++;
+	while (f_isdigit(*s))
+		s++;
+	while (f_isspace(*s))
+		s++;
+	if (!*s)
+		return (true);
+	return (false);
+}
+
+/* static bool	isnum(char *s)
+{
+	if (!s || !*s)
+		return (false);
+	while (f_isspace(*s))
+		s++;
 	if (*s == '-' || *s == '+')
 		s++;
 	while (*s)
 		if (!f_isdigit(*s++))
 			return (false);
 	return (true);
+} */
+
+static char *trim_spaces(char *s)
+{
+	int i;
+	int j;
+	char *new;
+
+	i = 0;
+	j = 0;
+	new = f_calloc(f_strlen(s), sizeof(char));
+	if (!new)
+		return (NULL);
+	while (f_isspace(s[i]))
+		i++;
+	while (!f_isspace(s[i]))
+		new[j++] = s[i++];
+	return (new);
 }
 
 static void	blt_exit_update_rval(char **argv)
@@ -50,31 +87,34 @@ static void	blt_exit_update_rval(char **argv)
 
 	n = f_exit_atoi(argv[1]);
 	p = f_itoa(n);
-	q = argv[1];
+	q = trim_spaces(argv[1]);
 	if (*q == '+')
 		q++;
 	if (!isnum(argv[1]) || (f_strcmp(q, p)))
 	{
 		g_rval = 2;
-		f_dprintf(STDERR_FILENO, "minishell: exit: numeric argument required\n");
+		f_dprintf(STDERR_FILENO,
+		"minishell: exit: %s: numeric argument required\n", argv[1]);
 	}
 	else
 		g_rval = (uint8_t)n;
+	free(q);
 	free(p);
 }
 
 void	blt_exit(t_glb *glb, t_cmd *cmd, int argc, char **argv)
 {
-	if (argc != 1)
-		g_rval = 0;
-	printf("exit\n");
-	if (argc > 2)
+	if (argc == 1)
+		panic(glb, glb->old_rval, cmd);
+	if (glb->multiple_cmd == 1)
+		printf("exit\n");
+	if (argc > 2 && isnum(argv[1]))
 	{
 		g_rval = 1;
 		return ((void)f_dprintf(STDERR_FILENO,
 				"minishell: exit: too many arguments\n"));
 	}
-	else if (argc == 2)
+	else
 		blt_exit_update_rval(argv);
 	panic(glb, g_rval, cmd);
 }

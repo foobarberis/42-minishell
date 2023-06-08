@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 16:14:24 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/07 12:35:27 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 11:23:38 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ struct s_glb
 	t_cmd		**cmd;
 	char		*rl;
 	int			multiple_cmd;
+	uint8_t		old_rval;
 };
 
 struct s_token

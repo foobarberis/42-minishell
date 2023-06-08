@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:39:39 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/07 11:54:53 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 11:23:56 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	parsing_recreate_words(t_token **tok)
 				return (1);
 			free(tok[i]->word);
 			tok[i]->word = tmp;
+			tok[i]->quote = tok[i+1]->quote;
 			token_array_rm(tok, i + 1);
 		}
 		i++;
@@ -57,7 +58,7 @@ int	parsing_recreate_words(t_token **tok)
 	return (0);
 }
 
-int	parsing_recreate_strings(t_token **tok) /* FIXME: Might not be useful */
+int	parsing_recreate_strings(t_token **tok)
 {
 	size_t	i;
 	char	*tmp;

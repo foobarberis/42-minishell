@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 13:39:22 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/02 08:20:43 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 11:07:51 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	exec(t_glb *glb)
 
 	i = 0;
 	status = 0;
+	g_rval = 0;
 	glb->multiple_cmd = (int) get_max_cmd(glb->tok);
 	cmd = malloc(sizeof(t_cmd) * glb->multiple_cmd);
 	if (!cmd)

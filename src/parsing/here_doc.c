@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:33:31 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/07 10:00:06 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 11:03:01 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ char	*here_doc(char *lim)
 {
 	char	*buf[3];
 
-	g_rval = 0;
 	buf[0] = f_strdup("");
 	if (!buf[0])
 		return (NULL);
