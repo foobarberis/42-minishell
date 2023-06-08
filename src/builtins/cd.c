@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:48:36 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/06 13:29:04 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 10:07:44 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void	update_pwd(t_glb *glb)
 
 	tmp = env_getenv(glb->env, "PWD");
 	if (!tmp)
-		tmp = f_strdup("");
-	glb->env = env_key_add(glb->env, f_strjoin("OLDPWD=", tmp));
-	free(tmp); /* FIXME: Free not malloce'd if PWD exists */
+		glb->env = env_key_add(glb->env, f_strjoin("OLDPWD=", ""));
+	else
+		glb->env = env_key_add(glb->env, f_strjoin("OLDPWD=", tmp));
 	if (!glb->env)
 		panic(glb, CODE_MALLOC, NULL);
 	tmp = f_strjoin("PWD=", getcwd(buf, PATH_MAX));
@@ -76,3 +76,23 @@ void	blt_cd(t_glb *glb, int argc, char **argv)
 	}
 	update_pwd(glb);
 }
+
+/* static void	update_pwd(t_glb *glb)
+{
+	char	*tmp;
+	char	buf[PATH_MAX];
+
+	tmp = env_getenv(glb->env, "PWD");
+	if (!tmp)
+		tmp = f_strdup("");
+	glb->env = env_key_add(glb->env, f_strjoin("OLDPWD=", tmp));
+	free(tmp);
+	if (!glb->env)
+		panic(glb, CODE_MALLOC, NULL);
+	tmp = f_strjoin("PWD=", getcwd(buf, PATH_MAX));
+	if (!tmp)
+		return (perror("minishell: cd: getcwd"));
+	glb->env = env_key_add(glb->env, tmp);
+	if (!glb->env)
+		panic(glb, CODE_MALLOC, NULL);
+} */
