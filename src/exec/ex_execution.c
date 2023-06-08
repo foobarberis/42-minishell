@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 13:39:22 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/08 11:51:28 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 17:02:26 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ static void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 	if (pid == 0)
 	{
 		g_rval = (uint8_t) cmd[i].is_valid;
-		child_exec(glb, cmd, i, nb_cmd);
+		if (cmd[i].args[0])
+			child_exec(glb, cmd, i, nb_cmd);
+		else
+			exec_n_close_unused(&cmd[i]);
 		if (i > 0)
 			close(cmd[i - 1].fd[0]);
 		panic(glb, g_rval, cmd);
