@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:52:26 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/08 11:47:25 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 19:41:15 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,16 @@ static char	*trim_spaces(char *s)
 
 	i = 0;
 	j = 0;
-	new = f_calloc(f_strlen(s), sizeof(char));
+	new = f_calloc(f_strlen(s) + 1, sizeof(char));
 	if (!new)
 		return (NULL);
-	while (f_isspace(s[i]))
+	while (s[i] && f_isspace(s[i]))
 		i++;
-	while (!f_isspace(s[i]))
+	if (s[i] == '+')
+		i++;
+	while (s[i] && !f_isspace(s[i]))
 		new[j++] = s[i++];
+	new[j] = 0;
 	return (new);
 }
 
@@ -74,6 +77,7 @@ static void	blt_exit_update_rval(char **argv)
 	n = f_exit_atoi(argv[1]);
 	p = f_itoa(n);
 	q = trim_spaces(argv[1]);
+	// printf("trim : %s, ori : %s\n", q, p);
 	if (*q == '+')
 		q++;
 	if (!isnum(argv[1]) || (f_strcmp(q, p)))

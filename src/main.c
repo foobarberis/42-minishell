@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:54:05 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/08 11:04:38 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/08 12:23:18 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ static void	reset(t_glb *glb)
 
 void	panic(t_glb *glb, int code, t_cmd *cmd)
 {
+	uint8_t n;
+
+	n = (uint8_t)code;
 	if (cmd)
 	{
 		close_fd(cmd, glb->multiple_cmd);
@@ -69,7 +72,7 @@ void	panic(t_glb *glb, int code, t_cmd *cmd)
 	msh_exit(glb);
 	if (code == CODE_MALLOC)
 		f_dprintf(STDERR_FILENO, ERR_MALLOC);
-	exit(code);
+	exit(n);
 }
 
 uint8_t	g_rval = 0; /* Global variable init */
