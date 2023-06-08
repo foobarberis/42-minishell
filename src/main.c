@@ -97,6 +97,7 @@ int	main(int ac, char *av[], char *ep[])
 			continue ;
 		if (!glb->env)
 			break ;
+		g_rval = 0;
 		exec(glb);
 	}
 	return (printf("exit\n"), msh_exit(glb), g_rval);

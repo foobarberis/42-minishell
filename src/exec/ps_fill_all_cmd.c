@@ -87,7 +87,7 @@ static int	ps_fill_cmd_struct(t_cmd *cmd, t_token **tok, int nb_args)
 int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 {
 	int	i;
-	int nb_args;
+	int	nb_args;
 
 	i = 0;
 	init_to_null_cmd_struct(cmd, glob->multiple_cmd);
