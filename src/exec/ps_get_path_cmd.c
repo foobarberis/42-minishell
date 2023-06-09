@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ps_get_path_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:10:13 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/08 10:30:26 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/09 11:07:05 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_compute_path(char **path, char *cmd)
 	i = 0;
 	if (access(cmd, X_OK) == 0 && ft_strncmp(cmd, "./", 2) == 0)
 		return (f_strdup(cmd));
-	while (path[i])
+	while (path && path[i])
 	{
 		buff = f_strjoin(path[i], "/");
 		if (!buff)
