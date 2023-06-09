@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 11:09:49 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/07 10:05:56 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/09 11:38:09 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	**env_key_modify(char **env, char *key, int pos)
 	char	*new;
 
 	if (f_strchr(env[pos], '=') && !f_strchr(key, '='))
-		return (env);
+		return (free(key), env);
 	p = f_strchr(key, '+');
 	if (!p)
 		return (free(env[pos]), env[pos] = key, env);
