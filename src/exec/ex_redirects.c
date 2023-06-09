@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:06:00 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/09 15:36:52 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/09 20:46:17 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 	{
 		if (!f_strcmp(cmd[0].args[0], "cat") && cmd[0].args[1] == NULL)
 			check = 1;
-		if (check == 0 || (check == 1 && cmd[0].input))
+		if (check == 0 || (check == 1 && cmd[0].final_input))
 			dup2(cmd[i - 1].fd[0], STDIN_FILENO);
 	}
 	if (i < nb_cmd - 1)
@@ -46,11 +46,21 @@ void	in_out_redirect(t_cmd *cmd, size_t i)
 
 void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 {
+	int	pid;
+	int	fd[2];
+
 	if (cmd[i].is_here_doc)
 	{
-		f_dprintf(cmd[i].fd[1], cmd[i].string_here_doc);
-		close(cmd[i].fd[1]);
-		dup2(cmd[i].fd[0], STDIN_FILENO);
+//		pipe(fd);
+//		pid = fork();
+//		if (pid == 0)
+//		{
+//			write(fd[0], cmd[i].string_here_doc, f_strlen(cmd[i].string_here_doc));
+//			exit(0);
+//		}
+//		dup2(fd[1], STDIN_FILENO);
+//		close(fd[1]);
+//		close(fd[0]);
 	}
 	else
 	{
@@ -58,7 +68,10 @@ void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 		close (cmd[i].final_input);
 	}
 	if (i < nb_cmd - 1)
+	{
 		dup2(cmd[i].fd[1], STDOUT_FILENO);
+		close (cmd[i].fd[1]);
+	}
 }
 
 void	out_redirect(t_cmd *cmd, size_t i)
