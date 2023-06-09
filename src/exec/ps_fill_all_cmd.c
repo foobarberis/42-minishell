@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:07:42 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/08 13:44:02 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/08 17:13:25 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,13 @@ static int	ps_check_redirect_n_blt(t_cmd *cmd, t_token **tok, int *error)
 	return (SUCCESS);
 }
 
-static int	ps_fill_cmd_struct(t_cmd *cmd, t_token **tok)
+static int	ps_fill_cmd_struct(t_cmd *cmd, t_token **tok, int nb_args)
 {
-	int	nb_args;
 	int	error;
 	int	args;
 	int	check_middle;
 
 	error = 0;
-	nb_args = count_type(tok, BASIC) + 1;
 	cmd->args = malloc(sizeof(char *) * nb_args);
 	if (!cmd->args)
 		return (CODE_MALLOC);
@@ -79,7 +77,7 @@ static int	ps_fill_cmd_struct(t_cmd *cmd, t_token **tok)
 		return (error);
 	if (!cmd->is_builtin && cmd->path_cmd == NULL && error == 0)
 		error = 127;
-	if (error == 127 && cmd->final_input && cmd->final_output && cmd->args[0] == NULL)
+	if (error == 127 && cmd->final_input && cmd->final_output && !cmd->args[0])
 		error = 0;
 	if (error == 0)
 		return (SUCCESS);
@@ -89,6 +87,7 @@ static int	ps_fill_cmd_struct(t_cmd *cmd, t_token **tok)
 int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 {
 	int	i;
+	int	nb_args;
 
 	i = 0;
 	init_to_null_cmd_struct(cmd, glob->multiple_cmd);
@@ -96,7 +95,8 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 	{
 		cmd[i].glb = glob;
 		cmd[i].env = glob->env;
-		cmd[i].is_valid = ps_fill_cmd_struct(&cmd[i], glob->split[i]);
+		nb_args = count_type(glob->split[i], BASIC) + 1;
+		cmd[i].is_valid = ps_fill_cmd_struct(&cmd[i], glob->split[i], nb_args);
 		if (cmd[i].is_valid == CODE_MALLOC)
 			panic(cmd->glb, CODE_MALLOC, cmd);
 		if (cmd[i].is_valid == 127 && !access(cmd[i].args[0], F_OK) && \
