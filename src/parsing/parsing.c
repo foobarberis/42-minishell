@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/09 11:31:41 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/09 11:33:36 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ static int	parsing_continue(t_glb *glb)
 	glb->split = token_split_create(glb->tok);
 	if (!glb->split)
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
+	return (0);
 }
 
 int	parsing(t_glb *glb)
