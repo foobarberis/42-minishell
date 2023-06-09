@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:54:05 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/08 12:23:18 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/09 11:29:15 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static t_glb	*msh_init(char **envp)
 	glb->tok = NULL;
 	glb->split = NULL;
 	glb->rl = NULL;
+	glb->old_rval = 0;
 	glb->env = env_init(envp);
 	if (!glb->env)
 		panic(glb, CODE_MALLOC, NULL);
@@ -61,7 +62,7 @@ static void	reset(t_glb *glb)
 
 void	panic(t_glb *glb, int code, t_cmd *cmd)
 {
-	uint8_t n;
+	uint8_t	n;
 
 	n = (uint8_t)code;
 	if (cmd)

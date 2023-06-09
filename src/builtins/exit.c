@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:52:26 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/08 19:41:15 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/09 11:20:39 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ static void	blt_exit_update_rval(char **argv)
 	n = f_exit_atoi(argv[1]);
 	p = f_itoa(n);
 	q = trim_spaces(argv[1]);
-	// printf("trim : %s, ori : %s\n", q, p);
 	if (*q == '+')
 		q++;
 	if (!isnum(argv[1]) || (f_strcmp(q, p)))

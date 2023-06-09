@@ -15,6 +15,13 @@
 + [X] Return code of <<EOF should be 0 but we get 2.
 + [X] <<EOF in cat > out  + Ctrl-C -> should not create out
 + [X] exit test 52 -> should return 2 check for numeric arg first then num
-+ <<EOF cd src
++ [X]
+```sh
+<<EOF cd src
   > cat main.c
   -> cat main.c should not be executed, just cd src/
+```
+```sh
+echo "hi" | cat | cat | cat | cat | cat | cat | cat
+ps -a
+```
