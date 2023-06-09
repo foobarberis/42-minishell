@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:16:05 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/08 11:48:09 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/09 10:44:06 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ char	*here_doc_expand_variables(char **env, char *buf)
 	if (!*buf)
 		return (buf);
 	tok = token_array_create(buf);
+	free(buf);
 	if (!tok)
 		return (NULL);
 	parsing_set_index_quote(tok);
