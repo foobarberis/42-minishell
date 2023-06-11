@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_redirects.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:06:00 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/09 20:46:17 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/11 17:53:00 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 {
-	int	check;
+	// int	check;
 
-	check = 0;
+	// check = 0;
 	if (i > 0 && cmd[i].is_builtin == 0)
 	{
-		if (!f_strcmp(cmd[0].args[0], "cat") && cmd[0].args[1] == NULL)
-			check = 1;
-		if (check == 0 || (check == 1 && cmd[0].final_input))
+		// if (!f_strcmp(cmd[0].args[0], "cat") && cmd[0].args[1] == NULL)
+		// 	check = 1;
+		// if (check == 0 || (check == 1 && cmd[0].final_input))
 			dup2(cmd[i - 1].fd[0], STDIN_FILENO);
 	}
 	if (i < nb_cmd - 1)
@@ -47,20 +47,22 @@ void	in_out_redirect(t_cmd *cmd, size_t i)
 void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 {
 	int	pid;
-	int	fd[2];
+	int	fds[2];
 
 	if (cmd[i].is_here_doc)
 	{
-//		pipe(fd);
-//		pid = fork();
-//		if (pid == 0)
-//		{
-//			write(fd[0], cmd[i].string_here_doc, f_strlen(cmd[i].string_here_doc));
-//			exit(0);
-//		}
-//		dup2(fd[1], STDIN_FILENO);
-//		close(fd[1]);
-//		close(fd[0]);
+		pipe(fds);
+		pid = fork();
+		if (pid == 0)
+		{
+			write(fds[1], cmd[i].string_here_doc, f_strlen(cmd[i].string_here_doc));
+			close(fds[1]);
+			close(fds[0]);
+			panic(cmd->glb, 0, cmd);
+		}
+		dup2(fds[0], STDIN_FILENO);
+		close(fds[1]);
+		close(fds[0]);
 	}
 	else
 	{
