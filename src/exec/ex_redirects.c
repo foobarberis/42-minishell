@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:06:00 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/11 17:53:00 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/11 18:11:02 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	nothing_to_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 {
-	// int	check;
+	int	check;
 
-	// check = 0;
+	check = 0;
 	if (i > 0 && cmd[i].is_builtin == 0)
 	{
-		// if (!f_strcmp(cmd[0].args[0], "cat") && cmd[0].args[1] == NULL)
-		// 	check = 1;
-		// if (check == 0 || (check == 1 && cmd[0].final_input))
+		if (!f_strcmp(cmd[0].args[0], "cat") && cmd[0].args[1] == NULL)
+			check = 1;
+		if (check == 0 || (check == 1 && cmd[0].final_input != -1))
 			dup2(cmd[i - 1].fd[0], STDIN_FILENO);
 	}
 	if (i < nb_cmd - 1)
