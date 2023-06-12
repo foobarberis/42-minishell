@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/12 13:50:17 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/12 16:09:30 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,36 +33,29 @@
  *   permission etc.).
  */
 
-static void token_array_print(t_token **tok)
-
+static void	parsing_quote_limit(t_token **tok)
 {
+	int	i;
 
-size_t i;
-
-
-
-printf("%-15s | %-15s | %-15s | %-15s | %-15s\n", "type", "quote", "char *", "word", "cmd");
-
-printf("-------------------------------------------------------------------"
-
-"--------\n");
-
-i = 0;
-
-while (tok[i])
-
-{
-
-printf("%-15d | %-15d | %-15s | %-15ld | %-15ld\n", tok[i]->type, tok[i]->quote,
-
-tok[i]->word, tok[i]->word_index, tok[i]->cmd_index);
-
-i++;
-
-}
-
-f_printf("\n");
-
+	i = 0;
+	while (1)
+	{
+		if (tok[i] && tok[i + 1] && *tok[i]->word == '<' && *tok[i + 1]->word == '<')
+		{
+			i += 2;
+			while (tok[i] && f_isspace(*tok[i]->word))
+				i++;
+			while (tok[i] && !f_isspace(*tok[i]->word))
+			{
+				if (!(*tok[i]->word == '$' && (*tok[i + 1]->word == '"' || *tok[i + 1]->word == '\'')))
+					tok[i]->quote = SIMPLE;
+				i++;
+			}
+		}
+		if (!tok[i])
+			break ;
+		i++;
+	}
 }
 
 char	*token_array_to_string(t_token **tok)
@@ -95,6 +88,8 @@ static int	parsing_expand(t_glb *glb)
 	parsing_set_index_quote(glb->tok);
 	parsing_set_index_word(glb->tok);
 	parsing_set_index_cmd(glb->tok);
+	parsing_quote_limit(glb->tok);
+	token_array_print(glb->tok);
 	if (parsing_expand_variables(glb->tok, glb->env))
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 	new = token_array_to_string(glb->tok);

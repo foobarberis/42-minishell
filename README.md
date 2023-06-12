@@ -1,5 +1,8 @@
 # 42-minishell
 
+<< $"hola"$"b"
+<< $"$hola"$$"b"
+
 + [X] Ctrl-C in here-doc should exit here-doc and discard the buffer (WARNING: LEAKS)
 + [X] echo ""'test'""
 + [X] echo """"'test'""""
@@ -28,3 +31,5 @@ ps -a
 
 export HOLA='"'
 echo " $HOLA " | cat -e
+
+`cat <<$USER` should exit on `$USER` not `matthieu`

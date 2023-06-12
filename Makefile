@@ -6,7 +6,7 @@
 #    By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 21:40:52 by mbarberi          #+#    #+#              #
-#    Updated: 2023/06/12 13:51:09 by mbarberi         ###   ########.fr        #
+#    Updated: 2023/06/12 14:47:57 by mbarberi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,7 @@ MLCDIR		:=	mlc
 INCFLAGS	:= -I$(INCDIR) -I$(SYSINC) -I$(MLCDIR)/inc
 LIBFLAGS	:= -L$(MLCDIR) -lreadline -lft
 # CFLAGS		:=	-O3 -Wall -Wextra -Werror
-CFLAGS		:= -g3 -fPIE -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion # -fsanitize=undefined,address
+CFLAGS		:= -g3 -fPIE -Wall -Wextra -Wconversion -Wdouble-promotion -Wno-unused-parameter -Wno-unused-function -Wno-sign-conversion -fsanitize=undefined,address
 RMFLAGS		:=	-f
 
 # Edit the $(HEADERS) variable as necessary.
@@ -83,9 +83,9 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 all: libft $(NAME)
 
 $(OBJECTS): $(HEADERS) Makefile
-# -fsanitize=address,undefined
+
 $(NAME): $(OBJECTS) $(MLCDIR)/libft.a
-	$(CC) $(OBJECTS) $(LIBFLAGS) -o $(NAME)
+	$(CC) $(OBJECTS) -fsanitize=address,undefined $(LIBFLAGS) -o $(NAME)
 
 libft:
 	make -C $(MLCDIR)

@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:38:50 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/12 13:22:22 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/12 14:20:32 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static int	parsing_recreate_variables(t_token **tok)
 	i = 0;
 	while (tok[i])
 	{
-		if (tok[i + 1] && (*tok[i]->word == '$' && !tok[i]->quote) && (*tok[i + 1]->word == '"' || *tok[i + 1]->word == '\''))
+		if (tok[i + 1] && (*tok[i]->word == '$' && !tok[i]->quote)
+			&& (*tok[i + 1]->word == '"' || *tok[i + 1]->word == '\''))
 			token_array_rm(tok, i);
 		while (tok[i + 1] && *tok[i]->word == '$' && is_legal(*tok[i + 1]->word)
 			&& (tok[i]->word_index == tok[i + 1]->word_index)
@@ -121,3 +122,4 @@ int	parsing_expand_variables(t_token **tok, char **env)
 	}
 	return (0);
 }
+
