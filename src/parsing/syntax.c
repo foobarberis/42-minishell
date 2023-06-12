@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:44:55 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/08 11:37:17 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/12 13:49:31 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ static int	check_syntax_brackets(t_token **tok)
 			&& !tok[i + 1]->quote
 			&& (*tok[i]->word == '<' || *tok[i]->word == '>'))
 		{
+			if ((*tok[i]->word == *tok[i + 1]->word) && (tok[i]->word_index != tok[i + 1]->word_index))
+					return (f_dprintf(STDERR_FILENO,
+						ERR_SYNTAX, tok[i + 1]->word), 1);
 			if (*tok[i]->word == '>' && *tok[i + 1]->word == '<')
 				return (f_dprintf(STDERR_FILENO, ERR_SYNTAX, "<"), 1);
 			if ((*tok[i]->word == *tok[i + 1]->word)
