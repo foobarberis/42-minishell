@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:06:00 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/12 10:56:12 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/12 14:06:18 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	in_out_redirect(t_cmd *cmd, size_t i)
 {
 	if (cmd[i].is_here_doc)
 	{
-		f_dprintf(cmd[i].fd[1], cmd[i].string_here_doc);
+		f_dprintf(cmd[i].fd[1], cmd[i].string_hc);
 		dup2(cmd[i].fd[0], STDIN_FILENO);
 	}
 	else
@@ -55,7 +55,7 @@ void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 		pid = fork();
 		if (pid == 0)
 		{
-			write(fds[1], cmd[i].string_here_doc, f_strlen(cmd[i].string_here_doc));
+			write(fds[1], cmd[i].string_hc, f_strlen(cmd[i].string_hc));
 			close(fds[1]);
 			close(fds[0]);
 			panic(cmd->glb, 0, cmd);
@@ -70,10 +70,7 @@ void	in_redirect(t_cmd *cmd, size_t i, size_t nb_cmd)
 		close (cmd[i].final_input);
 	}
 	if (i < nb_cmd - 1)
-	{
 		dup2(cmd[i].fd[1], STDOUT_FILENO);
-		close (cmd[i].fd[1]);
-	}
 }
 
 void	out_redirect(t_cmd *cmd, size_t i)
