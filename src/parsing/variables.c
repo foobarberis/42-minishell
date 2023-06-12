@@ -6,15 +6,24 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:38:50 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/12 14:20:32 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:39:32 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_legal(int c)
+static void	parsing_rm_dollar_quote(t_token **tok)
 {
-	return (f_isalnum(c) || c == '_' || c == '?' || c == 0);
+	int	i;
+
+	i = 0;
+	while (tok[i])
+	{
+		if (tok[i + 1] && (*tok[i]->word == '$' && !tok[i]->quote)
+			&& (*tok[i + 1]->word == '"' || *tok[i + 1]->word == '\''))
+			token_array_rm(tok, i);
+		i++;
+	}
 }
 
 static int	parsing_recreate_variables(t_token **tok)
@@ -23,11 +32,9 @@ static int	parsing_recreate_variables(t_token **tok)
 	char	*tmp;
 
 	i = 0;
+	parsing_rm_dollar_quote(tok);
 	while (tok[i])
 	{
-		if (tok[i + 1] && (*tok[i]->word == '$' && !tok[i]->quote)
-			&& (*tok[i + 1]->word == '"' || *tok[i + 1]->word == '\''))
-			token_array_rm(tok, i);
 		while (tok[i + 1] && *tok[i]->word == '$' && is_legal(*tok[i + 1]->word)
 			&& (tok[i]->word_index == tok[i + 1]->word_index)
 			&& (tok[i]->quote == tok[i + 1]->quote))
@@ -122,4 +129,3 @@ int	parsing_expand_variables(t_token **tok, char **env)
 	}
 	return (0);
 }
-

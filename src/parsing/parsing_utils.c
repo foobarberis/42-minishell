@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:32:38 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/05/20 16:13:14 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:37:27 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,9 @@ char	*f_itoa(intmax_t n)
 int	ismeta(int c)
 {
 	return (c == '<' || c == '>' || c == '|');
+}
+
+int	is_legal(int c)
+{
+	return (f_isalnum(c) || c == '_' || c == '?' || c == 0);
 }

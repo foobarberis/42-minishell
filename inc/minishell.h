@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 16:14:24 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/12 12:23:58 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:37:04 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ void	token_array_rm(t_token **tok, size_t pos);
 t_token	***token_split_create(t_token **tok);
 void	token_split_destroy(t_token ***split);
 int		ismeta(int c);
+int		is_legal(int c);
 char	*f_itoa(intmax_t n);
 size_t	get_max_cmd(t_token **tok);
 char	*here_doc_expand_variables(char **env, char *buf);

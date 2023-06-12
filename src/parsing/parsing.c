@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/12 16:09:30 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:35:09 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,16 @@ static void	parsing_quote_limit(t_token **tok)
 	i = 0;
 	while (1)
 	{
-		if (tok[i] && tok[i + 1] && *tok[i]->word == '<' && *tok[i + 1]->word == '<')
+		if (tok[i] && tok[i + 1]
+			&& *tok[i]->word == '<' && *tok[i + 1]->word == '<')
 		{
 			i += 2;
 			while (tok[i] && f_isspace(*tok[i]->word))
 				i++;
 			while (tok[i] && !f_isspace(*tok[i]->word))
 			{
-				if (!(*tok[i]->word == '$' && (*tok[i + 1]->word == '"' || *tok[i + 1]->word == '\'')))
+				if (!(*tok[i]->word == '$' && (*tok[i + 1]->word == '"'
+							|| *tok[i + 1]->word == '\'')))
 					tok[i]->quote = SIMPLE;
 				i++;
 			}
