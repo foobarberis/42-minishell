@@ -35,7 +35,7 @@ void	sig_child_handler(int status)
 	}
 	else if (WTERMSIG(status) == SIGQUIT)
 	{
-		write(1, "Quit\n", 6);
+		write(2, "Quit\n", 6);
 		g_rval = (uint8_t)(128 + SIGQUIT);
 	}
 }

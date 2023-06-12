@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:07:42 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/09 17:29:20 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/12 14:05:59 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd)
 		cmd[i].env = NULL;
 		cmd[i].input = NULL;
 		cmd[i].is_here_doc = 0;
-		cmd[i].string_here_doc = NULL;
+		cmd[i].string_hc = NULL;
 		cmd[i].output = NULL;
 		cmd[i].type_in = -1;
 		cmd[i].type_out = -1;
