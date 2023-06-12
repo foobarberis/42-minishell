@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:52:26 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/12 12:16:01 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/12 13:30:50 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ static char	*trim_spaces(char *s)
 	new = f_calloc(f_strlen(s) + 1, sizeof(char));
 	if (!new)
 		return (NULL);
-	while (s[i] && f_isspace(s[i]))
+	if (s[i + 1] && s[i] == '-' && !f_isspace(s[i + 1]))
+		new[j++] = s[i++];
+	while (s[i] && (f_isspace(s[i]) || s[i] == '0'))
 		i++;
 	if (s[i] == '+')
 		i++;

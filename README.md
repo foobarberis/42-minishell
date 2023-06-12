@@ -25,3 +25,6 @@
 echo "hi" | cat | cat | cat | cat | cat | cat | cat
 ps -a
 ```
+
+export HOLA='"'
+echo " $HOLA " | cat -e
