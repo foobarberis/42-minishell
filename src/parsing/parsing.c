@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/12 19:35:09 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:40:49 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ static int	parsing_expand(t_glb *glb)
 	parsing_set_index_word(glb->tok);
 	parsing_set_index_cmd(glb->tok);
 	parsing_quote_limit(glb->tok);
-	token_array_print(glb->tok);
 	if (parsing_expand_variables(glb->tok, glb->env))
 		return (f_dprintf(STDERR_FILENO, ERR_MALLOC), 1);
 	new = token_array_to_string(glb->tok);
