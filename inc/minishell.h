@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 16:14:24 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/12 19:37:04 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/13 08:47:03 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,8 @@ int		is_legal(int c);
 char	*f_itoa(intmax_t n);
 size_t	get_max_cmd(t_token **tok);
 char	*here_doc_expand_variables(char **env, char *buf);
+int		parsing_recreate_variables(t_token **tok);
+char	*get_value(char **env, char *key, int quote);
 void	parsing_set_index_quote(t_token **tok);
 void	parsing_set_index_word(t_token **tok);
 void	parsing_set_index_cmd(t_token **tok);

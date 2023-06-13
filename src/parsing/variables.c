@@ -6,7 +6,7 @@
 /*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:38:50 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/12 19:39:32 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/13 08:46:57 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	parsing_rm_dollar_quote(t_token **tok)
 	}
 }
 
-static int	parsing_recreate_variables(t_token **tok)
+int	parsing_recreate_variables(t_token **tok)
 {
 	size_t	i;
 	char	*tmp;
@@ -79,7 +79,7 @@ static char	*get_value_rm_whitespace(char *s)
 	return (s);
 }
 
-static char	*get_value(char **env, char *key, int quote)
+char	*get_value(char **env, char *key, int quote)
 {
 	char	*new;
 	char	*getenv;
