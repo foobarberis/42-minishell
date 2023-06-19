@@ -6,7 +6,7 @@
 /*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:15:21 by vburton           #+#    #+#             */
-/*   Updated: 2023/05/30 14:15:22 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/19 17:29:07 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	open_input(t_cmd *files)
 {
 	int	valid;
 
+	if (files->final_input > 1)
+		close (files->final_input);
 	if (files->type_in == S_INPUT)
 		valid = open(files->input, O_RDONLY);
 	else
@@ -36,6 +38,8 @@ int	open_output(t_cmd *files)
 {
 	int	valid;
 
+	if (files->final_output > 0)
+		close (files->final_output);
 	if (files->type_out == S_OUTPUT)
 		valid = open(files->output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	else

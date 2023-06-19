@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 10:35:54 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/13 11:53:16 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/19 14:16:30 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ int	parsing(t_glb *glb)
 	parsing_set_index_quote(glb->tok);
 	parsing_set_index_word(glb->tok);
 	parsing_set_index_cmd(glb->tok);
+	if (get_max_cmd(glb->tok) > 3332)
+		return (g_rval = 2, f_dprintf(STDERR_FILENO, ERR_SYNTAX, "|"), 1);
 	parsing_delete_space(glb->tok);
 	if (parsing_check_syntax(glb->tok))
 		return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:05:36 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/08 17:02:47 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/19 15:56:37 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	ex_builtin(t_glb *glb, t_cmd *cmd, int builtin, char **arg)
 
 void	exec_n_close_unused(t_cmd *cmd)
 {
+	(void)pipe(cmd->fd);
 	ex_builtin(cmd->glb, cmd, cmd->is_builtin, cmd->args);
 	close(cmd->fd[0]);
 	close(cmd->fd[1]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ps_fill_all_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:07:42 by mbarberi          #+#    #+#             */
-/*   Updated: 2023/06/13 11:52:56 by mbarberi         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:20:52 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void	init_to_null_cmd_struct(t_cmd *cmd, int nb_cmd)
 	i = 0;
 	while (i < nb_cmd)
 	{
-		(void)pipe(cmd[i].fd);
 		cmd[i].is_valid = 0;
 		cmd[i].pid = -1;
 		cmd[i].is_builtin = NONE;
@@ -100,7 +99,7 @@ int	ps_initialisation_cmds(t_cmd *cmd, t_glb *glob)
 		if (cmd[i].is_valid == CODE_MALLOC)
 			panic(cmd->glb, CODE_MALLOC, cmd);
 		if (cmd[i].is_valid == 127 && !access(cmd[i].args[0], F_OK) && \
-												!access(cmd[i].args[0], X_OK))
+											f_strchr(cmd[i].args[0], '/'))
 			cmd[i].is_valid = 126;
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 13:39:22 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/12 11:27:27 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/19 15:14:10 by vburton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static void	ex_childs(t_glb *glb, t_cmd *cmd, size_t i, size_t nb_cmd)
 {
 	int	pid;
 
+	(void)pipe(cmd[i].fd);
 	pid = fork();
 	cmd[i].pid = pid;
 	if (pid == -1)
@@ -97,13 +98,13 @@ static int	ex_launch(t_glb *glb, t_cmd *cmd, size_t nb_cmd)
 		while (i < nb_cmd && cmd[i].is_valid > 0)
 		{
 			g_rval = (uint8_t)cmd[i].is_valid;
+			(void)pipe(cmd[i].fd);
 			parent_exec(cmd, i);
 			i++;
 		}
 		if (i == nb_cmd)
 			break ;
-		ex_childs(glb, cmd, i, nb_cmd);
-		i++;
+		ex_childs(glb, cmd, i++, nb_cmd);
 	}
 	if (i > 0 && cmd[i - 1].fd[0])
 		close(cmd[i - 1].fd[0]);
