@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ps_get_path_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vburton <vburton@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbarberi <mbarberi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 14:10:13 by vburton           #+#    #+#             */
-/*   Updated: 2023/06/19 18:14:56 by vburton          ###   ########.fr       */
+/*   Updated: 2023/06/20 09:31:27 by mbarberi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int	check_cmd(char *cmd)
 	else if (dir && f_strchr(cmd, '/'))
 	{
 		f_dprintf(2, "minishell: %s: Is a directory\n", cmd);
-		closedir(dir);
 		error = ERROR;
 	}
+	closedir(dir);
 	return (error);
 }
 
